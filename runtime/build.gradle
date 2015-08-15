@@ -1,0 +1,6 @@
+apply plugin: 'groovy'
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy:2.4.4'
+    compile 'org.eclipse.jgit:org.eclipse.jgit:4.0.1.201506240215-r'
+}
