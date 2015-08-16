@@ -10,13 +10,13 @@ class Start {
             import greenmoonsoftware.sterling.gradle.*
 
             step checkout(type: GitClone) {
-                url = 'https://github.com/greathouse/green-tea-test.git'
-                dir = 'green-tea-test'
+                url 'https://github.com/greathouse/green-tea-test.git'
+                dir 'green-tea-test'
             }
 
             step buildProject(type: Gradle) {
-                workingDir = 'green-tea-test'
-                tasks = 'clean build'
+                workingDir checkout.dir
+                tasks 'clean build'
             }
 
         """)

@@ -12,7 +12,7 @@ class Gradle implements Step {
     String tasks = 'clean'
 
     @Override
-    void execute() {
+    void execute(PrintStream log) {
         ProcessBuilder builder = new ProcessBuilder("${executable} -b ${buildFile} ${tasks}".split(' ') )
         builder.directory(workingDir)
         builder.redirectErrorStream(true)
@@ -20,8 +20,23 @@ class Gradle implements Step {
         BufferedReader reader = new BufferedReader (new InputStreamReader(process.inputStream))
         String line
         while ((line = reader.readLine ()) != null) {
-            System.out.println (line)
+            log.println(line)
         }
+    }
+
+    @Override
+    Map<String, Object> getInputs() {
+        [
+                workingDir: workingDir,
+                executable: executable,
+                buildFile: buildFile,
+                tasks: tasks
+        ].asImmutable()
+    }
+
+    @Override
+    Map<String, Object> getOutputs() {
+        [:].asImmutable()
     }
 
     void setWorkingDir(String s) {

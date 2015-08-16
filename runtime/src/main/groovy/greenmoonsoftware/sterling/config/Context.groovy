@@ -1,8 +1,11 @@
 package greenmoonsoftware.sterling.config
 
+import groovy.time.TimeCategory
+
 final class Context {
     private static Context context
-    private LinkedHashMap<String, Step> steps = [:]
+    private LinkedHashMap<String, StepConfiguration> configuredSteps = [:]
+    private LinkedHashMap<String, Step> executedSteps = [:]
     private File workspace
 
     static Context get() {
@@ -14,24 +17,42 @@ final class Context {
         return workspace
     }
 
-    def execute() {
-        println "Workspace: ${workspace}"
-        println "Number of steps: ${steps.size()}"
-        steps.values().each { it.execute() }
+    def findExecutedStep(String name) {
+        executedSteps[name]
     }
 
-    def step(Definition definition) {
-        steps[definition.name] = definition.step
+    def execute() {
+        println "Workspace: ${workspace}"
+        println "Number of steps: ${configuredSteps.size()}"
+
+        configuredSteps.values().each { configured ->
+            def step = configured.type.newInstance()
+            def c = (Closure)configured.configureClosure.clone()
+            c.delegate = new StepDelegate(step)
+            c.resolveStrategy = Closure.DELEGATE_FIRST
+            c.call()
+
+            println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+            println "${configured.name} (${configured.type.simpleName})"
+            step.inputs.each { println "\t${it.key}: ${it.value}"}
+            println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+            def startTime = new Date()
+            step.execute(System.out)
+            def endTime = new Date()
+            println "\n${configured.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
+            step.outputs.each { println "\t${it.key}: ${it.value}" }
+            println ''
+
+            executedSteps[configured.name] = step
+        }
+    }
+
+    def step(StepConfiguration definition) {
+        configuredSteps[definition.name] = definition
     }
 
     def methodMissing(String name, args) {
-        def step = args[0].type.newInstance()
-        step.with args[1]
-        return new Definition(name:name, step:step)
-    }
-
-    private class Definition {
-        String name
-        Step step
+        def configureClosure = args[1]
+        return new StepConfiguration(name:name, type: args[0].type, configureClosure: configureClosure)
     }
 }
