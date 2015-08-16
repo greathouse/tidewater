@@ -43,25 +43,40 @@ final class Context {
         println "Number of steps: ${configuredSteps.size()}"
 
         configuredSteps.values().each { configured ->
-            def step = configured.type.newInstance()
-            def c = (Closure)configured.configureClosure.clone()
-            c.delegate = new StepDelegate(step)
-            c.resolveStrategy = Closure.DELEGATE_FIRST
-            c.call()
-
-            println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-            println "${configured.name} (${configured.type.simpleName})"
-            step.inputs.each { println "\t${it.key}: ${it.value}"}
-            println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-            def startTime = new Date()
-            step.execute(System.out, new File(metaDirectory, configured.name))
-            def endTime = new Date()
-            println "\n${configured.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
-            step.outputs.each { println "\t${it.key}: ${it.value}" }
-            println ''
-
-            executedSteps[configured.name] = step
+            def step = configure(configured)
+            printBanner(configured, step)
+            executeStep(step, configured)
+            printFooter(step)
         }
+    }
+
+    private void printFooter(Step step) {
+        step.outputs.each { println "\t${it.key}: ${it.value}" }
+        println ''
+    }
+
+    private void executeStep(Step step, StepConfiguration configured) {
+        def startTime = new Date()
+        step.execute(System.out, new File(metaDirectory, configured.name))
+        def endTime = new Date()
+        println "\n${configured.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
+        executedSteps[configured.name] = step
+    }
+
+    private void printBanner(StepConfiguration configured, Step step) {
+        println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+        println "${configured.name} (${configured.type.simpleName})"
+        step.inputs.each { println "\t${it.key}: ${it.value}" }
+        println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    }
+
+    private Step configure(StepConfiguration configured) {
+        def step = configured.type.newInstance()
+        def c = (Closure) configured.configureClosure.clone()
+        c.delegate = new StepDelegate(step)
+        c.resolveStrategy = Closure.DELEGATE_FIRST
+        c.call()
+        step
     }
 
     def step(StepConfiguration definition) {
