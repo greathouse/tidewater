@@ -1,6 +1,6 @@
-package greenmoonsoftware.sterling.scm.git
-import greenmoonsoftware.sterling.config.Context
-import greenmoonsoftware.sterling.config.Step
+package greenmoonsoftware.tidewater.scm.git
+import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.Step
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder

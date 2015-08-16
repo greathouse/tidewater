@@ -1,7 +1,7 @@
-package greenmoonsoftware.sterling.shell
+package greenmoonsoftware.tidewater.shell
 
-import greenmoonsoftware.sterling.config.Context
-import greenmoonsoftware.sterling.config.Step
+import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.Step
 
 class Shell implements Step {
     String contents

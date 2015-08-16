@@ -1,4 +1,4 @@
-package greenmoonsoftware.sterling.config
+package greenmoonsoftware.tidewater.config
 
 interface Step {
     void execute(PrintStream log, File metaDirectory)

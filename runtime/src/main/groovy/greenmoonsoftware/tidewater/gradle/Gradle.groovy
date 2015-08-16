@@ -1,7 +1,7 @@
-package greenmoonsoftware.sterling.gradle
+package greenmoonsoftware.tidewater.gradle
 
-import greenmoonsoftware.sterling.config.Context
-import greenmoonsoftware.sterling.config.Step
+import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.Step
 import groovy.transform.ToString
 
 @ToString

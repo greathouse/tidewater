@@ -1,4 +1,4 @@
-package greenmoonsoftware.sterling.config
+package greenmoonsoftware.tidewater.config
 
 import groovy.time.TimeCategory
 
@@ -12,7 +12,7 @@ final class Context {
     static Context get() {
         if (!context) {
             context = new Context(
-                    workspace: new File("/Users/robert/tmp/sterling/${new Date().format('yyyyMMddHHmmssSSSS')}")
+                    workspace: new File("/Users/robert/tmp/tidewater/${new Date().format('yyyyMMddHHmmssSSSS')}")
             )
             .initialize()
         }

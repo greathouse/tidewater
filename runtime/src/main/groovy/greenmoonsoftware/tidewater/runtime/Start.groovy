@@ -1,30 +1,30 @@
-package greenmoonsoftware.sterling.runtime
+package greenmoonsoftware.tidewater.runtime
 
-import greenmoonsoftware.sterling.config.Context
+import greenmoonsoftware.tidewater.config.Context
 import org.codehaus.groovy.control.CompilerConfiguration
 
 class Start {
     static void main(String[] args) {
         new Start().start('''
-            import greenmoonsoftware.sterling.scm.git.*
-            import greenmoonsoftware.sterling.gradle.*
-            import greenmoonsoftware.sterling.shell.*
+            import greenmoonsoftware.tidewater.scm.git.*
+            import greenmoonsoftware.tidewater.gradle.*
+            import greenmoonsoftware.tidewater.shell.*
 
-//            step checkout(type: GitClone) {
-//                url 'https://github.com/greathouse/green-tea-test.git'
-//                dir 'green-tea-test'
-//            }
-//
-//            step buildProject(type: Gradle) {
-//                workingDir checkout.dir
-//                tasks 'clean build'
-//            }
-//
-//            step custom {
-//                println 'Workspace: ' + context.workspace
-//                println 'Checkout dir: ' + checkout.dir
-//                println 'Sha from checkout: ' + checkout.sha
-//            }
+            step checkout(type: GitClone) {
+                url 'https://github.com/greathouse/green-tea-test.git'
+                dir 'green-tea-test'
+            }
+
+            step buildProject(type: Gradle) {
+                workingDir checkout.dir
+                tasks 'clean build'
+            }
+
+            step custom {
+                println 'Workspace: ' + context.workspace
+                println 'Checkout dir: ' + checkout.dir
+                println 'Sha from checkout: ' + checkout.sha
+            }
 
             step shell(type: Shell) {
                 contents """

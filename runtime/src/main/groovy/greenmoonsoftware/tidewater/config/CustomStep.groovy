@@ -1,4 +1,4 @@
-package greenmoonsoftware.sterling.config
+package greenmoonsoftware.tidewater.config
 
 class CustomStep implements Step {
     Closure executable
