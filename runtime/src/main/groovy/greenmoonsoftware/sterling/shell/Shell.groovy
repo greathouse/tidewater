@@ -1,19 +1,21 @@
-package greenmoonsoftware.sterling.gradle
+package greenmoonsoftware.sterling.shell
 
 import greenmoonsoftware.sterling.config.Context
 import greenmoonsoftware.sterling.config.Step
-import groovy.transform.ToString
 
-@ToString
-class Gradle implements Step {
+class Shell implements Step {
+    String contents
     private File workingDir = Context.get().workspace
-    String executable = './gradlew'
-    String buildFile = 'build.gradle'
-    String tasks = 'clean'
 
     @Override
     void execute(PrintStream log, File metaDirectory) {
-        ProcessBuilder builder = new ProcessBuilder("${executable} -b ${buildFile} ${tasks}".split(' ') )
+        metaDirectory.mkdirs()
+        def scriptFile = new File(metaDirectory, 'script.sh')
+        scriptFile.withWriter {
+            it.println(contents)
+        }
+
+        ProcessBuilder builder = new ProcessBuilder('sh', scriptFile.absolutePath)
         builder.directory(workingDir)
         builder.redirectErrorStream(true)
         Process process = builder.start()
@@ -28,15 +30,13 @@ class Gradle implements Step {
     Map<String, Object> getInputs() {
         [
                 workingDir: workingDir,
-                executable: executable,
-                buildFile: buildFile,
-                tasks: tasks
+                contents: contents
         ].asImmutable()
     }
 
     @Override
     Map<String, Object> getOutputs() {
-        [:].asImmutable()
+        return null
     }
 
     void setWorkingDir(String s) {

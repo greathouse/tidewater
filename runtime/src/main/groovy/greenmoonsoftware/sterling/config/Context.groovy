@@ -7,14 +7,31 @@ final class Context {
     private LinkedHashMap<String, StepConfiguration> configuredSteps = [:]
     private LinkedHashMap<String, Step> executedSteps = [:]
     private File workspace
+    private File metaDirectory
 
     static Context get() {
-        if (!context) { context = new Context(workspace: new File("/Users/robert/tmp/sterling/${new Date().format('yyyyMMddHHmmssSSSS')}"))}
+        if (!context) {
+            context = new Context(
+                    workspace: new File("/Users/robert/tmp/sterling/${new Date().format('yyyyMMddHHmmssSSSS')}")
+            )
+            .initialize()
+        }
         return context
     }
 
-    public File getWorkspace() {
-        return workspace
+    private Context initialize() {
+        workspace.mkdirs()
+        metaDirectory = new File(workspace, '.meta')
+        metaDirectory.mkdirs()
+        return this
+    }
+
+    File getWorkspace() {
+        workspace
+    }
+
+    File getMetaDirectory() {
+        metaDirectory
     }
 
     def findExecutedStep(String name) {
@@ -37,7 +54,7 @@ final class Context {
             step.inputs.each { println "\t${it.key}: ${it.value}"}
             println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
             def startTime = new Date()
-            step.execute(System.out)
+            step.execute(System.out, new File(metaDirectory, configured.name))
             def endTime = new Date()
             println "\n${configured.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
             step.outputs.each { println "\t${it.key}: ${it.value}" }

@@ -12,7 +12,7 @@ class GitClone implements Step {
 
     private String sha
 
-    void execute(PrintStream log) {
+    void execute(PrintStream log, File metaDirectory) {
         Git.cloneRepository()
             .setURI(url)
             .setDirectory(new File(Context.get().workspace, dir))
