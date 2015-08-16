@@ -52,7 +52,20 @@ final class Context {
     }
 
     def methodMissing(String name, args) {
-        def configureClosure = args[1]
-        return new StepConfiguration(name:name, type: args[0].type, configureClosure: configureClosure)
+        if (args.length == 1) {
+            return customStep(name, args)
+        }
+        return stepConfiguration(name, args)
+    }
+
+    StepConfiguration stepConfiguration(String name, args) {
+        def type = args[0].type
+        def configureClosure = args[-1]
+        return new StepConfiguration(name:name, type: type, configureClosure: configureClosure)
+    }
+
+    StepConfiguration customStep(String name, args) {
+        Closure c = args[0]
+        return new StepConfiguration(name: name, type: CustomStep, configureClosure: { executable c})
     }
 }

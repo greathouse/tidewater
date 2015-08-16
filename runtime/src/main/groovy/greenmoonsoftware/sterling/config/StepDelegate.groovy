@@ -8,6 +8,9 @@ class StepDelegate {
     }
 
     def propertyMissing(String name) {
+        if (name == 'context') {
+            return Context.get()
+        }
         def executedStep = Context.get().findExecutedStep(name)
         if (!executedStep) {
             println """\

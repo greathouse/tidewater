@@ -14,9 +14,15 @@ class Start {
                 dir 'green-tea-test'
             }
 
-            step buildProject(type: Gradle) {
-                workingDir checkout.dir
-                tasks 'clean build'
+//            step buildProject(type: Gradle) {
+//                workingDir checkout.dir
+//                tasks 'clean build'
+//            }
+
+            step custom {
+                println 'Workspace: ' + context.workspace
+                println 'Checkout dir: ' + checkout.dir
+                println 'Sha from checkout: ' + checkout.sha
             }
 
         """)

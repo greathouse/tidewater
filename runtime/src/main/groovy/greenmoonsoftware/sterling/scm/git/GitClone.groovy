@@ -37,9 +37,7 @@ class GitClone implements Step {
 
     @Override
     Map<String, Object> getOutputs() {
-        Collections.unmodifiableMap([
-                sha: sha
-        ])
+        [sha: sha].asImmutable()
     }
 
     String getSha() { sha }
