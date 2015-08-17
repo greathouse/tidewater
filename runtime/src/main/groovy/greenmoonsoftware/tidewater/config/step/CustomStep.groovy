@@ -9,14 +9,4 @@ class CustomStep extends AbstractStep {
         c.delegate = new StepDelegate(this)
         c.call()
     }
-
-    @Override
-    Map<String, Object> getInputs() {
-        [:].asImmutable()
-    }
-
-    @Override
-    Map<String, Object> getOutputs() {
-        [:].asImmutable()
-    }
 }

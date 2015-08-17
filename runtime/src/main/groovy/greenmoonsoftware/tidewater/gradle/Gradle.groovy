@@ -2,14 +2,15 @@ package greenmoonsoftware.tidewater.gradle
 
 import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.config.step.AbstractStep
+import greenmoonsoftware.tidewater.config.step.Input
 import groovy.transform.ToString
 
 @ToString
 class Gradle extends AbstractStep {
-    private File workingDir = Context.get().workspace
-    String executable = './gradlew'
-    String buildFile = 'build.gradle'
-    String tasks = 'clean'
+    @Input private File workingDir = Context.get().workspace
+    @Input String executable = './gradlew'
+    @Input String buildFile = 'build.gradle'
+    @Input String tasks = 'clean'
 
     @Override
     void execute(PrintStream log, File metaDirectory) {
@@ -24,22 +25,12 @@ class Gradle extends AbstractStep {
         }
     }
 
-    @Override
-    Map<String, Object> getInputs() {
-        [
-                workingDir: workingDir,
-                executable: executable,
-                buildFile: buildFile,
-                tasks: tasks
-        ].asImmutable()
+    File getWorkingDir() {
+        workingDir
     }
 
-    @Override
-    Map<String, Object> getOutputs() {
-        [:].asImmutable()
-    }
-
-    void setWorkingDir(String s) {
+    Gradle setWorkingDir(String s) {
         workingDir = new File(Context.get().workspace, s)
+        return this
     }
 }

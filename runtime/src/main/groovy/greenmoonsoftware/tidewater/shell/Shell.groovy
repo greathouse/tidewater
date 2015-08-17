@@ -2,10 +2,11 @@ package greenmoonsoftware.tidewater.shell
 
 import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.config.step.AbstractStep
+import greenmoonsoftware.tidewater.config.step.Input
 
 class Shell extends AbstractStep {
-    String contents
-    private File workingDir = Context.get().workspace
+    @Input String contents
+    @Input private File workingDir = Context.get().workspace
 
     @Override
     void execute(PrintStream log, File metaDirectory) {
@@ -24,19 +25,6 @@ class Shell extends AbstractStep {
         while ((line = reader.readLine ()) != null) {
             log.println(line)
         }
-    }
-
-    @Override
-    Map<String, Object> getInputs() {
-        [
-                workingDir: workingDir,
-                contents: contents
-        ].asImmutable()
-    }
-
-    @Override
-    Map<String, Object> getOutputs() {
-        return null
     }
 
     void setWorkingDir(String s) {
