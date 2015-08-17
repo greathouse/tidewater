@@ -13,15 +13,17 @@ abstract class AbstractStep implements Step {
 
     @Override
     Map<String, Object> getInputs() {
-        this.class.declaredFields
-                .findAll { field -> field.isAnnotationPresent(Input)}
-                .collectEntries { field -> [(field.name) : this[field.name]]}
+        findFieldsWith(Input)
     }
 
     @Override
     Map<String, Object> getOutputs() {
+        findFieldsWith(Output)
+    }
+
+    private Map<String, Object> findFieldsWith(Class annotation) {
         this.class.declaredFields
-                .findAll { field -> field.isAnnotationPresent(Output)}
-                .collectEntries { field -> [(field.name) : this[field.name]]}
+                .findAll { field -> field.isAnnotationPresent(annotation) }
+                .collectEntries { field -> [(field.name): this[field.name]] }
     }
 }
