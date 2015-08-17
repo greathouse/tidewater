@@ -14,23 +14,28 @@ class Gradle extends AbstractStep {
 
     @Override
     void execute(PrintStream log, File metaDirectory) {
-        ProcessBuilder builder = new ProcessBuilder("${executable} -b ${buildFile} ${tasks}".split(' ') )
-        builder.directory(workingDir)
-        builder.redirectErrorStream(true)
-        Process process = builder.start()
-        BufferedReader reader = new BufferedReader (new InputStreamReader(process.inputStream))
-        String line
-        while ((line = reader.readLine ()) != null) {
-            log.println(line)
+        executeProcess(buildProcess()).eachLine {
+            log.println(it)
         }
+    }
+
+    private BufferedReader executeProcess(ProcessBuilder builder) {
+        new BufferedReader(new InputStreamReader(builder.start().inputStream))
+    }
+
+    private ProcessBuilder buildProcess() {
+        new ProcessBuilder("${executable} -b ${buildFile} ${tasks}".split(' ')).with {
+            directory = workingDir
+            redirectErrorStream(true)
+            delegate
+        } as ProcessBuilder
     }
 
     File getWorkingDir() {
         workingDir
     }
 
-    Gradle setWorkingDir(String s) {
+    void setWorkingDir(String s) {
         workingDir = new File(Context.get().workspace, s)
-        return this
     }
 }
