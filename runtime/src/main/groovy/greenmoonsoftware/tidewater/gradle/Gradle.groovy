@@ -1,11 +1,11 @@
 package greenmoonsoftware.tidewater.gradle
 
 import greenmoonsoftware.tidewater.config.Context
-import greenmoonsoftware.tidewater.config.Step
+import greenmoonsoftware.tidewater.config.step.AbstractStep
 import groovy.transform.ToString
 
 @ToString
-class Gradle implements Step {
+class Gradle extends AbstractStep {
     private File workingDir = Context.get().workspace
     String executable = './gradlew'
     String buildFile = 'build.gradle'

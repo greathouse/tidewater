@@ -1,16 +1,19 @@
 package greenmoonsoftware.tidewater.scm.git
+
 import greenmoonsoftware.tidewater.config.Context
-import greenmoonsoftware.tidewater.config.Step
+import greenmoonsoftware.tidewater.config.step.AbstractStep
+import greenmoonsoftware.tidewater.config.step.Input
+import greenmoonsoftware.tidewater.config.step.Output
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 
-class GitClone implements Step {
-    String url
-    String dir = ''
-    String ref = 'master'
+class GitClone extends AbstractStep {
+    @Input String url
+    @Input String dir = ''
+    @Input String ref = 'master'
 
-    private String sha
+    @Output private String sha
 
     void execute(PrintStream log, File metaDirectory) {
         Git.cloneRepository()
@@ -24,20 +27,6 @@ class GitClone implements Step {
                 .build();
         def ref = repository.getRef(ref)
         sha = ref.objectId.name
-    }
-
-    @Override
-    Map<String, Object> getInputs() {
-        [
-                url: url,
-                dir: dir,
-                ref: ref
-        ].asImmutable()
-    }
-
-    @Override
-    Map<String, Object> getOutputs() {
-        [sha: sha].asImmutable()
     }
 
     String getSha() { sha }

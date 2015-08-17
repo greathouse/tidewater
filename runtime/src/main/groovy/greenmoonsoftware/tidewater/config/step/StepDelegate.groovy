@@ -1,4 +1,6 @@
-package greenmoonsoftware.tidewater.config
+package greenmoonsoftware.tidewater.config.step
+
+import greenmoonsoftware.tidewater.config.Context
 
 class StepDelegate {
     private Step step

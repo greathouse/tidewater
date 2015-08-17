@@ -1,5 +1,9 @@
 package greenmoonsoftware.tidewater.config
 
+import greenmoonsoftware.tidewater.config.step.CustomStep
+import greenmoonsoftware.tidewater.config.step.Step
+import greenmoonsoftware.tidewater.config.step.StepConfiguration
+import greenmoonsoftware.tidewater.config.step.StepDelegate
 import groovy.time.TimeCategory
 
 final class Context {
@@ -57,10 +61,20 @@ final class Context {
 
     private void executeStep(Step step, StepConfiguration configured) {
         def startTime = new Date()
-        step.execute(System.out, new File(metaDirectory, configured.name))
+        File stepDirectory = setupStepMetaDirectory(configured)
+        step.execute(System.out, stepDirectory)
         def endTime = new Date()
         println "\n${configured.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
         executedSteps[configured.name] = step
+    }
+
+    private File setupStepMetaDirectory(StepConfiguration configured) {
+        def stepDirectory = new File(metaDirectory, configured.name)
+        stepDirectory.mkdirs()
+        new File(stepDirectory, 'step.json').withWriter { w ->
+
+        }
+        return stepDirectory
     }
 
     private void printBanner(StepConfiguration configured, Step step) {

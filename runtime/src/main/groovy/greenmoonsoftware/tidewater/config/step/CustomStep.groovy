@@ -1,6 +1,6 @@
-package greenmoonsoftware.tidewater.config
+package greenmoonsoftware.tidewater.config.step
 
-class CustomStep implements Step {
+class CustomStep extends AbstractStep {
     Closure executable
 
     @Override

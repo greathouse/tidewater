@@ -1,9 +1,9 @@
 package greenmoonsoftware.tidewater.shell
 
 import greenmoonsoftware.tidewater.config.Context
-import greenmoonsoftware.tidewater.config.Step
+import greenmoonsoftware.tidewater.config.step.AbstractStep
 
-class Shell implements Step {
+class Shell extends AbstractStep {
     String contents
     private File workingDir = Context.get().workspace
 
