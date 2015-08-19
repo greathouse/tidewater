@@ -7,7 +7,7 @@ import groovy.transform.ToString
 
 @ToString
 class Gradle extends AbstractStep {
-    @Input private File workingDir = Context.get().workspace
+    @Input String workingDir = ''
     @Input String executable = './gradlew'
     @Input String buildFile = 'build.gradle'
     @Input String tasks = 'clean'
@@ -25,17 +25,9 @@ class Gradle extends AbstractStep {
 
     private ProcessBuilder buildProcess() {
         new ProcessBuilder("${executable} -b ${buildFile} ${tasks}".split(' ')).with {
-            directory = workingDir
+            directory = new File(Context.get().workspace, workingDir)
             redirectErrorStream(true)
             delegate
         } as ProcessBuilder
-    }
-
-    File getWorkingDir() {
-        workingDir
-    }
-
-    void setWorkingDir(String s) {
-        workingDir = new File(Context.get().workspace, s)
     }
 }

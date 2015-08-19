@@ -60,20 +60,21 @@ final class Context {
     }
 
     private void executeStep(Step step, StepConfiguration configured) {
+        def stepDirectory = setupStepMetaDirectory(configured)
+        def stepFile = new File(stepDirectory, 'step.json')
+        step.seralize(stepFile)
+
         def startTime = new Date()
-        File stepDirectory = setupStepMetaDirectory(configured)
         step.execute(System.out, stepDirectory)
         def endTime = new Date()
         println "\n${configured.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
+        step.seralize(stepFile)
         executedSteps[configured.name] = step
     }
 
     private File setupStepMetaDirectory(StepConfiguration configured) {
         def stepDirectory = new File(metaDirectory, configured.name)
         stepDirectory.mkdirs()
-        new File(stepDirectory, 'step.json').withWriter { w ->
-
-        }
         return stepDirectory
     }
 

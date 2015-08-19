@@ -9,7 +9,7 @@ abstract class AbstractStep implements Step {
         def json = new JsonBuilder()
         json.step {
             'inputs' inputs
-//            'outputs' outputs
+            'outputs' outputs
         }
         toFile.write(json.toString())
     }

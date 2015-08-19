@@ -6,7 +6,7 @@ import greenmoonsoftware.tidewater.config.step.Input
 
 class Shell extends AbstractStep {
     @Input String contents
-    @Input private File workingDir = Context.get().workspace
+    @Input String workingDir = ''
 
     @Override
     void execute(PrintStream log, File metaDirectory) {
@@ -22,7 +22,7 @@ class Shell extends AbstractStep {
     private ProcessBuilder buildProcess(File scriptFile) {
         new ProcessBuilder('sh', scriptFile.absolutePath)
         .with {
-            directory = workingDir
+            directory = new File(Context.get().workspace, workingDir)
             redirectErrorStream(true)
             delegate
         } as ProcessBuilder
@@ -35,9 +35,5 @@ class Shell extends AbstractStep {
             it.println(contents)
         }
         return scriptFile
-    }
-
-    void setWorkingDir(String s) {
-        workingDir = new File(Context.get().workspace, s)
     }
 }
