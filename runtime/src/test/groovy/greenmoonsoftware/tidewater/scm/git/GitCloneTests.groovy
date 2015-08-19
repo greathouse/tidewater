@@ -25,4 +25,23 @@ class GitCloneTests {
         assert actual.size() == 1
         assert actual['sha'] == sha
     }
+
+    @Test
+    void shouldSerializeAndDeserialize() {
+        def url = 'git://your.url.here'
+        def ref = 'branches/your-branch'
+        def dir = '/home/yournamehere'
+
+        def file = File.createTempFile('serialize', '.json')
+        println file
+        def obj = new GitClone(url:url, dir: dir, ref: ref)
+        obj.seralize(file)
+
+        def actual = new GitClone()
+        actual.deserialize(file)
+
+        assert actual.url == url
+        assert actual.ref == ref
+        assert actual.dir == dir
+    }
 }
