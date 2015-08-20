@@ -1,0 +1,22 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+    }
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'groovy'
+
+dependencies {
+    compile project(':runtime')
+
+    compile 'org.codehaus.groovy:groovy:2.4.4'
+    compile 'org.codehaus.groovy:groovy-json:2.4.4'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-mustache'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+}

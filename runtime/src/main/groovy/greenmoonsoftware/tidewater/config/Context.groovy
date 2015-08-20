@@ -16,7 +16,7 @@ final class Context {
     static Context get() {
         if (!context) {
             context = new Context(
-                    workspace: new File("/Users/robert/tmp/tidewater/${new Date().format('yyyyMMddHHmmssSSSS')}")
+                    workspace: new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
             )
             .initialize()
         }
