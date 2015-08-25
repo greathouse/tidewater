@@ -34,6 +34,7 @@ class Start {
     }
 
     public void start(String script) {
+        new File(Context.get().workspace, 'script.tw').write(script)
         DelegatingScript script1 = setupScript(script)
         script1.run()
 

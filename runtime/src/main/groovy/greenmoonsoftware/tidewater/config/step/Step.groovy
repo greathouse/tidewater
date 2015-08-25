@@ -1,7 +1,9 @@
 package greenmoonsoftware.tidewater.config.step
 
+import greenmoonsoftware.tidewater.config.LogWriter
+
 interface Step {
-    void execute(PrintStream log, File metaDirectory)
+    void execute(LogWriter log, File metaDirectory)
 
     void seralize(File toFile)
     void deserialize(File fromFile)

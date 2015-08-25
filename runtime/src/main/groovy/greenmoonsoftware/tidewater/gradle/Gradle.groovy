@@ -1,6 +1,7 @@
 package greenmoonsoftware.tidewater.gradle
 
 import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.LogWriter
 import greenmoonsoftware.tidewater.config.step.AbstractStep
 import greenmoonsoftware.tidewater.config.step.Input
 import groovy.transform.ToString
@@ -13,7 +14,7 @@ class Gradle extends AbstractStep {
     @Input String tasks = 'clean'
 
     @Override
-    void execute(PrintStream log, File metaDirectory) {
+    void execute(LogWriter log, File metaDirectory) {
         executeProcess(buildProcess()).eachLine {
             log.println(it)
         }

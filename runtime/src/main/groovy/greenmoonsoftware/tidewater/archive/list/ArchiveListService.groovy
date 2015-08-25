@@ -13,10 +13,4 @@ class ArchiveListService {
             it.name
         }
     }
-
-    static void main(String[] args) {
-        new ArchiveListService().getNames().each {
-            println it
-        }
-    }
 }

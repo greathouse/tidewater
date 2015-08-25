@@ -1,6 +1,7 @@
 package greenmoonsoftware.tidewater.shell
 
 import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.LogWriter
 import greenmoonsoftware.tidewater.config.step.AbstractStep
 import greenmoonsoftware.tidewater.config.step.Input
 
@@ -9,7 +10,7 @@ class Shell extends AbstractStep {
     @Input String workingDir = ''
 
     @Override
-    void execute(PrintStream log, File metaDirectory) {
+    void execute(LogWriter log, File metaDirectory) {
         executeProcess(buildProcess(writeScript(metaDirectory))).eachLine {
             log.println(it)
         }

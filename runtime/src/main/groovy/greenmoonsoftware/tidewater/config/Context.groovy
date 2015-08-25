@@ -65,7 +65,7 @@ final class Context {
         step.seralize(stepFile)
 
         def startTime = new Date()
-        step.execute(System.out, stepDirectory)
+        step.execute(new LogWriter(new File(stepDirectory, 'log.txt')), stepDirectory)
         def endTime = new Date()
         println "\n${configured.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
         step.seralize(stepFile)
