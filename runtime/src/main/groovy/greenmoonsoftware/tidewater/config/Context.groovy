@@ -1,33 +1,35 @@
 package greenmoonsoftware.tidewater.config
 
-import greenmoonsoftware.tidewater.config.step.CustomStep
 import greenmoonsoftware.tidewater.config.step.Step
 import greenmoonsoftware.tidewater.config.step.StepConfiguration
 import greenmoonsoftware.tidewater.config.step.StepDelegate
 import groovy.time.TimeCategory
 
 final class Context {
-    private static Context context
-    private LinkedHashMap<String, StepConfiguration> configuredSteps = [:]
+    private static ThreadLocal<Context> contextThreadLocal = new ThreadLocal<>()
+
+    @Deprecated private static Context context
+    private LinkedHashMap<String, StepConfiguration> definedSteps = [:]
     private LinkedHashMap<String, Step> executedSteps = [:]
-    private File workspace
+    private File workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
     private File metaDirectory
 
+    @Deprecated
     static Context get() {
-        if (!context) {
-            context = new Context(
-                    workspace: new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
-            )
-            .initialize()
-        }
-        return context
+        return contextThreadLocal.get() ?: new Context()
     }
 
-    private Context initialize() {
-        workspace.mkdirs()
+    Context() {
+        workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
         metaDirectory = new File(workspace, '.meta')
+        workspace.mkdirs()
         metaDirectory.mkdirs()
-        return this
+
+        contextThreadLocal.set(this)
+    }
+
+    void addStep(StepConfiguration stepDef) {
+        definedSteps[stepDef.name] = stepDef
     }
 
     File getWorkspace() {
@@ -44,12 +46,12 @@ final class Context {
 
     def execute() {
         println "Workspace: ${workspace}"
-        println "Number of steps: ${configuredSteps.size()}"
+        println "Number of steps: ${definedSteps.size()}"
 
-        configuredSteps.values().each { configured ->
-            def step = configure(configured)
-            printBanner(configured, step)
-            executeStep(step, configured)
+        definedSteps.values().each { defined ->
+            def step = configure(defined)
+            printBanner(defined, step)
+            executeStep(step, defined)
             printFooter(step)
         }
     }
@@ -92,27 +94,5 @@ final class Context {
         c.resolveStrategy = Closure.DELEGATE_FIRST
         c.call()
         step
-    }
-
-    def step(StepConfiguration definition) {
-        configuredSteps[definition.name] = definition
-    }
-
-    def methodMissing(String name, args) {
-        if (args.length == 1) {
-            return customStep(name, args)
-        }
-        return stepConfiguration(name, args)
-    }
-
-    StepConfiguration stepConfiguration(String name, args) {
-        def type = args[0].type
-        def configureClosure = args[-1]
-        return new StepConfiguration(name:name, type: type, configureClosure: configureClosure)
-    }
-
-    StepConfiguration customStep(String name, args) {
-        Closure c = args[0]
-        return new StepConfiguration(name: name, type: CustomStep, configureClosure: { executable c})
     }
 }

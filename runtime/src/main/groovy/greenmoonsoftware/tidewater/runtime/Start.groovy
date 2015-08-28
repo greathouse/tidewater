@@ -35,28 +35,27 @@ class Start {
 
     public void start(String script) {
         new File(Context.get().workspace, 'script.tw').write(script)
-        DelegatingScript script1 = setupScript(script)
+        def script1 = setupScript(script)
         script1.run()
 
         Context.get().execute()
     }
 
-    private DelegatingScript setupScript(String script) {
-        DelegatingScript script1 = parseScript(setupCompilerConfiguration(), script)
-        script1.setDelegate(Context.get())
+    private setupScript(String script) {
+        def script1 = parseScript(setupCompilerConfiguration(), script)
         return script1
     }
 
     private CompilerConfiguration setupCompilerConfiguration() {
         CompilerConfiguration cc = new CompilerConfiguration();
-        cc.setScriptBaseClass(DelegatingScript.class.getName());
+        cc.setScriptBaseClass(TidewaterBaseScript.class.getName());
         addImports(cc)
         return cc
     }
 
-    private DelegatingScript parseScript(CompilerConfiguration cc, String script) {
+    private parseScript(CompilerConfiguration cc, String script) {
         GroovyShell shell = new GroovyShell(this.class.classLoader, new Binding(), cc)
-        DelegatingScript script1 = (DelegatingScript) shell.parse(script)
+        def script1 = (TidewaterBaseScript) shell.parse(script)
         return script1
     }
 
