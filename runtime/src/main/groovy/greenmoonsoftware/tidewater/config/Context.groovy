@@ -50,8 +50,8 @@ final class Context {
 
         definedSteps.values().each { defined ->
             def step = configure(defined)
-            printBanner(defined, step)
-            executeStep(step, defined)
+            printBanner(step)
+            executeStep(step)
             printFooter(step)
         }
     }
@@ -61,34 +61,35 @@ final class Context {
         println ''
     }
 
-    private void executeStep(Step step, StepConfiguration configured) {
-        def stepDirectory = setupStepMetaDirectory(configured)
+    private void executeStep(Step step) {
+        def stepDirectory = setupStepMetaDirectory(step)
         def stepFile = new File(stepDirectory, 'step.json')
         step.seralize(stepFile)
 
         def startTime = new Date()
         step.execute(new LogWriter(new File(stepDirectory, 'log.txt')), stepDirectory)
         def endTime = new Date()
-        println "\n${configured.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
+        println "\n${step.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
         step.seralize(stepFile)
-        executedSteps[configured.name] = step
+        executedSteps[step.name] = step
     }
 
-    private File setupStepMetaDirectory(StepConfiguration configured) {
-        def stepDirectory = new File(metaDirectory, configured.name)
+    private File setupStepMetaDirectory(Step step) {
+        def stepDirectory = new File(metaDirectory, step.name)
         stepDirectory.mkdirs()
         return stepDirectory
     }
 
-    private void printBanner(StepConfiguration configured, Step step) {
+    private void printBanner(Step step) {
         println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-        println "${configured.name} (${configured.type.simpleName})"
+        println "${step.name} (${step.class.simpleName})"
         step.inputs.each { println "\t${it.key}: ${it.value}" }
         println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     }
 
     private Step configure(StepConfiguration configured) {
         def step = configured.type.newInstance()
+        step.name = configured.name
         def c = (Closure) configured.configureClosure.clone()
         c.delegate = new StepDelegate(step)
         c.resolveStrategy = Closure.DELEGATE_FIRST

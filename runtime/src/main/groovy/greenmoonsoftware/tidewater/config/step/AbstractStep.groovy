@@ -1,9 +1,10 @@
 package greenmoonsoftware.tidewater.config.step
-
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 
 abstract class AbstractStep implements Step {
+    String name
+
     @Override
     final void seralize(File toFile) {
         def json = new JsonBuilder()

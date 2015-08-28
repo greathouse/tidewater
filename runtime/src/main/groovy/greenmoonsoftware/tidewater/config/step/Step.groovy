@@ -3,6 +3,7 @@ package greenmoonsoftware.tidewater.config.step
 import greenmoonsoftware.tidewater.config.LogWriter
 
 interface Step {
+    String getName()
     void execute(LogWriter log, File metaDirectory)
 
     void seralize(File toFile)
