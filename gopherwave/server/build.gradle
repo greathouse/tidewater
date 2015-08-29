@@ -1,0 +1,9 @@
+apply plugin: 'application'
+apply plugin: 'java'
+
+mainClassName = 'greenmoonsoftware.gopherwave.server.ChatServer'
+
+dependencies {
+    compile project(':core')
+    compile project(':gopherwave:core')
+}

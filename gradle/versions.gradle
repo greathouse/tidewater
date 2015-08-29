@@ -1,0 +1,8 @@
+ext {
+    def groovyVersion = '2.4.3'
+    groovy = "org.codehaus.groovy:groovy:$groovyVersion"
+    groovySql = "org.codehaus.groovy:groovy-sql:$groovyVersion"
+
+    h2 = 'com.h2database:h2:1.4.186'
+    testng = 'org.testng:testng:6.8.21'
+}

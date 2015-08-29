@@ -1,0 +1,11 @@
+apply from: "$rootDir/gradle/java.gradle"
+apply from: "$rootDir/gradle/versions.gradle"
+
+dependencies {
+    compile project(':core')
+
+    testCompile groovy
+    testCompile groovySql
+    testCompile h2
+    testCompile testng
+}

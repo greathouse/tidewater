@@ -1,0 +1,7 @@
+apply plugin: 'java'
+
+test {
+    useTestNG {
+        scanForTestClasses = false
+    }
+}

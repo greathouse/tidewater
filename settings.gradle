@@ -1,0 +1,12 @@
+include (
+        'core'
+        , 'jdbc-event-store'
+        , 'samples:multiple-aggregate'
+)
+
+include (
+        'gopherwave:client'
+        , 'gopherwave:core'
+        , 'gopherwave:server'
+)
+
