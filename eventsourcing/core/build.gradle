@@ -1,2 +1,2 @@
-apply from: "$rootDir/gradle/java.gradle"
-apply from: "$rootDir/gradle/versions.gradle"
+apply from: "$projectDir/../gradle/java.gradle"
+apply from: "$projectDir/../gradle/versions.gradle"
