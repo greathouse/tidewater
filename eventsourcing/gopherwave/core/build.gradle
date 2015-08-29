@@ -1,0 +1,12 @@
+apply from: "$rootDir/gradle/java.gradle"
+apply plugin: 'groovy'
+apply from: "$rootDir/gradle/versions.gradle"
+
+dependencies {
+    compile project(':core')
+
+    compile groovy
+    compile groovySql
+
+    testCompile testng
+}
