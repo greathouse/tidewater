@@ -38,6 +38,7 @@ class Start {
         def script1 = setupScript(script)
         script1.run()
 
+        Context.get().addEventSubscribers(new StdoutLoggingSubscriber())
         Context.get().execute()
     }
 

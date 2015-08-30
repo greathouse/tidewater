@@ -1,13 +1,11 @@
 package greenmoonsoftware.tidewater.config
 import greenmoonsoftware.es.event.Event
-import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.tidewater.config.step.*
 import groovy.time.TimeCategory
-import groovy.time.TimeDuration
 
-final class Context implements EventSubscriber<Event> {
+final class Context {
     private static ThreadLocal<Context> contextThreadLocal = new ThreadLocal<>()
 
     @Deprecated private static Context context
@@ -29,7 +27,10 @@ final class Context implements EventSubscriber<Event> {
         metaDirectory.mkdirs()
 
         contextThreadLocal.set(this)
-        eventBus.register(this)
+    }
+
+    void addEventSubscribers(EventSubscriber<Event>... subscriber) {
+        subscriber.each {eventBus.register(it)}
     }
 
     void raiseEvent(Event event) {
@@ -62,12 +63,6 @@ final class Context implements EventSubscriber<Event> {
         }
     }
 
-    private void printFooter(Step step, TimeDuration duration) {
-        println "\n${step.name} completed. Took $duration"
-        step.outputs.each { println "\t${it.key}: ${it.value}" }
-        println ''
-    }
-
     private void executeStep(Step step) {
         def stepDirectory = setupStepMetaDirectory(step)
         def stepFile = new File(stepDirectory, 'step.json')
@@ -88,13 +83,6 @@ final class Context implements EventSubscriber<Event> {
         return stepDirectory
     }
 
-    private void printBanner(Step step) {
-        println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-        println "${step.name} (${step.class.simpleName})"
-        step.inputs.each { println "\t${it.key}: ${it.value}" }
-        println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-    }
-
     private Step configure(StepConfiguration configured) {
         def step = configured.type.newInstance()
         step.name = configured.name
@@ -103,18 +91,5 @@ final class Context implements EventSubscriber<Event> {
         c.resolveStrategy = Closure.DELEGATE_FIRST
         c.call()
         step
-    }
-
-    @Override
-    void onEvent(Event event) {
-        EventApplier.apply(this, event);
-    }
-
-    private void handle(StepStartedEvent event) {
-        printBanner(event.step)
-    }
-
-    private void handle(StepSuccessEvent event) {
-        printFooter(event.step, event.duration)
     }
 }
