@@ -8,7 +8,6 @@ import groovy.time.TimeCategory
 final class Context {
     private static ThreadLocal<Context> contextThreadLocal = new ThreadLocal<>()
 
-    @Deprecated private static Context context
     private definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
     private executedSteps = [:] as LinkedHashMap<String, Step>
     private File workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
@@ -31,6 +30,10 @@ final class Context {
 
     void addEventSubscribers(EventSubscriber<Event>... subscriber) {
         subscriber.each {eventBus.register(it)}
+    }
+
+    void removeEventSubscriber(EventSubscriber<Event> sub) {
+        eventBus.unregister(sub)
     }
 
     void raiseEvent(Event event) {
@@ -65,16 +68,18 @@ final class Context {
 
     private void executeStep(Step step) {
         def stepDirectory = setupStepMetaDirectory(step)
-        def stepFile = new File(stepDirectory, 'step.json')
-        step.seralize(stepFile)
+        def serializer = new StepSerializerSubscriber(stepDirectory)
+        addEventSubscribers(serializer)
 
         def startTime = new Date()
         raiseEvent(new StepStartedEvent(step, startTime))
+
         step.execute(this, stepDirectory)
         def endTime = new Date()
         raiseEvent(new StepSuccessEvent(step, endTime, TimeCategory.minus(endTime, startTime)))
-        step.seralize(stepFile)
+
         executedSteps[step.name] = step
+        removeEventSubscriber(serializer)
     }
 
     private File setupStepMetaDirectory(Step step) {

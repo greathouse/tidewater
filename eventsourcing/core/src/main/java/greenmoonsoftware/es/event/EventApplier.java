@@ -37,7 +37,6 @@ public class EventApplier {
             handleMethod = aggregate.getClass().getDeclaredMethod(method, event.getClass());
             handleMethod.setAccessible(true);
         } catch (NoSuchMethodException e) {
-            System.out.println("WARN: No handle method for event of type: " + event.getClass().getName());
             handleMethod = null;
         }
         return handleMethod;
