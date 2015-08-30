@@ -1,11 +1,12 @@
 package greenmoonsoftware.tidewater.config
 import greenmoonsoftware.es.event.Event
+import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.tidewater.config.step.*
 import groovy.time.TimeCategory
 
-final class Context {
+final class Context implements EventSubscriber<Event> {
     private static ThreadLocal<Context> contextThreadLocal = new ThreadLocal<>()
 
     private definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
@@ -26,6 +27,7 @@ final class Context {
         metaDirectory.mkdirs()
 
         contextThreadLocal.set(this)
+        addEventSubscribers(this)
     }
 
     void addEventSubscribers(EventSubscriber<Event>... subscriber) {
@@ -68,8 +70,7 @@ final class Context {
 
     private void executeStep(Step step) {
         def stepDirectory = setupStepMetaDirectory(step)
-        def serializer = new StepSerializerSubscriber(stepDirectory)
-        addEventSubscribers(serializer)
+        def serializer = serializer(stepDirectory)
 
         def startTime = new Date()
         raiseEvent(new StepStartedEvent(step, startTime))
@@ -77,9 +78,13 @@ final class Context {
         step.execute(this, stepDirectory)
         def endTime = new Date()
         raiseEvent(new StepSuccessEvent(step, endTime, TimeCategory.minus(endTime, startTime)))
-
-        executedSteps[step.name] = step
         removeEventSubscriber(serializer)
+    }
+
+    private StepSerializerSubscriber serializer(File stepDirectory) {
+        def serializer = new StepSerializerSubscriber(stepDirectory)
+        addEventSubscribers(serializer)
+        serializer
     }
 
     private File setupStepMetaDirectory(Step step) {
@@ -96,5 +101,14 @@ final class Context {
         c.resolveStrategy = Closure.DELEGATE_FIRST
         c.call()
         step
+    }
+
+    @Override
+    void onEvent(Event event) {
+        EventApplier.apply(this, event)
+    }
+
+    private void handle(StepSuccessEvent event) {
+        executedSteps[event.step.name] = event.step
     }
 }
