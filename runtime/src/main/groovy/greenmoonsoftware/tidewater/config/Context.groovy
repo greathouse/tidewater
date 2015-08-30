@@ -64,13 +64,12 @@ final class Context implements EventSubscriber<Event> {
     }
 
     private Step configure(StepConfiguration configured) {
-        def step = configured.type.newInstance()
+        def step = configured.type.newInstance() as Step
         step.name = configured.name
-        def c = (Closure) configured.configureClosure.clone()
-        c.delegate = new StepDelegate(this, step as Step)
+        def c = (Closure) configured.configureClosure.rehydrate(new StepDelegate(this, step), this, this)
         c.resolveStrategy = Closure.DELEGATE_ONLY
         c.call()
-        step
+        return step
     }
 
     @Override

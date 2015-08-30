@@ -4,6 +4,7 @@ import greenmoonsoftware.tidewater.config.Context
 
 interface Step {
     String getName()
+    void setName(String name)
     void execute(Context context, File stepDirectory)
 
     void seralize(File toFile)
