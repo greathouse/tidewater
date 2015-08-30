@@ -6,12 +6,12 @@ import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.tidewater.config.step.*
 import groovy.time.TimeCategory
 
-class Context implements EventSubscriber<Event> {
-    private definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
-    private executedSteps = [:] as LinkedHashMap<String, Step>
-    private final File workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
-    private final File metaDirectory = new File(workspace, '.meta')
-    private def eventBus = new SimpleEventBus()
+final class Context implements EventSubscriber<Event> {
+    private final definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
+    private final executedSteps = [:] as LinkedHashMap<String, Step>
+    private final workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
+    private final metaDirectory = new File(workspace, '.meta')
+    private final eventBus = new SimpleEventBus()
 
     Context() {
         metaDirectory.mkdirs()
@@ -68,7 +68,7 @@ class Context implements EventSubscriber<Event> {
         step.name = configured.name
         def c = (Closure) configured.configureClosure.clone()
         c.delegate = new StepDelegate(this, step as Step)
-        c.resolveStrategy = Closure.DELEGATE_FIRST
+        c.resolveStrategy = Closure.DELEGATE_ONLY
         c.call()
         step
     }
