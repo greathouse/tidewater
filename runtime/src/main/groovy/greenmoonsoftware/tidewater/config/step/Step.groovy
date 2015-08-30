@@ -2,7 +2,7 @@ package greenmoonsoftware.tidewater.config.step
 
 import greenmoonsoftware.tidewater.config.Context
 
-interface Step {
+interface Step extends Serializable {
     String getName()
     void setName(String name)
     void execute(Context context, File stepDirectory)

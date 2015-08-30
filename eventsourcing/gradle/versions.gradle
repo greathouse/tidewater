@@ -1,5 +1,5 @@
 ext {
-    def groovyVersion = '2.4.3'
+    def groovyVersion = '2.4.4'
     groovy = "org.codehaus.groovy:groovy:$groovyVersion"
     groovySql = "org.codehaus.groovy:groovy-sql:$groovyVersion"
 

@@ -1,16 +1,17 @@
 package greenmoonsoftware.tidewater.config.step
 import greenmoonsoftware.es.event.AbstractEvent
-import groovy.time.TimeDuration
+
+import java.time.Duration
 
 final class StepSuccessfullyCompletedEvent extends AbstractEvent {
     Step step
-    Date endTime
-    TimeDuration duration
+    Date endDate
+    Duration duration
 
-    StepSuccessfullyCompletedEvent(Step s, Date end, TimeDuration d) {
+    StepSuccessfullyCompletedEvent(Step s, Date end, Duration d) {
         super(s.name, "success")
         step = s
-        endTime = end
+        endDate = end
         duration = d
     }
 }

@@ -8,6 +8,8 @@ import greenmoonsoftware.tidewater.config.step.StepLogEvent
 import greenmoonsoftware.tidewater.config.step.StepStartedEvent
 import greenmoonsoftware.tidewater.config.step.StepSuccessfullyCompletedEvent
 
+import java.util.concurrent.TimeUnit
+
 final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
 
     @Override
@@ -30,7 +32,7 @@ final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(StepSuccessfullyCompletedEvent event) {
-        println "\n${event.step.name} completed. Took ${event.duration}"
+        println "\n${event.step.name} completed. Took ${convert(event.duration.toMillis())}"
         println "Outputs:"
         event.step.outputs.each { println "\t${it.key}: ${it.value}" }
         println ''
@@ -38,5 +40,17 @@ final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
 
     private void handle(StepLogEvent event) {
         println event.message
+    }
+
+    public String convert(long millis) {
+        def hrs = (int) TimeUnit.MILLISECONDS.toHours(millis) % 24
+        def min = (int) TimeUnit.MILLISECONDS.toMinutes(millis) % 60
+        def sec = (int) TimeUnit.MILLISECONDS.toSeconds(millis) % 60
+        def ms = (int) millis % 1000
+
+        def s = String.format('%2d.%03d seconds', sec, ms)
+        if (min) { s = String.format('%02d minutes, ', min) + s }
+        if (hrs) { s = String.format('%02d hours, ') + s }
+        return s
     }
 }

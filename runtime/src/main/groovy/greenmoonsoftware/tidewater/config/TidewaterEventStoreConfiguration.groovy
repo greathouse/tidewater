@@ -17,7 +17,7 @@ final class TidewaterEventStoreConfiguration {
     private void setupDatabase() {
         datasource.with {
             user = 'testuser'
-            url = "jdbc:h2:${metaDirectory.absolutePath};DB_CLOSE_DELAY=-1"
+            url = "jdbc:h2:${metaDirectory.absolutePath}".toString()
         }
         def sql = new Sql(datasource)
         sql.execute("""

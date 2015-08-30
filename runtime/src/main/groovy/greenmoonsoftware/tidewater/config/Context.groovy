@@ -1,10 +1,13 @@
 package greenmoonsoftware.tidewater.config
+
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
+import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
 import greenmoonsoftware.tidewater.config.step.*
-import groovy.time.TimeCategory
+
+import java.time.Duration
 
 final class Context implements EventSubscriber<Event> {
     private final attributes = new ContextAttributes()
@@ -15,7 +18,7 @@ final class Context implements EventSubscriber<Event> {
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         addEventSubscribers(
                 this,
-//                new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource)
+                new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource)
         )
     }
 
@@ -44,11 +47,11 @@ final class Context implements EventSubscriber<Event> {
     }
 
     private void executeStep(Step step) {
-        def startTime = new Date()
-        raiseEvent(new StepStartedEvent(step, startTime))
+        def startDate = new Date()
+        raiseEvent(new StepStartedEvent(step, startDate))
         step.execute(this, setupStepMetaDirectory(step))
-        def endTime = new Date()
-        raiseEvent(new StepSuccessfullyCompletedEvent(step, endTime, TimeCategory.minus(endTime, startTime)))
+        def endDate = new Date()
+        raiseEvent(new StepSuccessfullyCompletedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
     }
 
     private File setupStepMetaDirectory(Step step) {
