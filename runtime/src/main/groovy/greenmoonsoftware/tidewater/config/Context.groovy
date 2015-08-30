@@ -65,7 +65,7 @@ final class Context implements EventSubscriber<Event> {
 
         step.execute(this, stepDirectory)
         def endTime = new Date()
-        raiseEvent(new StepSuccessEvent(step, endTime, TimeCategory.minus(endTime, startTime)))
+        raiseEvent(new StepSuccessfullyCompletedEvent(step, endTime, TimeCategory.minus(endTime, startTime)))
         removeEventSubscriber(serializer)
     }
 
@@ -96,7 +96,7 @@ final class Context implements EventSubscriber<Event> {
         EventApplier.apply(this, event)
     }
 
-    private void handle(StepSuccessEvent event) {
+    private void handle(StepSuccessfullyCompletedEvent event) {
         executedSteps[event.step.name] = event.step
     }
 

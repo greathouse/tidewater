@@ -5,7 +5,7 @@ import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.step.StepLogEvent
 import greenmoonsoftware.tidewater.config.step.StepStartedEvent
-import greenmoonsoftware.tidewater.config.step.StepSuccessEvent
+import greenmoonsoftware.tidewater.config.step.StepSuccessfullyCompletedEvent
 
 final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
 
@@ -22,7 +22,7 @@ final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
         println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     }
 
-    private void handle(StepSuccessEvent event) {
+    private void handle(StepSuccessfullyCompletedEvent event) {
         println "\n${event.step.name} completed. Took ${event.duration}"
         println "Outputs:"
         event.step.outputs.each { println "\t${it.key}: ${it.value}" }

@@ -15,7 +15,7 @@ final class StepSerializerSubscriber implements EventSubscriber<Event> {
         EventApplier.apply(this, event)
     }
 
-    void handle(StepSuccessEvent event) {
+    void handle(StepSuccessfullyCompletedEvent event) {
         event.step.seralize(new File(stepDirectory, 'step.json'))
     }
 }
