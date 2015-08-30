@@ -13,9 +13,9 @@ class Gradle extends AbstractStep {
     @Input String tasks = 'clean'
 
     @Override
-    void execute(Context context, File metaDirectory) {
-        executeProcess(buildProcess()).eachLine {
-            context.raiseEvent(new StepLogEvent(this, it))
+    void execute(Context c, File metaDirectory) {
+        executeProcess(buildProcess(c)).eachLine {
+            c.raiseEvent(new StepLogEvent(this, it))
         }
     }
 
@@ -23,9 +23,9 @@ class Gradle extends AbstractStep {
         new BufferedReader(new InputStreamReader(builder.start().inputStream))
     }
 
-    private ProcessBuilder buildProcess() {
+    private ProcessBuilder buildProcess(Context context) {
         new ProcessBuilder("${executable} -b ${buildFile} ${tasks}".split(' ')).with {
-            directory = new File(Context.get().workspace, workingDir)
+            directory = new File(context.workspace, workingDir)
             redirectErrorStream(true)
             delegate
         } as ProcessBuilder

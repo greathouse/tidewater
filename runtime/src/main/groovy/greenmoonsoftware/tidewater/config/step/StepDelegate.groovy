@@ -2,18 +2,20 @@ package greenmoonsoftware.tidewater.config.step
 
 import greenmoonsoftware.tidewater.config.Context
 
-class StepDelegate {
+final class StepDelegate {
+    private Context context
     private Step step
 
-    StepDelegate(Step s) {
+    StepDelegate(Context c, Step s) {
+        context = c
         step = s
     }
 
     def propertyMissing(String name) {
         if (name == 'context') {
-            return Context.get()
+            return context
         }
-        def executedStep = Context.get().findExecutedStep(name)
+        def executedStep = context.findExecutedStep(name)
         if (!executedStep) {
             println """\
                 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

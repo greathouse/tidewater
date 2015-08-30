@@ -7,18 +7,11 @@ import greenmoonsoftware.tidewater.config.step.*
 import groovy.time.TimeCategory
 
 final class Context implements EventSubscriber<Event> {
-    private static ThreadLocal<Context> contextThreadLocal = new ThreadLocal<>()
-
     private definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
     private executedSteps = [:] as LinkedHashMap<String, Step>
     private File workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
     private File metaDirectory
     private def eventBus = new SimpleEventBus()
-
-    @Deprecated
-    static Context get() {
-        return contextThreadLocal.get() ?: new Context()
-    }
 
     Context() {
         workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
@@ -26,7 +19,6 @@ final class Context implements EventSubscriber<Event> {
         workspace.mkdirs()
         metaDirectory.mkdirs()
 
-        contextThreadLocal.set(this)
         addEventSubscribers(this)
     }
 
@@ -93,7 +85,7 @@ final class Context implements EventSubscriber<Event> {
         def step = configured.type.newInstance()
         step.name = configured.name
         def c = (Closure) configured.configureClosure.clone()
-        c.delegate = new StepDelegate(step)
+        c.delegate = new StepDelegate(this, step as Step)
         c.resolveStrategy = Closure.DELEGATE_FIRST
         c.call()
         step

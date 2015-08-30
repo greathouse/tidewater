@@ -10,7 +10,7 @@ class Shell extends AbstractStep {
 
     @Override
     void execute(Context context, File stepDirectory) {
-        executeProcess(buildProcess(writeScript(stepDirectory))).eachLine {
+        executeProcess(buildProcess(context, writeScript(stepDirectory))).eachLine {
             context.raiseEvent(new StepLogEvent(this, it))
         }
     }
@@ -19,10 +19,10 @@ class Shell extends AbstractStep {
         new BufferedReader(new InputStreamReader(builder.start().inputStream))
     }
 
-    private ProcessBuilder buildProcess(File scriptFile) {
+    private ProcessBuilder buildProcess(Context context, File scriptFile) {
         new ProcessBuilder('sh', scriptFile.absolutePath)
         .with {
-            directory = new File(Context.get().workspace, workingDir)
+            directory = new File(context.workspace, workingDir)
             redirectErrorStream(true)
             delegate
         } as ProcessBuilder

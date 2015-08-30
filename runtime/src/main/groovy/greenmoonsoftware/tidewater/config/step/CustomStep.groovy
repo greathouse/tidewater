@@ -8,7 +8,7 @@ class CustomStep extends AbstractStep {
     @Override
     void execute(Context context, File metaDirectory) {
         def c = (Closure) executable.clone()
-        c.delegate = new StepDelegate(this)
+        c.delegate = new StepDelegate(context, this)
         c.call()
     }
 }
