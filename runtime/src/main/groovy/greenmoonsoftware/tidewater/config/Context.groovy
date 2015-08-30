@@ -15,7 +15,11 @@ final class Context implements EventSubscriber<Event> {
 
     Context() {
         metaDirectory.mkdirs()
-        addEventSubscribers(this)
+        def storage = new TidewaterEventStoreConfiguration(metaDirectory)
+        addEventSubscribers(
+                this,
+//                new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource)
+        )
     }
 
     void addEventSubscribers(EventSubscriber<Event>... subscriber) {

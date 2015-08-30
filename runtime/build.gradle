@@ -2,9 +2,12 @@ apply plugin: 'groovy'
 
 dependencies {
     compile project(':eventsourcing:core')
+    compile project(':eventsourcing:jdbc-event-store')
 
+    compile 'com.h2database:h2:1.4.186'
     compile 'org.codehaus.groovy:groovy:2.4.4'
     compile 'org.codehaus.groovy:groovy-json:2.4.4'
+    compile 'org.codehaus.groovy:groovy-sql:2.4.4'
     compile 'org.eclipse.jgit:org.eclipse.jgit:4.0.1.201506240215-r'
 
     testCompile 'org.testng:testng:6.9.6'

@@ -4,7 +4,7 @@ import greenmoonsoftware.tidewater.config.step.CustomStep
 import greenmoonsoftware.tidewater.config.step.StepConfiguration
 import greenmoonsoftware.tidewater.config.step.StepConfiguredEvent
 
-abstract class TidewaterBaseScript extends Script {
+abstract class TidewaterBaseScript extends Script implements Serializable {
     def step(StepConfiguration definition) {
         this.binding.context.raiseEvent(new StepConfiguredEvent(definition))
     }

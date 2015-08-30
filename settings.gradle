@@ -1,5 +1,6 @@
 include (
 		'eventsourcing:core',
+        'eventsourcing:jdbc-event-store',
 		'runtime',
 		'web'
 )

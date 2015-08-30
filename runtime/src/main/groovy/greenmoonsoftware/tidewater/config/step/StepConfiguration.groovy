@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.config.step
 
-class StepConfiguration {
+class StepConfiguration implements Serializable {
     String name
     Class type
     Closure configureClosure
