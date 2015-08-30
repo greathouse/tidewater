@@ -1,18 +1,21 @@
 package greenmoonsoftware.tidewater.config
-
-import greenmoonsoftware.tidewater.config.step.Step
-import greenmoonsoftware.tidewater.config.step.StepConfiguration
-import greenmoonsoftware.tidewater.config.step.StepDelegate
+import greenmoonsoftware.es.event.Event
+import greenmoonsoftware.es.event.EventApplier
+import greenmoonsoftware.es.event.EventSubscriber
+import greenmoonsoftware.es.event.SimpleEventBus
+import greenmoonsoftware.tidewater.config.step.*
 import groovy.time.TimeCategory
+import groovy.time.TimeDuration
 
-final class Context {
+final class Context implements EventSubscriber<Event> {
     private static ThreadLocal<Context> contextThreadLocal = new ThreadLocal<>()
 
     @Deprecated private static Context context
-    private LinkedHashMap<String, StepConfiguration> definedSteps = [:]
-    private LinkedHashMap<String, Step> executedSteps = [:]
+    private definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
+    private executedSteps = [:] as LinkedHashMap<String, Step>
     private File workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
     private File metaDirectory
+    private def eventBus = new SimpleEventBus()
 
     @Deprecated
     static Context get() {
@@ -26,6 +29,11 @@ final class Context {
         metaDirectory.mkdirs()
 
         contextThreadLocal.set(this)
+        eventBus.register(this)
+    }
+
+    void raiseEvent(Event event) {
+        eventBus.post(event)
     }
 
     void addStep(StepConfiguration stepDef) {
@@ -50,13 +58,12 @@ final class Context {
 
         definedSteps.values().each { defined ->
             def step = configure(defined)
-            printBanner(step)
             executeStep(step)
-            printFooter(step)
         }
     }
 
-    private void printFooter(Step step) {
+    private void printFooter(Step step, TimeDuration duration) {
+        println "\n${step.name} completed. Took $duration"
         step.outputs.each { println "\t${it.key}: ${it.value}" }
         println ''
     }
@@ -67,9 +74,10 @@ final class Context {
         step.seralize(stepFile)
 
         def startTime = new Date()
+        raiseEvent(new StepStartedEvent(step))
         step.execute(new LogWriter(new File(stepDirectory, 'log.txt')), stepDirectory)
         def endTime = new Date()
-        println "\n${step.name} completed. Took ${TimeCategory.minus(endTime, startTime)}"
+        raiseEvent(new StepSuccessEvent(step, TimeCategory.minus(endTime, startTime)))
         step.seralize(stepFile)
         executedSteps[step.name] = step
     }
@@ -95,5 +103,18 @@ final class Context {
         c.resolveStrategy = Closure.DELEGATE_FIRST
         c.call()
         step
+    }
+
+    @Override
+    void onEvent(Event event) {
+        EventApplier.apply(this, event);
+    }
+
+    private void handle(StepStartedEvent event) {
+        printBanner(event.step)
+    }
+
+    private void handle(StepSuccessEvent event) {
+        printFooter(event.step, event.duration)
     }
 }
