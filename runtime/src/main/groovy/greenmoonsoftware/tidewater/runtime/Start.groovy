@@ -34,16 +34,18 @@ class Start {
     }
 
     public void start(String script) {
-        new File(Context.get().workspace, 'script.tw').write(script)
-        def script1 = setupScript(script)
+        def context = new Context()
+        new File(context.workspace, 'script.tw').write(script)
+        def script1 = setupScript(context, script)
+
         script1.run()
 
-        Context.get().addEventSubscribers(new StdoutLoggingSubscriber())
-        Context.get().execute()
+        context.addEventSubscribers(new StdoutLoggingSubscriber())
+        context.execute()
     }
 
-    private setupScript(String script) {
-        def script1 = parseScript(setupCompilerConfiguration(), script)
+    private TidewaterBaseScript setupScript(Context context, String script) {
+        def script1 = parseScript(context, setupCompilerConfiguration(), script)
         return script1
     }
 
@@ -54,8 +56,8 @@ class Start {
         return cc
     }
 
-    private parseScript(CompilerConfiguration cc, String script) {
-        GroovyShell shell = new GroovyShell(this.class.classLoader, new Binding(), cc)
+    private TidewaterBaseScript parseScript(Context context, CompilerConfiguration cc, String script) {
+        GroovyShell shell = new GroovyShell(this.class.classLoader, new Binding(context: context), cc)
         def script1 = (TidewaterBaseScript) shell.parse(script)
         return script1
     }

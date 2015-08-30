@@ -24,6 +24,7 @@ final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
 
     private void handle(StepSuccessEvent event) {
         println "\n${event.step.name} completed. Took ${event.duration}"
+        println "Outputs:"
         event.step.outputs.each { println "\t${it.key}: ${it.value}" }
         println ''
     }

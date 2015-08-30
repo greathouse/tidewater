@@ -1,13 +1,12 @@
 package greenmoonsoftware.tidewater.runtime
 
-import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.config.step.CustomStep
 import greenmoonsoftware.tidewater.config.step.StepConfiguration
+import greenmoonsoftware.tidewater.config.step.StepConfiguredEvent
 
 abstract class TidewaterBaseScript extends Script {
     def step(StepConfiguration definition) {
-        println "Step: ${definition.name}"
-        Context.get().addStep(definition)
+        this.binding.context.raiseEvent(new StepConfiguredEvent(definition))
     }
 
     def methodMissing(String name, args) {

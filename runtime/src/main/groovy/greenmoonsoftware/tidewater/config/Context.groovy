@@ -42,10 +42,6 @@ final class Context implements EventSubscriber<Event> {
         eventBus.post(event)
     }
 
-    void addStep(StepConfiguration stepDef) {
-        definedSteps[stepDef.name] = stepDef
-    }
-
     File getWorkspace() {
         workspace
     }
@@ -110,5 +106,10 @@ final class Context implements EventSubscriber<Event> {
 
     private void handle(StepSuccessEvent event) {
         executedSteps[event.step.name] = event.step
+    }
+
+    private void handle(StepConfiguredEvent event) {
+        def stepDef = event.definition
+        definedSteps[stepDef.name] = stepDef
     }
 }
