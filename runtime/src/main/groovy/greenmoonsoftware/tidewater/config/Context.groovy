@@ -7,15 +7,12 @@ import greenmoonsoftware.tidewater.config.step.*
 import groovy.time.TimeCategory
 
 final class Context implements EventSubscriber<Event> {
-    private final definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
-    private final executedSteps = [:] as LinkedHashMap<String, Step>
-    private final workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
-    private final metaDirectory = new File(workspace, '.meta')
+    private final attributes = new ContextAttributes()
     private final eventBus = new SimpleEventBus()
 
     Context() {
-        metaDirectory.mkdirs()
-        def storage = new TidewaterEventStoreConfiguration(metaDirectory)
+        attributes.metaDirectory.mkdirs()
+        def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         addEventSubscribers(
                 this,
 //                new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource)
@@ -30,25 +27,18 @@ final class Context implements EventSubscriber<Event> {
         eventBus.post(event)
     }
 
-    File getWorkspace() {
-        workspace
-    }
-
-    File getMetaDirectory() {
-        metaDirectory
-    }
-
-    Map getDefinedSteps() {
-        definedSteps.asImmutable()
-    }
-
     def findExecutedStep(String name) {
-        executedSteps[name]
+        attributes.executedSteps[name]
+    }
+
+    @Deprecated
+    def getWorkspace() {
+        attributes.workspace
     }
 
     def execute() {
-        raiseEvent(new ContextExecutionStartedEvent(this))
-        definedSteps.values().each { defined ->
+        raiseEvent(new ContextExecutionStartedEvent(attributes))
+        attributes.definedSteps.values().each { defined ->
             executeStep(configure(defined))
         }
     }
@@ -62,7 +52,7 @@ final class Context implements EventSubscriber<Event> {
     }
 
     private File setupStepMetaDirectory(Step step) {
-        def stepDirectory = new File(metaDirectory, step.name)
+        def stepDirectory = new File(attributes.metaDirectory, step.name)
         stepDirectory.mkdirs()
         return stepDirectory
     }
@@ -82,11 +72,10 @@ final class Context implements EventSubscriber<Event> {
     }
 
     private void handle(StepSuccessfullyCompletedEvent event) {
-        executedSteps[event.step.name] = event.step
+        attributes.addExecutedStep(event.step)
     }
 
     private void handle(StepConfiguredEvent event) {
-        def stepDef = event.definition
-        definedSteps[stepDef.name] = stepDef
+        attributes.addDefinedStep(event.definition)
     }
 }
