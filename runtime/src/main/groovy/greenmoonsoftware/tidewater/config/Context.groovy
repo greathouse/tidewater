@@ -74,10 +74,10 @@ final class Context implements EventSubscriber<Event> {
         step.seralize(stepFile)
 
         def startTime = new Date()
-        raiseEvent(new StepStartedEvent(step))
+        raiseEvent(new StepStartedEvent(step, startTime))
         step.execute(new LogWriter(new File(stepDirectory, 'log.txt')), stepDirectory)
         def endTime = new Date()
-        raiseEvent(new StepSuccessEvent(step, TimeCategory.minus(endTime, startTime)))
+        raiseEvent(new StepSuccessEvent(step, endTime, TimeCategory.minus(endTime, startTime)))
         step.seralize(stepFile)
         executedSteps[step.name] = step
     }
