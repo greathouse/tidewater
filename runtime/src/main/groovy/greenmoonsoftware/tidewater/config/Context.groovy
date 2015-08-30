@@ -6,28 +6,20 @@ import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.tidewater.config.step.*
 import groovy.time.TimeCategory
 
-final class Context implements EventSubscriber<Event> {
+class Context implements EventSubscriber<Event> {
     private definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
     private executedSteps = [:] as LinkedHashMap<String, Step>
-    private File workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
-    private File metaDirectory
+    private final File workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
+    private final File metaDirectory = new File(workspace, '.meta')
     private def eventBus = new SimpleEventBus()
 
     Context() {
-        workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
-        metaDirectory = new File(workspace, '.meta')
-        workspace.mkdirs()
         metaDirectory.mkdirs()
-
         addEventSubscribers(this)
     }
 
     void addEventSubscribers(EventSubscriber<Event>... subscriber) {
         subscriber.each {eventBus.register(it)}
-    }
-
-    void removeEventSubscriber(EventSubscriber<Event> sub) {
-        eventBus.unregister(sub)
     }
 
     void raiseEvent(Event event) {
@@ -42,37 +34,27 @@ final class Context implements EventSubscriber<Event> {
         metaDirectory
     }
 
+    Map getDefinedSteps() {
+        definedSteps.asImmutable()
+    }
+
     def findExecutedStep(String name) {
         executedSteps[name]
     }
 
     def execute() {
-        println "Workspace: ${workspace}"
-        println "Number of steps: ${definedSteps.size()}"
-
+        raiseEvent(new ContextExecutionStartedEvent(this))
         definedSteps.values().each { defined ->
-            def step = configure(defined)
-            executeStep(step)
+            executeStep(configure(defined))
         }
     }
 
     private void executeStep(Step step) {
-        def stepDirectory = setupStepMetaDirectory(step)
-        def serializer = serializer(stepDirectory)
-
         def startTime = new Date()
         raiseEvent(new StepStartedEvent(step, startTime))
-
-        step.execute(this, stepDirectory)
+        step.execute(this, setupStepMetaDirectory(step))
         def endTime = new Date()
         raiseEvent(new StepSuccessfullyCompletedEvent(step, endTime, TimeCategory.minus(endTime, startTime)))
-        removeEventSubscriber(serializer)
-    }
-
-    private StepSerializerSubscriber serializer(File stepDirectory) {
-        def serializer = new StepSerializerSubscriber(stepDirectory)
-        addEventSubscribers(serializer)
-        serializer
     }
 
     private File setupStepMetaDirectory(Step step) {

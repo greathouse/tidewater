@@ -3,6 +3,7 @@ package greenmoonsoftware.tidewater.runtime
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
+import greenmoonsoftware.tidewater.config.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.config.step.StepLogEvent
 import greenmoonsoftware.tidewater.config.step.StepStartedEvent
 import greenmoonsoftware.tidewater.config.step.StepSuccessfullyCompletedEvent
@@ -12,6 +13,12 @@ final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
     @Override
     void onEvent(Event event) {
         EventApplier.apply(this, event);
+    }
+
+    private void handle(ContextExecutionStartedEvent event) {
+        def context = event.context
+        println "Workspace: ${context.workspace}"
+        println "Number of steps: ${context.definedSteps.size()}"
     }
 
     private void handle(StepStartedEvent event) {
