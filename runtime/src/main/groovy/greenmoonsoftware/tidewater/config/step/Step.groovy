@@ -1,10 +1,10 @@
 package greenmoonsoftware.tidewater.config.step
 
-import greenmoonsoftware.tidewater.config.LogWriter
+import greenmoonsoftware.tidewater.config.Context
 
 interface Step {
     String getName()
-    void execute(LogWriter log, File metaDirectory)
+    void execute(Context context, File stepDirectory)
 
     void seralize(File toFile)
     void deserialize(File fromFile)

@@ -1,18 +1,17 @@
 package greenmoonsoftware.tidewater.shell
-
 import greenmoonsoftware.tidewater.config.Context
-import greenmoonsoftware.tidewater.config.LogWriter
 import greenmoonsoftware.tidewater.config.step.AbstractStep
 import greenmoonsoftware.tidewater.config.step.Input
+import greenmoonsoftware.tidewater.config.step.StepLogEvent
 
 class Shell extends AbstractStep {
     @Input String contents
     @Input String workingDir = ''
 
     @Override
-    void execute(LogWriter log, File metaDirectory) {
-        executeProcess(buildProcess(writeScript(metaDirectory))).eachLine {
-            log.println(it)
+    void execute(Context context, File stepDirectory) {
+        executeProcess(buildProcess(writeScript(stepDirectory))).eachLine {
+            context.raiseEvent(new StepLogEvent(this, it))
         }
     }
 

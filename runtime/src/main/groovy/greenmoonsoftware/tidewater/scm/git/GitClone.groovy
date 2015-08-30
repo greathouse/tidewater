@@ -1,7 +1,5 @@
 package greenmoonsoftware.tidewater.scm.git
-
 import greenmoonsoftware.tidewater.config.Context
-import greenmoonsoftware.tidewater.config.LogWriter
 import greenmoonsoftware.tidewater.config.step.AbstractStep
 import greenmoonsoftware.tidewater.config.step.Input
 import greenmoonsoftware.tidewater.config.step.Output
@@ -16,7 +14,7 @@ class GitClone extends AbstractStep {
 
     @Output private String sha
 
-    void execute(LogWriter log, File metaDirectory) {
+    void execute(Context context, File metaDirectory) {
         Git.cloneRepository()
             .setURI(url)
             .setDirectory(new File(Context.get().workspace, dir))

@@ -70,7 +70,7 @@ final class Context {
 
         def startTime = new Date()
         raiseEvent(new StepStartedEvent(step, startTime))
-        step.execute(new LogWriter(new File(stepDirectory, 'log.txt')), stepDirectory)
+        step.execute(this, stepDirectory)
         def endTime = new Date()
         raiseEvent(new StepSuccessEvent(step, endTime, TimeCategory.minus(endTime, startTime)))
         step.seralize(stepFile)
