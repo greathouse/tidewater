@@ -6,7 +6,7 @@ final class ContextExecutionStartedEvent extends AbstractEvent {
     final ContextAttributes attributes
 
     ContextExecutionStartedEvent(ContextAttributes a) {
-        super(a.toString(), 'executionStarted')
+        super(a.id, 'executionStarted')
         attributes = a
     }
 }

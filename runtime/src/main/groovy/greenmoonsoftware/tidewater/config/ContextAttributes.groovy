@@ -16,6 +16,10 @@ final class ContextAttributes implements Serializable {
         metaDirectory = new File(workspace, '.meta')
     }
 
+    String getId() {
+        id
+    }
+
     File getWorkspace() {
         workspace
     }
