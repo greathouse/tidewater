@@ -7,8 +7,6 @@ interface Step extends Serializable {
     void setName(String name)
     void execute(Context context, File stepDirectory)
 
-    void seralize(File toFile)
-    void deserialize(File fromFile)
     Map<String, Object> getInputs()
     Map<String, Object> getOutputs()
 }
