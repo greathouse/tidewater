@@ -10,10 +10,15 @@ import greenmoonsoftware.tidewater.config.step.*
 import java.time.Duration
 
 final class Context implements EventSubscriber<Event> {
-    private final attributes = new ContextAttributes()
+    private final attributes
     private final eventBus = new SimpleEventBus()
 
     Context() {
+        this(new Date().format('yyyy-MM-dd_HH-mm-ss'))
+    }
+
+    Context(String id) {
+        attributes = new ContextAttributes(id)
         attributes.metaDirectory.mkdirs()
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         addEventSubscribers(

@@ -4,10 +4,17 @@ import greenmoonsoftware.tidewater.config.step.Step
 import greenmoonsoftware.tidewater.config.step.StepConfiguration
 
 final class ContextAttributes implements Serializable {
+    private final String id
     private final definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
     private final executedSteps = [:] as LinkedHashMap<String, Step>
-    private final workspace = new File("${Tidewater.WORKSPACE_ROOT}/${new Date().format('yyyyMMddHHmmssSSSS')}")
-    private final metaDirectory = new File(workspace, '.meta')
+    private final File workspace
+    private final File metaDirectory
+
+    ContextAttributes(String id) {
+        this.id = id
+        workspace = new File("${Tidewater.WORKSPACE_ROOT}/$id")
+        metaDirectory = new File(workspace, '.meta')
+    }
 
     File getWorkspace() {
         workspace
