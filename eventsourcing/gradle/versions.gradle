@@ -5,4 +5,8 @@ ext {
 
     h2 = 'com.h2database:h2:1.4.186'
     testng = 'org.testng:testng:6.8.21'
+
+    peerProject = { name ->
+        project.parent.subprojects.find { it.name == name}
+    }
 }

@@ -2,7 +2,7 @@ apply from: "$projectDir/../gradle/java.gradle"
 apply from: "$projectDir/../gradle/versions.gradle"
 
 dependencies {
-    compile project(':eventsourcing:core')
+    compile peerProject('core') //project("${project.parent.path}core")
 
     testCompile groovy
     testCompile groovySql
