@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config.step
+package greenmoonsoftware.tidewater.step
 
 class StepConfiguration implements Serializable {
     String name

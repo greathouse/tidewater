@@ -1,7 +1,7 @@
 package greenmoonsoftware.tidewater.config
 
-import greenmoonsoftware.tidewater.config.step.Step
-import greenmoonsoftware.tidewater.config.step.StepConfiguration
+import greenmoonsoftware.tidewater.step.Step
+import greenmoonsoftware.tidewater.step.StepConfiguration
 
 final class ContextAttributes implements Serializable {
     private final String id

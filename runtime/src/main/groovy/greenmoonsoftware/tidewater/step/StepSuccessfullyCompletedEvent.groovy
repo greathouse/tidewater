@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config.step
+package greenmoonsoftware.tidewater.step
 import greenmoonsoftware.es.event.AbstractEvent
 
 import java.time.Duration

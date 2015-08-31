@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config.step
+package greenmoonsoftware.tidewater.step
 import greenmoonsoftware.es.event.AbstractEvent
 
 class StepStartedEvent extends AbstractEvent {

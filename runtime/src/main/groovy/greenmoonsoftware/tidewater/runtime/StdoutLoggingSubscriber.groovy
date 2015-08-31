@@ -4,9 +4,9 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.ContextExecutionStartedEvent
-import greenmoonsoftware.tidewater.config.step.StepLogEvent
-import greenmoonsoftware.tidewater.config.step.StepStartedEvent
-import greenmoonsoftware.tidewater.config.step.StepSuccessfullyCompletedEvent
+import greenmoonsoftware.tidewater.step.StepLogEvent
+import greenmoonsoftware.tidewater.step.StepStartedEvent
+import greenmoonsoftware.tidewater.step.StepSuccessfullyCompletedEvent
 
 import java.util.concurrent.TimeUnit
 

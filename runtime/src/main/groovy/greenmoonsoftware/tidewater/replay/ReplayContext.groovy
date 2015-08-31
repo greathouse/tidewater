@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config.replay
+package greenmoonsoftware.tidewater.replay
 
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber

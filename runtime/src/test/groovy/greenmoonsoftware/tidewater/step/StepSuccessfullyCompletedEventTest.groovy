@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config.step
+package greenmoonsoftware.tidewater.step
 import greenmoonsoftware.es.event.jdbcstore.ObjectEventSerializer
 import greenmoonsoftware.tidewater.DummyStep
 import org.testng.annotations.Test

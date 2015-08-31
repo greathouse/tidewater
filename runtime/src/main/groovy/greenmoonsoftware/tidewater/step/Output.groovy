@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config.step
+package greenmoonsoftware.tidewater.step
 
 import java.lang.annotation.ElementType
 import java.lang.annotation.Retention
@@ -7,5 +7,5 @@ import java.lang.annotation.Target
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@interface Input {
+@interface Output {
 }

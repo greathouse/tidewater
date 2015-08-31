@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.runtime
 
-import greenmoonsoftware.tidewater.config.replay.ReplayContext
+import greenmoonsoftware.tidewater.replay.ReplayContext
 
 class Replay {
     static void main(String[] args) {

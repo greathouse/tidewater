@@ -1,16 +1,14 @@
 package greenmoonsoftware.tidewater.config
-
 import greenmoonsoftware.es.event.Event
-import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
-import greenmoonsoftware.tidewater.config.step.*
+import greenmoonsoftware.tidewater.step.*
 
 import java.time.Duration
 
-final class Context implements EventSubscriber<Event> {
-    private final attributes
+final class Context {
+    @Delegate private final ContextAttributes attributes
     private final eventBus = new SimpleEventBus()
 
     Context() {
@@ -22,8 +20,8 @@ final class Context implements EventSubscriber<Event> {
         attributes.metaDirectory.mkdirs()
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         addEventSubscribers(
-                this,
-                new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource)
+                new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource),
+                new ContextAttributeEventSubscriber(attributes)
         )
     }
 
@@ -39,20 +37,11 @@ final class Context implements EventSubscriber<Event> {
         attributes.executedSteps[name]
     }
 
-    @Deprecated
-    def getWorkspace() {
-        attributes.workspace
-    }
-
     def execute() {
         raiseEvent(new ContextExecutionStartedEvent(attributes))
         attributes.definedSteps.values().each { defined ->
             executeStep(configure(defined))
         }
-    }
-
-    def replay() {
-
     }
 
     private void executeStep(Step step) {
@@ -76,18 +65,5 @@ final class Context implements EventSubscriber<Event> {
         c.resolveStrategy = Closure.DELEGATE_ONLY
         c.call()
         return step
-    }
-
-    @Override
-    void onEvent(Event event) {
-        EventApplier.apply(this, event)
-    }
-
-    private void handle(StepSuccessfullyCompletedEvent event) {
-        attributes.addExecutedStep(event.step)
-    }
-
-    private void handle(StepConfiguredEvent event) {
-        attributes.addDefinedStep(event.definition)
     }
 }

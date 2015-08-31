@@ -1,8 +1,8 @@
 package greenmoonsoftware.tidewater.scm.git
 import greenmoonsoftware.tidewater.config.Context
-import greenmoonsoftware.tidewater.config.step.AbstractStep
-import greenmoonsoftware.tidewater.config.step.Input
-import greenmoonsoftware.tidewater.config.step.Output
+import greenmoonsoftware.tidewater.step.AbstractStep
+import greenmoonsoftware.tidewater.step.Input
+import greenmoonsoftware.tidewater.step.Output
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
