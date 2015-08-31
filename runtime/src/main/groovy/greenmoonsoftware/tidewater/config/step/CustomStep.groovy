@@ -3,7 +3,7 @@ package greenmoonsoftware.tidewater.config.step
 import greenmoonsoftware.tidewater.config.Context
 
 class CustomStep extends AbstractStep {
-    Closure executable
+    transient Closure executable
 
     @Override
     void execute(Context context, File metaDirectory) {

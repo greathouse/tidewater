@@ -51,6 +51,10 @@ final class Context implements EventSubscriber<Event> {
         }
     }
 
+    def replay() {
+
+    }
+
     private void executeStep(Step step) {
         def startDate = new Date()
         raiseEvent(new StepStartedEvent(step, startDate))
