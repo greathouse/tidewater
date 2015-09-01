@@ -24,11 +24,12 @@ class Start {
             }
 
             step shell(type: Shell) {
-                contents """\
+                env (['name': 'Robert'])
+                contents \'\'\'\
                     #!/bin/bash
-                    echo hello from the shell
+                    echo hello $name, from the shell
                     whoami
-                """.stripIndent()
+                \'\'\'.stripIndent()
             }
         ''')
     }

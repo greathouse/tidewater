@@ -9,10 +9,11 @@ class ShellTest {
         def context = new Context()
         def contents = 'echo Test'
         def workingDir = UUID.randomUUID().toString()
-        def actual = new Shell(contents: contents, workingDir: workingDir).inputs
-        assert actual.size() == 2
-        assert actual['contents'] == contents
+        def env = [name: 'value']
+        def actual = new Shell(contents: contents, workingDir: workingDir, env: env).inputs
 
-        assert actual['workingDir'] == new File(context.workspace, workingDir)
+        assert actual['contents'] == contents
+//        assert actual['workingDir'] == new File(context.workspace, workingDir)
+        assert actual['env'] as Map == env
     }
 }

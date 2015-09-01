@@ -7,6 +7,7 @@ import greenmoonsoftware.tidewater.step.StepLogEvent
 class Shell extends AbstractStep {
     @Input String contents
     @Input String workingDir = ''
+    @Input Map<String, String> env = [:]
 
     @Override
     void execute(Context context, File stepDirectory) {
@@ -22,8 +23,9 @@ class Shell extends AbstractStep {
     private ProcessBuilder buildProcess(Context context, File scriptFile) {
         new ProcessBuilder('sh', scriptFile.absolutePath)
         .with {
-            directory = new File(context.workspace, workingDir)
+            directory(new File(context.workspace, workingDir))
             redirectErrorStream(true)
+            env.each { environment().put(it.key, it.value) }
             delegate
         } as ProcessBuilder
     }
