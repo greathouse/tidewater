@@ -46,7 +46,9 @@ final class Context {
         attributes.executedSteps[name]
     }
 
-    def execute(String script) {
+    def execute(String scriptText) {
+        def script = TidewaterBaseScript.configure(this, scriptText)
+        script.run()
         raiseEvent(new ContextExecutionStartedEvent(attributes))
         attributes.definedSteps.values().each { defined ->
             executeStep(configure(defined))
@@ -75,4 +77,6 @@ final class Context {
         c.call()
         return step
     }
+
+
 }
