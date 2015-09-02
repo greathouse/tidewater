@@ -3,8 +3,8 @@ package greenmoonsoftware.tidewater.config
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
-import greenmoonsoftware.tidewater.step.StepConfiguredEvent
-import greenmoonsoftware.tidewater.step.StepSuccessfullyCompletedEvent
+import greenmoonsoftware.tidewater.step.events.StepConfiguredEvent
+import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 
 class ContextAttributeEventSubscriber implements EventSubscriber<Event> {
     private final ContextAttributes attributes

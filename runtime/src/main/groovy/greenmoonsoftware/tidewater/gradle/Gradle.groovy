@@ -2,7 +2,7 @@ package greenmoonsoftware.tidewater.gradle
 import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
-import greenmoonsoftware.tidewater.step.StepLogEvent
+import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import groovy.transform.ToString
 
 @ToString

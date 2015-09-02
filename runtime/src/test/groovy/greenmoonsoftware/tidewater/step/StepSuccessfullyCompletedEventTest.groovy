@@ -1,6 +1,7 @@
 package greenmoonsoftware.tidewater.step
 import greenmoonsoftware.es.event.jdbcstore.ObjectEventSerializer
 import greenmoonsoftware.tidewater.DummyStep
+import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 import org.testng.annotations.Test
 
 import java.time.Duration

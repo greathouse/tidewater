@@ -4,6 +4,8 @@ import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
 import greenmoonsoftware.tidewater.step.*
+import greenmoonsoftware.tidewater.step.events.StepStartedEvent
+import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 
 import java.time.Duration
 

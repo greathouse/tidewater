@@ -2,7 +2,7 @@ package greenmoonsoftware.tidewater.runtime
 
 import greenmoonsoftware.tidewater.step.CustomStep
 import greenmoonsoftware.tidewater.step.StepConfiguration
-import greenmoonsoftware.tidewater.step.StepConfiguredEvent
+import greenmoonsoftware.tidewater.step.events.StepConfiguredEvent
 
 abstract class TidewaterBaseScript extends Script implements Serializable {
     def step(StepConfiguration definition) {

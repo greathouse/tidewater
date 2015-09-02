@@ -4,7 +4,7 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.replay.ReplayContext
-import greenmoonsoftware.tidewater.step.StepLogEvent
+import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 class LogController {
     @RequestMapping("/archive")
     String index(Map<String, Object> model) {
-        def replay = new ReplayContext('2015-08-30_22-02-00')
+        def replay = new ReplayContext('2015-09-01_21-17-38')
         def log = ''
         replay.addEventSubscribers(new EventSubscriber<Event>() {
             @Override
