@@ -5,6 +5,7 @@ import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcEventQuery
 import greenmoonsoftware.tidewater.config.ContextAttributes
+import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.config.TidewaterEventStoreConfiguration
 
 public class ReplayContext {
@@ -12,7 +13,7 @@ public class ReplayContext {
     private final JdbcEventQuery eventQuery
     private final eventBus = new SimpleEventBus()
 
-    ReplayContext(String id) {
+    ReplayContext(ContextId id) {
         attributes = new ContextAttributes(id)
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         eventQuery = new JdbcEventQuery(storage.toConfiguration(), storage.datasource)

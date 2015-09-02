@@ -3,7 +3,9 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
-import greenmoonsoftware.tidewater.step.*
+import greenmoonsoftware.tidewater.step.Step
+import greenmoonsoftware.tidewater.step.StepConfiguration
+import greenmoonsoftware.tidewater.step.StepDelegate
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 
@@ -14,10 +16,10 @@ final class Context {
     private final eventBus = new SimpleEventBus()
 
     Context() {
-        this(new Date().format('yyyy-MM-dd_HH-mm-ss'))
+        this(new ContextId(new Date().format('yyyy-MM-dd_HH-mm-ss')))
     }
 
-    Context(String id) {
+    Context(ContextId id) {
         attributes = new ContextAttributes(id)
         attributes.metaDirectory.mkdirs()
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
@@ -25,6 +27,11 @@ final class Context {
                 new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource),
                 new ContextAttributeEventSubscriber(attributes)
         )
+    }
+
+    @Deprecated
+    Context(String id) {
+        this(new ContextId(id))
     }
 
     void addEventSubscribers(EventSubscriber<Event>... subscriber) {
@@ -39,7 +46,7 @@ final class Context {
         attributes.executedSteps[name]
     }
 
-    def execute() {
+    def execute(String script) {
         raiseEvent(new ContextExecutionStartedEvent(attributes))
         attributes.definedSteps.values().each { defined ->
             executeStep(configure(defined))
