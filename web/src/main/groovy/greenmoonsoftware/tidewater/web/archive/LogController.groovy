@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 class LogController {
-    @RequestMapping("/archive")
+    @RequestMapping('/archive')
     String index(Map<String, Object> model) {
         def replay = new ReplayContext('2015-09-01_21-17-38')
         def log = ''
@@ -25,7 +25,7 @@ class LogController {
             }
         })
         replay.replay()
-        model.put("log", log)
-        return "archive/index"
+        model.put('log', log)
+        return 'archive/index'
     }
 }
