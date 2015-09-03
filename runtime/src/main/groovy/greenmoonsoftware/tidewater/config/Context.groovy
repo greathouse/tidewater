@@ -44,13 +44,15 @@ final class Context {
     }
 
     def execute(String scriptText) {
-        def script = TidewaterBaseScript.configure(this, scriptText)
-        script.run()
-        raiseEvent(new ContextExecutionStartedEvent(scriptText, attributes))
-        attributes.definedSteps.values().each { defined ->
-            executeStep(configure(defined))
-        }
-        raiseEvent(new ContextExecutionEndedEvent(attributes))
+        new Thread({
+            def script = TidewaterBaseScript.configure(this, scriptText)
+            script.run()
+            raiseEvent(new ContextExecutionStartedEvent(scriptText, attributes))
+            attributes.definedSteps.values().each { defined ->
+                executeStep(configure(defined))
+            }
+            raiseEvent(new ContextExecutionEndedEvent(attributes))
+        }).start()
     }
 
     private void executeStep(Step step) {
