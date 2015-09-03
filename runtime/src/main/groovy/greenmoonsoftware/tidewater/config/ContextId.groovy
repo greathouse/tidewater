@@ -1,9 +1,14 @@
 package greenmoonsoftware.tidewater.config
 
-class ContextId {
-    @Delegate final String id
+class ContextId implements Serializable {
+    private final String value
 
     ContextId(String id) {
-        this.id = id
+        this.value = id
+    }
+
+    @Override
+    String toString() {
+        value
     }
 }

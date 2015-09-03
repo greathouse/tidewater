@@ -3,7 +3,7 @@ package greenmoonsoftware.tidewater.runtime
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
-import greenmoonsoftware.tidewater.config.ContextExecutionStartedEvent
+import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent

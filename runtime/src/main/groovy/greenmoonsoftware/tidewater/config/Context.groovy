@@ -3,6 +3,8 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
+import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
+import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepConfiguration
 import greenmoonsoftware.tidewater.step.StepDelegate
@@ -29,11 +31,6 @@ final class Context {
         )
     }
 
-    @Deprecated
-    Context(String id) {
-        this(new ContextId(id))
-    }
-
     void addEventSubscribers(EventSubscriber<Event>... subscriber) {
         subscriber.each {eventBus.register(it)}
     }
@@ -49,10 +46,11 @@ final class Context {
     def execute(String scriptText) {
         def script = TidewaterBaseScript.configure(this, scriptText)
         script.run()
-        raiseEvent(new ContextExecutionStartedEvent(attributes))
+        raiseEvent(new ContextExecutionStartedEvent(scriptText, attributes))
         attributes.definedSteps.values().each { defined ->
             executeStep(configure(defined))
         }
+        raiseEvent(new ContextExecutionEndedEvent(attributes))
     }
 
     private void executeStep(Step step) {
