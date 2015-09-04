@@ -15,17 +15,22 @@ class GitClone extends AbstractStep {
     @Output private String sha
 
     void execute(Context context, File metaDirectory) {
+        def log = context.&log.curry(this)
+        def directory = new File(context.workspace, dir)
+        log "Cloning repo: $url into ${directory.absolutePath}"
+
         Git.cloneRepository()
             .setURI(url)
-            .setDirectory(new File(context.workspace, dir))
+            .setDirectory(directory)
             .setBranch(ref)
             .call()
 
         FileRepositoryBuilder builder = new FileRepositoryBuilder();
-        Repository repository = builder.setWorkTree(new File(context.workspace, dir))
+        Repository repository = builder.setWorkTree(directory)
                 .build();
         def ref = repository.getRef(ref)
         sha = ref.objectId.name
+        log "Finished cloning. Working directory at ${ref.name} ($sha)"
     }
 
     String getSha() { sha }

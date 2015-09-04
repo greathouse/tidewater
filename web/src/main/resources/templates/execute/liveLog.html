@@ -17,19 +17,30 @@
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/greetings/{{contextId}}', function(greeting){
-                    showGreeting(greeting.body);
+                stompClient.subscribe('/topic/greetings/{{contextId}}', function(event){
+                    processEvent(JSON.parse(event.body));
                 });
             });
         }
 
-        function showGreeting(message) {
+        function processEvent(event) {
             var response = document.getElementById('response');
-            var p = document.createElement('span');
-            p.style.wordWrap = 'break-word';
-            p.appendChild(document.createTextNode(message));
-            response.appendChild(p);
-            response.appendChild(document.createElement('br'));
+            if (event.type === 'log') {
+                var p = document.createElement('span');
+                p.appendChild(document.createTextNode(event.message));
+                response.appendChild(p);
+                response.appendChild(document.createElement('br'));
+            }
+            if (event.type === 'success') {
+                var p = document.createElement('hr');
+                response.appendChild(p);
+            }
+            if (event.type === 'started') {
+                var p = document.createElement('h4');
+                p.appendChild(document.createTextNode(event.step.name));
+                response.appendChild(p);
+                response.appendChild(document.createElement('br'));
+            }
         }
     </script>
 </head>
@@ -50,8 +61,7 @@
                 <div class="row">
                     <div class="large-12 columns">
                         <div class="callout panel">
-              <pre id="response">
-              </pre>
+              <pre id="response"></pre>
                         </div>
                     </div>
                 </div>

@@ -8,6 +8,7 @@ import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepConfiguration
 import greenmoonsoftware.tidewater.step.StepDelegate
+import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 
@@ -53,6 +54,10 @@ final class Context {
             }
             raiseEvent(new ContextExecutionEndedEvent(attributes))
         }).start()
+    }
+
+    void log(Step step, String message) {
+        raiseEvent(new StepLogEvent(step, message))
     }
 
     private void executeStep(Step step) {
