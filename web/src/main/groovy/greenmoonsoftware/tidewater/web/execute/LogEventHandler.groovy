@@ -3,6 +3,7 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
@@ -44,8 +45,16 @@ class LogEventHandler implements EventSubscriber<Event> {
         })
     }
 
+    void handle(ContextExecutionEndedEvent event) {
+        send base(event)
+    }
+
     private send(message) {
         messagingTemplate.convertAndSend("/topic/greetings/${context.id}".toString(), message)
+    }
+
+    private base(Event e) {
+        base(e) {}
     }
 
     private base(Event e, Closure c) {
