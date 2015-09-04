@@ -22,14 +22,33 @@ class LogEventHandler implements EventSubscriber<Event> {
     }
 
     void handle(StepLogEvent event) {
-        send(event.message)
+        send(base(event) {
+            step = event.step
+            message = event.message
+        })
     }
 
     void handle(StepSuccessfullyCompletedEvent event) {
-        send(event.step.name)
+        send(base(event) {
+            step = event.step
+            duration = event.duration
+            endDate = event.endDate
+        })
     }
 
-    private send(String message) {
+    private send(message) {
         messagingTemplate.convertAndSend("/topic/greetings/${context.id}".toString(), message)
+    }
+
+    private base(Event e, Closure c) {
+        def b = [
+            id: e.id,
+            aggregateId: e.aggregateId,
+            eventDateTime: e.eventDateTime,
+            type: e.type,
+        ]
+        c.delegate = b
+        c.call(b)
+        return b
     }
 }
