@@ -12,33 +12,15 @@
     <script type="text/javascript">
         var stompClient = null;
 
-        function setConnected(connected) {
-            document.getElementById('response').innerHTML = '';
-        }
-
         function connect() {
             var socket = new SockJS('/hello');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
-                setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/greetings', function(greeting){
+                stompClient.subscribe('/topic/greetings/{{contextId}}', function(greeting){
                     showGreeting(greeting.body);
                 });
             });
-        }
-
-        function disconnect() {
-            if (stompClient != null) {
-                stompClient.disconnect();
-            }
-            setConnected(false);
-            console.log("Disconnected");
-        }
-
-        function sendName() {
-            var name = document.getElementById('name').value;
-            stompClient.send("/app/hello", {}, JSON.stringify({ 'name': name }));
         }
 
         function showGreeting(message) {

@@ -22,7 +22,7 @@ class ExecuteController {
     String post(@ModelAttribute ExecuteBody model, ModelMap response) {
         println model.script
         def context = new Context()
-        context.addEventSubscribers(new StdoutLoggingSubscriber(), new LogEventHandler(template))
+        context.addEventSubscribers(new StdoutLoggingSubscriber(), new LogEventHandler(context, template))
         context.execute(model.script)
 
         response.addAttribute('contextId', context.id)

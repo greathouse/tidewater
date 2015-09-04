@@ -2,13 +2,17 @@ package greenmoonsoftware.tidewater.web.execute
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
+import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
+import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 import org.springframework.messaging.simp.SimpMessagingTemplate
 
 class LogEventHandler implements EventSubscriber<Event> {
     private SimpMessagingTemplate messagingTemplate
+    private Context context
 
-    LogEventHandler(SimpMessagingTemplate t) {
+    LogEventHandler(Context c, SimpMessagingTemplate t) {
+        context = c
         messagingTemplate = t
     }
 
@@ -18,6 +22,14 @@ class LogEventHandler implements EventSubscriber<Event> {
     }
 
     void handle(StepLogEvent event) {
-        messagingTemplate.convertAndSend('/topic/greetings', event.message)
+        send(event.message)
+    }
+
+    void handle(StepSuccessfullyCompletedEvent event) {
+        send(event.step.name)
+    }
+
+    private send(String message) {
+        messagingTemplate.convertAndSend("/topic/greetings/${context.id}".toString(), message)
     }
 }
