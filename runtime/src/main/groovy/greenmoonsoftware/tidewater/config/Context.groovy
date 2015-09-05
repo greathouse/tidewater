@@ -1,6 +1,5 @@
 package greenmoonsoftware.tidewater.config
 
-import greenmoonsoftware.es.event.AbstractEvent
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
@@ -10,11 +9,7 @@ import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepConfiguration
 import greenmoonsoftware.tidewater.step.StepDelegate
-import greenmoonsoftware.tidewater.step.events.StepErroredEvent
-import greenmoonsoftware.tidewater.step.events.StepFailedEvent
-import greenmoonsoftware.tidewater.step.events.StepLogEvent
-import greenmoonsoftware.tidewater.step.events.StepStartedEvent
-import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
+import greenmoonsoftware.tidewater.step.events.*
 
 import java.time.Duration
 
@@ -53,8 +48,11 @@ final class Context {
             def script = TidewaterBaseScript.configure(this, scriptText)
             script.run()
             raiseEvent(new ContextExecutionStartedEvent(scriptText, attributes))
-            attributes.definedSteps.values().each { defined ->
-                start(configure(defined))
+            for (defined in attributes.definedSteps.values()) {
+                def success = start(configure(defined))
+                if (!success) {
+                    break
+                }
             }
             raiseEvent(new ContextExecutionEndedEvent(attributes))
         }).start()
@@ -64,13 +62,14 @@ final class Context {
         raiseEvent(new StepLogEvent(step, message))
     }
 
-    private void start(Step step) {
+    private boolean start(Step step) {
         def startDate = new Date()
         raiseEvent(new StepStartedEvent(step, startDate))
         try {
-            executeStep(step, startDate)
+            return executeStep(step, startDate)
         } catch (all) {
             handleErroredStep(step, startDate, all)
+            return false
         }
     }
 
@@ -79,7 +78,7 @@ final class Context {
         raiseEvent(new StepErroredEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()), all))
     }
 
-    private AbstractEvent executeStep(Step step, Date startDate) {
+    private boolean executeStep(Step step, Date startDate) {
         def success = step.execute(this, setupStepMetaDirectory(step))
         def endDate = new Date()
         if (success) {
@@ -87,6 +86,7 @@ final class Context {
         } else {
             raiseEvent(new StepFailedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
         }
+        return success
     }
 
     private File setupStepMetaDirectory(Step step) {

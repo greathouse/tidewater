@@ -28,7 +28,7 @@ final class ContextAttributes implements Serializable {
         metaDirectory
     }
 
-    Map getDefinedSteps() {
+    Map<String, StepConfiguration> getDefinedSteps() {
         definedSteps.asImmutable()
     }
 
@@ -36,7 +36,7 @@ final class ContextAttributes implements Serializable {
         definedSteps[stepDef.name] = stepDef
     }
 
-    Map getExecutedSteps() {
+    Map<String, Step> getExecutedSteps() {
         executedSteps.asImmutable()
     }
 
