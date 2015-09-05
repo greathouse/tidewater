@@ -18,9 +18,18 @@
         <div class="large-12 medium-12 columns">
             <div class="row">
                 <div class="large-6 columns">
+                    <dl class="accordion" data-accordion>
+                        <dd class="accordion-navigation">
+                            <a href="#panel-script">
+                                Script
+                            </a>
+                            <div id="panel-script" class="content callout panel" style="overflow-x: scroll;">
                 <pre>
 {{script}}
                 </pre>
+                                </div>
+                        </dd>
+                        </dl>
                 </div>
                 <div class="large-6 columns">
                     <div class="row callout panel">
@@ -37,8 +46,8 @@
             </div>
             <div class="row">
                 <div class="large-12 columns">
+                    {{#steps}}
                     <dl class="accordion" data-accordion>
-                        {{#steps}}
                         <dd class="accordion-navigation">
                             <a href="#panel-{{name}}">
                                 <span class="label round {{outcome.styleClass}}">{{outcome.label}}</span> {{name}}
@@ -52,8 +61,8 @@
                               </pre>
                             </div>
                         </dd>
-                        {{/steps}}
                     </dl>
+                    {{/steps}}
                 </div>
             </div>
         </div>
