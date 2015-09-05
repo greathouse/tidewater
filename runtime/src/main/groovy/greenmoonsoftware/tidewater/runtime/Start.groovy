@@ -3,7 +3,7 @@ import greenmoonsoftware.tidewater.config.Context
 
 class Start {
     static void main(String[] args) {
-        new Start().start('''
+        new Start().start('''\
             step checkout(type: GitClone) {
                 url 'https://github.com/greathouse/green-tea-test.git'
                 dir 'green-tea-test'
@@ -22,13 +22,13 @@ class Start {
 
             step shell(type: Shell) {
                 env (['name': 'Robert'])
-                contents \'\'\'\
+                contents \'\'\'\\
                     #!/bin/bash
                     echo hello $name, from the shell
                     whoami
                 \'\'\'.stripIndent()
             }
-        ''')
+        '''.stripIndent())
     }
 
     public void start(String script) {
