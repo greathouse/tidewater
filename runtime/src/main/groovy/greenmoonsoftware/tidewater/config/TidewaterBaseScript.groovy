@@ -2,13 +2,13 @@ package greenmoonsoftware.tidewater.config
 
 import greenmoonsoftware.tidewater.step.CustomStep
 import greenmoonsoftware.tidewater.step.StepConfiguration
-import greenmoonsoftware.tidewater.step.events.StepConfiguredEvent
+import greenmoonsoftware.tidewater.step.events.StepDefinedEvent
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 
 abstract class TidewaterBaseScript extends Script implements Serializable {
     def step(StepConfiguration definition) {
-        this.binding.context.raiseEvent(new StepConfiguredEvent(definition))
+        this.binding.context.raiseEvent(new StepDefinedEvent(definition))
     }
 
     def methodMissing(String name, args) {
@@ -18,15 +18,19 @@ abstract class TidewaterBaseScript extends Script implements Serializable {
         return stepConfiguration(name, args)
     }
 
-    StepConfiguration stepConfiguration(String name, args) {
+    private StepConfiguration stepConfiguration(String name, args) {
         def type = args[0].type
         def configureClosure = args[-1]
         return new StepConfiguration(name:name, type: type, configureClosure: configureClosure)
     }
 
-    StepConfiguration customStep(String name, args) {
+    private StepConfiguration customStep(String name, args) {
         Closure c = args[0]
         return new StepConfiguration(name: name, type: CustomStep, configureClosure: { executable c})
+    }
+
+    void println(String s) {
+        this.binding.context.log(s)
     }
 
     final static TidewaterBaseScript configure(Context c, String script) {

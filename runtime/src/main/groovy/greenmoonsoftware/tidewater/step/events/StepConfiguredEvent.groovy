@@ -1,13 +1,13 @@
 package greenmoonsoftware.tidewater.step.events
 
 import greenmoonsoftware.es.event.AbstractEvent
-import greenmoonsoftware.tidewater.step.StepConfiguration
+import greenmoonsoftware.tidewater.step.Step
 
 class StepConfiguredEvent extends AbstractEvent {
-    StepConfiguration definition
+    Step step
 
-    StepConfiguredEvent(StepConfiguration d) {
-        super(d.name, 'configured')
-        definition = d
+    StepConfiguredEvent(Step s) {
+        super(s.name, 'step.configured')
+        step = s
     }
 }

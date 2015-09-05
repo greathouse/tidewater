@@ -27,7 +27,7 @@ class LogController {
                 scriptText = event.script
             }
 
-            private void handle(StepConfiguredEvent event) {
+            private void handle(StepDefinedEvent event) {
                 steps[event.definition.name] = new ArchiveStep(event.definition.name, event.definition.type.simpleName)
             }
 

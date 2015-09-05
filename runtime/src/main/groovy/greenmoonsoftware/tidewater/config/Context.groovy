@@ -15,6 +15,7 @@ import java.time.Duration
 
 final class Context {
     @Delegate private final ContextAttributes attributes
+    private Step currentStep
     private final eventBus = new SimpleEventBus()
 
     Context() {
@@ -58,11 +59,16 @@ final class Context {
         }).start()
     }
 
+    void log(String message) {
+        log(currentStep, message)
+    }
+
     void log(Step step, String message) {
         raiseEvent(new StepLogEvent(step, message))
     }
 
     private boolean start(Step step) {
+        currentStep = step
         def startDate = new Date()
         raiseEvent(new StepStartedEvent(step, startDate))
         try {
@@ -101,6 +107,7 @@ final class Context {
         def c = (Closure) configured.configureClosure.rehydrate(new StepDelegate(this, step), this, this)
         c.resolveStrategy = Closure.DELEGATE_ONLY
         c.call()
+        raiseEvent(new StepConfiguredEvent(step))
         return step
     }
 
