@@ -2,6 +2,7 @@ package greenmoonsoftware.tidewater.web.archive
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
+import greenmoonsoftware.tidewater.config.ContextAttributes
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.replay.ReplayContext
@@ -17,6 +18,8 @@ class LogController {
         def replay = new ReplayContext(new ContextId(contextId))
         def steps = [:] as LinkedHashMap<String, ArchiveStep>
         String scriptText = ''
+        ContextAttributes attributes
+
         replay.addEventSubscribers(new EventSubscriber<Event>() {
             @Override
             void onEvent(Event event) {
@@ -25,6 +28,7 @@ class LogController {
 
             private void handle(ContextExecutionStartedEvent event) {
                 scriptText = event.script
+                attributes = event.attributes
             }
 
             private void handle(StepDefinedEvent event) {
@@ -49,6 +53,11 @@ class LogController {
         })
         replay.replay()
         model.put('script', scriptText)
+        model.put('attributes', [
+                new Kv('id', attributes.id),
+                new Kv('workspace', attributes.workspace.absolutePath),
+                new Kv('metaDirectory', attributes.metaDirectory.absolutePath)
+        ])
         model.put('steps', new ArrayList<ArchiveStep>(steps.values()))
         return 'archive/index'
     }
