@@ -2,7 +2,7 @@ package greenmoonsoftware.tidewater.web.archive
 
 class ArchiveStep {
     enum Outcome {
-        NA('N/A', '¯\\_(ツ)_/¯', 'secondary', ''),
+        NA('¯\\_(ツ)_/¯', '¯\\_(ツ)_/¯', 'warning', ''),
         SUCCESS('Success', '✓', 'success', ''),
         FAIL ('Failed', '✘', 'alert', 'active'),
         ERROR('Errored', '!', 'alert', 'active');
