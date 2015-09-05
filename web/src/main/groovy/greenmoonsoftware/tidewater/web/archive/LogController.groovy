@@ -3,6 +3,7 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.replay.ReplayContext
 import greenmoonsoftware.tidewater.step.events.*
 import org.springframework.stereotype.Controller
@@ -15,10 +16,15 @@ class LogController {
     String index(Map<String, Object> model, @PathVariable('contextId') String contextId) {
         def replay = new ReplayContext(new ContextId(contextId))
         def steps = [:] as LinkedHashMap<String, ArchiveStep>
+        String scriptText = ''
         replay.addEventSubscribers(new EventSubscriber<Event>() {
             @Override
             void onEvent(Event event) {
                 EventApplier.apply(this, event)
+            }
+
+            private void handle(ContextExecutionStartedEvent event) {
+                scriptText = event.script
             }
 
             private void handle(StepConfiguredEvent event) {
@@ -42,6 +48,7 @@ class LogController {
             }
         })
         replay.replay()
+        model.put('script', scriptText)
         model.put('steps', new ArrayList<ArchiveStep>(steps.values()))
         return 'archive/index'
     }
