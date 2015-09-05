@@ -10,10 +10,10 @@ class StepFailedEvent extends AbstractEvent {
     Date endDate
     Duration duration
 
-    StepFailedEvent(Step s, Date endDate, Duration d) {
+    StepFailedEvent(Step s, Date end, Duration d) {
         super(s.name, 'step.failed')
         step = s
-        this.endDate = endDate
+        endDate = end
         duration = d
     }
 }

@@ -4,6 +4,8 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
+import greenmoonsoftware.tidewater.step.events.StepErroredEvent
+import greenmoonsoftware.tidewater.step.events.StepFailedEvent
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
@@ -27,19 +29,23 @@ final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
         def step = event.step
         println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
         println "${step.name} (${step.class.simpleName})"
-        step.inputs.each { println "\t${it.key}: ${it.value}" }
         println '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     }
 
     private void handle(StepSuccessfullyCompletedEvent event) {
-        println "\n${event.step.name} completed. Took ${convert(event.duration.toMillis())}"
-        println "Outputs:"
-        event.step.outputs.each { println "\t${it.key}: ${it.value}" }
-        println ''
+        println "\n\u001B[32mSUCCESS:\u001B[0m ${event.step.name} completed. Took ${convert(event.duration.toMillis())}"
     }
 
     private void handle(StepLogEvent event) {
         println event.message
+    }
+
+    private void handle(StepFailedEvent event) {
+        println "\u001B[31mFAILED:\u001B[0m ${event.step.name}"
+    }
+
+    private void handle(StepErroredEvent event) {
+        println "\u001B[31mErrored:\u001B[0m ${event.step.name}. (${event.exception.message})"
     }
 
     public String convert(long millis) {

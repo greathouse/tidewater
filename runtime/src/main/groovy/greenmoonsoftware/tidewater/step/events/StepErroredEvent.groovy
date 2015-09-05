@@ -10,10 +10,10 @@ class StepErroredEvent extends AbstractEvent {
     Duration duration
     Exception exception
 
-    StepErroredEvent(Step s, Date endDate, Duration d, Exception e) {
-        super(step.name, 'step.errored')
+    StepErroredEvent(Step s, Date end, Duration d, Exception e) {
+        super(s.name, 'step.failed')
         step = s
-        this.endDate = endDate
+        endDate = end
         duration = d
         exception = e
     }

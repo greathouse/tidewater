@@ -14,14 +14,15 @@ class Gradle extends AbstractStep {
 
     @Override
     boolean execute(Context c, File metaDirectory) {
-        executeProcess(buildProcess(c)).eachLine {
+        return executeProcess(buildProcess(c)) {
             c.raiseEvent(new StepLogEvent(this, it))
         }
-        return true
     }
 
-    private BufferedReader executeProcess(ProcessBuilder builder) {
-        new BufferedReader(new InputStreamReader(builder.start().inputStream))
+    private boolean executeProcess(ProcessBuilder builder, Closure eachLine) {
+        def process = builder.start()
+        new BufferedReader(new InputStreamReader(process.inputStream)).eachLine eachLine
+        return process.exitValue() == 0
     }
 
     private ProcessBuilder buildProcess(Context context) {
