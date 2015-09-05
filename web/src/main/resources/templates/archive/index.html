@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Foundation | Welcome</title>
-    <link rel="stylesheet" href="css/foundation.css" />
-    <script src="js/vendor/modernizr.js"></script>
+    <link rel="stylesheet" href="/css/foundation.css" />
+    <script src="/js/vendor/modernizr.js"></script>
   </head>
   <body>
     
@@ -16,13 +16,18 @@
     
     <div class="row">
       <div class="large-12 medium-12 columns">
-        <!-- Grid Example -->
-
         <div class="row">
           <div class="large-12 columns">
             {{#steps}}
-            <div class="callout panel">
-                <h4>{{name}} {{outcome}}</h4>
+            <div class="callout panel" style="overflow-x: scroll;">
+                <div class="row">
+                    <div class="large-1 columns">
+                        <span class="label round {{outcome.styleClass}}">{{outcome.label}}</span>
+                    </div>
+                    <div class="large-11 columns">
+                        <h4>{{name}}</h4>
+                    </div>
+                </div>
                 <pre>
 {{#logLines}}
 {{.}}

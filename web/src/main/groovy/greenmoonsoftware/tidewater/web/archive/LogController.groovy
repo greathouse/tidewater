@@ -1,23 +1,19 @@
 package greenmoonsoftware.tidewater.web.archive
-
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.replay.ReplayContext
-import greenmoonsoftware.tidewater.step.events.StepErroredEvent
-import greenmoonsoftware.tidewater.step.events.StepFailedEvent
-import greenmoonsoftware.tidewater.step.events.StepLogEvent
-import greenmoonsoftware.tidewater.step.events.StepStartedEvent
-import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
+import greenmoonsoftware.tidewater.step.events.*
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 class LogController {
-    @RequestMapping('/archive')
-    String index(Map<String, Object> model) {
-        def replay = new ReplayContext(new ContextId('2015-09-04_21-04-31'))
+    @RequestMapping('/archive/{contextId}')
+    String index(Map<String, Object> model, @PathVariable('contextId') String contextId) {
+        def replay = new ReplayContext(new ContextId(contextId))
         def steps = [:] as LinkedHashMap<String, ArchiveStep>
         replay.addEventSubscribers(new EventSubscriber<Event>() {
             @Override
@@ -25,8 +21,8 @@ class LogController {
                 EventApplier.apply(this, event)
             }
 
-            private void handle(StepStartedEvent event) {
-                steps[event.step.name] = new ArchiveStep(event.step)
+            private void handle(StepConfiguredEvent event) {
+                steps[event.definition.name] = new ArchiveStep(event.definition.name, event.definition.type.simpleName)
             }
 
             private void handle(StepLogEvent event) {
