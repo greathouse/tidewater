@@ -7,6 +7,7 @@ import groovy.transform.Canonical
 @Canonical
 class DummyStep extends AbstractStep {
     @Override
-    void execute(Context context, File stepDirectory) {
+    boolean execute(Context context, File stepDirectory) {
+        true
     }
 }

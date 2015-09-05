@@ -10,10 +10,11 @@ class Shell extends AbstractStep {
     @Input Map<String, String> env = [:]
 
     @Override
-    void execute(Context context, File stepDirectory) {
+    boolean execute(Context context, File stepDirectory) {
         executeProcess(buildProcess(context, writeScript(stepDirectory))).eachLine {
             context.raiseEvent(new StepLogEvent(this, it))
         }
+        return true
     }
 
     private BufferedReader executeProcess(ProcessBuilder builder) {

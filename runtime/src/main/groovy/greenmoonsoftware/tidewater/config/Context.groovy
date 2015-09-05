@@ -1,4 +1,6 @@
 package greenmoonsoftware.tidewater.config
+
+import greenmoonsoftware.es.event.AbstractEvent
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
@@ -8,6 +10,8 @@ import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepConfiguration
 import greenmoonsoftware.tidewater.step.StepDelegate
+import greenmoonsoftware.tidewater.step.events.StepErroredEvent
+import greenmoonsoftware.tidewater.step.events.StepFailedEvent
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
@@ -50,7 +54,7 @@ final class Context {
             script.run()
             raiseEvent(new ContextExecutionStartedEvent(scriptText, attributes))
             attributes.definedSteps.values().each { defined ->
-                executeStep(configure(defined))
+                start(configure(defined))
             }
             raiseEvent(new ContextExecutionEndedEvent(attributes))
         }).start()
@@ -60,12 +64,29 @@ final class Context {
         raiseEvent(new StepLogEvent(step, message))
     }
 
-    private void executeStep(Step step) {
+    private void start(Step step) {
         def startDate = new Date()
         raiseEvent(new StepStartedEvent(step, startDate))
-        step.execute(this, setupStepMetaDirectory(step))
+        try {
+            executeStep(step, startDate)
+        } catch (all) {
+            handleErroredStep(step, startDate, all)
+        }
+    }
+
+    private StepErroredEvent handleErroredStep(Step step, Date startDate, Exception all) {
         def endDate = new Date()
-        raiseEvent(new StepSuccessfullyCompletedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
+        raiseEvent(new StepErroredEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()), all))
+    }
+
+    private AbstractEvent executeStep(Step step, Date startDate) {
+        def success = step.execute(this, setupStepMetaDirectory(step))
+        def endDate = new Date()
+        if (success) {
+            raiseEvent(new StepSuccessfullyCompletedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
+        } else {
+            raiseEvent(new StepFailedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
+        }
     }
 
     private File setupStepMetaDirectory(Step step) {

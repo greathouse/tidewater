@@ -13,10 +13,11 @@ class Gradle extends AbstractStep {
     @Input String tasks = 'clean'
 
     @Override
-    void execute(Context c, File metaDirectory) {
+    boolean execute(Context c, File metaDirectory) {
         executeProcess(buildProcess(c)).eachLine {
             c.raiseEvent(new StepLogEvent(this, it))
         }
+        return true
     }
 
     private BufferedReader executeProcess(ProcessBuilder builder) {
