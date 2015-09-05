@@ -50,10 +50,10 @@
                     <dl class="accordion" data-accordion>
                         <dd class="accordion-navigation">
                             <a href="#panel-{{name}}">
-                                <span class="label round {{outcome.styleClass}}">{{outcome.label}}</span> {{name}}
+                                <span class="label round {{outcome.labelStyleClass}}">{{outcome.label}}</span> {{name}}
                             </a>
 
-                            <div id="panel-{{name}}" class="content callout panel" style="overflow-x: scroll;">
+                            <div id="panel-{{name}}" class="content callout panel {{outcome.panelStyleClass}}" style="overflow-x: scroll;">
                           <pre>
 {{#logLines}}
 {{.}}

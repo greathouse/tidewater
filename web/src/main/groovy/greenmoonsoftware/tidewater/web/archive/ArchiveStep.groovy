@@ -2,19 +2,21 @@ package greenmoonsoftware.tidewater.web.archive
 
 class ArchiveStep {
     enum Outcome {
-        NA('N/A', '¯\\_(ツ)_/¯', 'secondary'),
-        SUCCESS('Success', '✓', 'success'),
-        FAIL ('Failed', '✘', 'alert'),
-        ERROR('Errored', '!', 'alert');
+        NA('N/A', '¯\\_(ツ)_/¯', 'secondary', ''),
+        SUCCESS('Success', '✓', 'success', ''),
+        FAIL ('Failed', '✘', 'alert', 'active'),
+        ERROR('Errored', '!', 'alert', 'active');
 
         String label
         String symbol
-        String styleClass
+        String labelStyleClass
+        String panelStyleClass
 
-        private Outcome(String label, String symbol, String styleClass) {
+        private Outcome(String label, String symbol, String styleClass, String panelStyleClass) {
             this.label = label
             this.symbol = symbol
-            this.styleClass = styleClass
+            this.labelStyleClass = styleClass
+            this.panelStyleClass = panelStyleClass
         }
     }
 
