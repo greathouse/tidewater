@@ -51,23 +51,26 @@
                     <dl class="accordion" data-accordion>
                         <dd class="accordion-navigation">
                             <a href="#panel-{{name}}">
-                                <span class="label round {{outcome.labelStyleClass}}">{{outcome.label}}</span> {{name}}
+                                {{name}} {{#attempts}}<span class="label round {{outcome.labelStyleClass}}">{{outcome.label}}</span>&nbsp;{{/attempts}}
                             </a>
 
-                            <div id="panel-{{name}}" class="content callout panel {{outcome.panelStyleClass}}" style="overflow-x: scroll;">
+                            <div id="panel-{{name}}" class="content callout panel {{panelStyleClass}}" style="overflow-x: scroll;">
                                 <ul class="tabs" data-tab>
-                                    <li class="tab-title active"><a href="#log-{{name}}">Log</a></li>
-                                    <li class="tab-title"><a href="#attributes-{{name}}">Attributes</a></li>
+                                    {{#attempts}}
+                                    <li class="tab-title"><a href="#log-{{name}}-{{index}}">Log</a></li>
+                                    <li class="tab-title"><a href="#attributes-{{name}}-{{index}}">Attributes</a></li>
+                                    {{/attempts}}
                                 </ul>
                                 <div class="tabs-content">
-                                    <div class="content active" id="log-{{name}}">
+                                    {{#attempts}}
+                                    <div class="content" id="log-{{name}}-{{index}}">
                                         <pre>
 {{#logLines}}
 {{.}}
 {{/logLines}}
                                     </pre>
                                     </div>
-                                    <div class="content" id="attributes-{{name}}">
+                                    <div class="content" id="attributes-{{name}}-{{index}}">
                                         <div class="row" data-equalizer>
                                             {{#attributes}}
                                             <div class="large-3 columns">
@@ -79,6 +82,7 @@
                                             {{/attributes}}
                                         </div>
                                     </div>
+                                    {{/attempts}}
                                 </div>
                             </div>
                         </dd>

@@ -1,6 +1,8 @@
 package greenmoonsoftware.tidewater.web.archive
 
 class ArchiveStep {
+    String name
+
     enum Outcome {
         NA('¯\\_(ツ)_/¯', '¯\\_(ツ)_/¯', 'warning', ''),
         SUCCESS('Success', '✓', 'success', ''),
@@ -20,34 +22,39 @@ class ArchiveStep {
         }
     }
 
-    String name
     String type
-    Outcome outcome = Outcome.NA
-    List<String> logLines = []
-    List<Kv> attributes = []
+    List<StepAttempt> attempts = []
 
     ArchiveStep(String name, String type) {
         this.name = name
         this.type = type
     }
 
+    void newAttempt() {
+        attempts << new StepAttempt(attempts.size())
+    }
+
     void addLog(String log) {
-        logLines << log
+        attempts[-1].logLines << log
     }
 
     void addAttribute(String name, String value) {
-        attributes << new Kv(name, value)
+        attempts[-1].attributes << new Kv(name, value)
     }
 
     void success() {
-        outcome = Outcome.SUCCESS
+        attempts[-1].outcome = Outcome.SUCCESS
     }
 
     void failed() {
-        outcome = Outcome.FAIL
+        attempts[-1].outcome = Outcome.FAIL
     }
 
     void errored() {
-        outcome = Outcome.ERROR
+        attempts[-1].outcome = Outcome.ERROR
+    }
+
+    String getPanelStyleClass() {
+        return attempts ? attempts[-1].outcome.panelStyleClass : Outcome.NA.panelStyleClass
     }
 }

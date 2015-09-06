@@ -38,6 +38,10 @@ class LogController {
                 }
             }
 
+            private void handle(StepStartedEvent event) {
+                steps[event.step.name].newAttempt()
+            }
+
             private void handle(StepLogEvent event) {
                 steps[event.step.name].addLog event.message
             }
@@ -48,6 +52,7 @@ class LogController {
 
             private void handle(StepFailedEvent event) {
                 stepEnded(event.step).failed()
+
             }
 
             private void handle(StepErroredEvent event) {
