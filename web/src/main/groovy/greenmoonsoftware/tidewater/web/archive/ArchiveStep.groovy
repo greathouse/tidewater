@@ -24,6 +24,7 @@ class ArchiveStep {
     String type
     Outcome outcome = Outcome.NA
     List<String> logLines = []
+    List<Kv> attributes = []
 
     ArchiveStep(String name, String type) {
         this.name = name
@@ -32,6 +33,10 @@ class ArchiveStep {
 
     void addLog(String log) {
         logLines << log
+    }
+
+    void addAttribute(String name, String value) {
+        attributes << new Kv(name, value)
     }
 
     void success() {

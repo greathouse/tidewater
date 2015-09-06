@@ -6,6 +6,7 @@ import greenmoonsoftware.tidewater.config.ContextAttributes
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.replay.ReplayContext
+import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.events.*
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
@@ -40,18 +41,29 @@ class LogController {
             }
 
             private void handle(StepSuccessfullyCompletedEvent event) {
-                steps[event.step.name].success()
+                stepEnded(event.step).success()
             }
 
             private void handle(StepFailedEvent event) {
-                steps[event.step.name].failed()
+                stepEnded(event.step).failed()
             }
 
             private void handle(StepErroredEvent event) {
-                steps[event.step.name].errored()
+                stepEnded(event.step).errored()
+            }
+
+            private ArchiveStep stepEnded(Step step) {
+                def archiveStep = steps[step.name]
+                def c = {
+                    archiveStep.addAttribute(it.key, it.value.toString() ? it.value.toString().replaceAll('\n', '<br />') : '&nbsp;')
+                }
+                step.inputs.each c
+                step.outputs.each c
+                return archiveStep
             }
         })
         replay.replay()
+        model.put('contextId', attributes.id)
         model.put('script', scriptText)
         model.put('attributes', [
                 new Kv('id', attributes.id),

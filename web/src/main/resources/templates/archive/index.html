@@ -11,7 +11,7 @@
 
 <div class="row">
     <div class="large-12 columns">
-        <h1>Log</h1>
+        <h1>{{contextId}}</h1>
     </div>
 
     <div class="row">
@@ -23,13 +23,14 @@
                             <a href="#panel-script">
                                 Script
                             </a>
+
                             <div id="panel-script" class="content callout panel" style="overflow-x: scroll;">
                 <pre>
 {{script}}
                 </pre>
-                                </div>
+                            </div>
                         </dd>
-                        </dl>
+                    </dl>
                 </div>
                 <div class="large-6 columns">
                     <div class="row callout panel">
@@ -54,11 +55,31 @@
                             </a>
 
                             <div id="panel-{{name}}" class="content callout panel {{outcome.panelStyleClass}}" style="overflow-x: scroll;">
-                          <pre>
+                                <ul class="tabs" data-tab>
+                                    <li class="tab-title active"><a href="#log-{{name}}">Log</a></li>
+                                    <li class="tab-title"><a href="#attributes-{{name}}">Attributes</a></li>
+                                </ul>
+                                <div class="tabs-content">
+                                    <div class="content active" id="log-{{name}}">
+                                        <pre>
 {{#logLines}}
 {{.}}
 {{/logLines}}
-                              </pre>
+                                    </pre>
+                                    </div>
+                                    <div class="content" id="attributes-{{name}}">
+                                        <div class="row" data-equalizer>
+                                            {{#attributes}}
+                                            <div class="large-3 columns">
+                                                <span class="right">{{key}}:</span>
+                                            </div>
+                                            <div class="large-9 columns">
+                                                <span class="small left">{{{value}}}</span>
+                                            </div>
+                                            {{/attributes}}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </dd>
                     </dl>
@@ -72,6 +93,8 @@
     <script src="/js/foundation.min.js"></script>
     <script>
       $(document).foundation();
+
+
 
     </script>
 </div>
