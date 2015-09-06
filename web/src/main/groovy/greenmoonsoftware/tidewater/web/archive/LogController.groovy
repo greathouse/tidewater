@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+
 @Controller
 class LogController {
     @RequestMapping('/archive/{contextId}')
@@ -43,7 +46,8 @@ class LogController {
             }
 
             private void handle(StepLogEvent event) {
-                steps[event.step.name].addLog event.message
+                def formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS").withZone(ZoneId.systemDefault())
+                steps[event.step.name].addLog "<strong>${formatter.format(event.eventDateTime)}:</strong> ${event.message}"
             }
 
             private void handle(StepSuccessfullyCompletedEvent event) {
