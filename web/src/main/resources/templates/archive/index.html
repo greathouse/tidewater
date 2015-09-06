@@ -48,22 +48,20 @@
             <div class="row">
                 <div class="large-12 columns">
                     {{#steps}}
+                    {{#attempts}}
                     <dl class="accordion" data-accordion>
                         <dd class="accordion-navigation">
-                            <a href="#panel-{{name}}">
-                                {{name}} {{#attempts}}<span class="label round {{outcome.labelStyleClass}}">{{outcome.label}}</span>&nbsp;{{/attempts}}
+                            <a href="#panel-{{name}}-{{index}}">
+                                {{name}} <span class="label round {{outcome.labelStyleClass}}">{{outcome.label}}</span>
                             </a>
 
-                            <div id="panel-{{name}}" class="content callout panel {{panelStyleClass}}" style="overflow-x: scroll;">
+                            <div id="panel-{{name}}-{{index}}" class="content callout panel {{panelStyleClass}}" style="overflow-x: scroll;">
                                 <ul class="tabs" data-tab>
-                                    {{#attempts}}
-                                    <li class="tab-title"><a href="#log-{{name}}-{{index}}">Log</a></li>
+                                    <li class="tab-title active"><a href="#log-{{name}}-{{index}}">Log</a></li>
                                     <li class="tab-title"><a href="#attributes-{{name}}-{{index}}">Attributes</a></li>
-                                    {{/attempts}}
                                 </ul>
                                 <div class="tabs-content">
-                                    {{#attempts}}
-                                    <div class="content" id="log-{{name}}-{{index}}">
+                                    <div class="content active" id="log-{{name}}-{{index}}">
                                         <pre>
 {{#logLines}}
 {{.}}
@@ -82,11 +80,11 @@
                                             {{/attributes}}
                                         </div>
                                     </div>
-                                    {{/attempts}}
                                 </div>
                             </div>
                         </dd>
                     </dl>
+                    {{/attempts}}
                     {{/steps}}
                 </div>
             </div>

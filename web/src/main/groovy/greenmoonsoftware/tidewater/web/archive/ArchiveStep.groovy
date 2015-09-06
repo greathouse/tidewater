@@ -4,8 +4,8 @@ class ArchiveStep {
     String name
 
     enum Outcome {
-        NA('¯\\_(ツ)_/¯', '¯\\_(ツ)_/¯', 'warning', ''),
-        SUCCESS('Success', '✓', 'success', ''),
+        NA('¯\\_(ツ)_/¯', '¯\\_(ツ)_/¯', 'warning', 'na'),
+        SUCCESS('Success', '✓', 'success', 'success'),
         FAIL ('Failed', '✘', 'alert', 'active'),
         ERROR('Errored', '!', 'alert', 'active');
 
@@ -31,6 +31,9 @@ class ArchiveStep {
     }
 
     void newAttempt() {
+        if (attempts) {
+            attempts[-1].panelStyleClass = Outcome.NA.panelStyleClass
+        }
         attempts << new StepAttempt(attempts.size())
     }
 
@@ -52,9 +55,5 @@ class ArchiveStep {
 
     void errored() {
         attempts[-1].outcome = Outcome.ERROR
-    }
-
-    String getPanelStyleClass() {
-        return attempts ? attempts[-1].outcome.panelStyleClass : Outcome.NA.panelStyleClass
     }
 }
