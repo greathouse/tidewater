@@ -1,5 +1,4 @@
 package greenmoonsoftware.tidewater.step
-
 import greenmoonsoftware.tidewater.config.Context
 
 final class StepDelegate {

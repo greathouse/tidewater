@@ -28,12 +28,14 @@ class LogController {
             }
 
             private void handle(ContextExecutionStartedEvent event) {
-                scriptText = event.script
+                scriptText = event.attributes.script
                 attributes = event.attributes
             }
 
             private void handle(StepDefinedEvent event) {
-                steps[event.definition.name] = new ArchiveStep(event.definition.name, event.definition.type.simpleName)
+                if (!steps[event.definition.name]) {
+                    steps[event.definition.name] = new ArchiveStep(event.definition.name, event.definition.type.simpleName)
+                }
             }
 
             private void handle(StepLogEvent event) {
@@ -66,7 +68,7 @@ class LogController {
         model.put('contextId', attributes.id)
         model.put('script', scriptText)
         model.put('attributes', [
-                new Kv('id', attributes.id),
+                new Kv('id', attributes.id.toString()),
                 new Kv('workspace', attributes.workspace.absolutePath),
                 new Kv('metaDirectory', attributes.metaDirectory.absolutePath)
         ])

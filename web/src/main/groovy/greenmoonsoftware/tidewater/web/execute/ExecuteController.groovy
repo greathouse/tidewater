@@ -1,5 +1,5 @@
 package greenmoonsoftware.tidewater.web.execute
-import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.NewContext
 import greenmoonsoftware.tidewater.runtime.StdoutLoggingSubscriber
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.simp.SimpMessagingTemplate
@@ -21,7 +21,7 @@ class ExecuteController {
     @RequestMapping(value = '/execute', method = RequestMethod.POST)
     String post(@ModelAttribute ExecuteBody model, ModelMap response) {
         println model.script
-        def context = new Context()
+        def context = new NewContext()
         context.addEventSubscribers(new StdoutLoggingSubscriber(), new LogEventHandler(context, template))
         context.execute(model.script)
 

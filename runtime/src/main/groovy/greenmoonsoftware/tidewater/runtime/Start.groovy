@@ -1,5 +1,5 @@
 package greenmoonsoftware.tidewater.runtime
-import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.NewContext
 
 class Start {
     static void main(String[] args) {
@@ -11,7 +11,7 @@ class Start {
 
             step buildProject(type: Gradle) {
                 workingDir checkout.dir
-                tasks 'clean build'
+                tasks 'clean build1'
             }
 
             step custom {
@@ -32,7 +32,7 @@ class Start {
     }
 
     public void start(String script) {
-        def context = new Context()
+        def context = new NewContext()
         context.addEventSubscribers(new StdoutLoggingSubscriber())
         context.execute(script)
     }

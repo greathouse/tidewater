@@ -1,5 +1,7 @@
 package greenmoonsoftware.tidewater.shell
+
 import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.NewContext
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
@@ -21,7 +23,7 @@ class Shell extends AbstractStep {
         new BufferedReader(new InputStreamReader(builder.start().inputStream))
     }
 
-    private ProcessBuilder buildProcess(Context context, File scriptFile) {
+    private ProcessBuilder buildProcess(NewContext context, File scriptFile) {
         new ProcessBuilder('sh', scriptFile.absolutePath)
         .with {
             directory(new File(context.workspace, workingDir))

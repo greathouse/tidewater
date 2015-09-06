@@ -1,4 +1,5 @@
 package greenmoonsoftware.tidewater.scm.git
+
 import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input

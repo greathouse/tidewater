@@ -5,6 +5,7 @@ import greenmoonsoftware.tidewater.step.StepConfiguration
 
 final class ContextAttributes implements Serializable {
     private final ContextId id
+    private String script
     private final definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
     private final executedSteps = [:] as LinkedHashMap<String, Step>
     private final File workspace
@@ -16,7 +17,7 @@ final class ContextAttributes implements Serializable {
         metaDirectory = new File(workspace, '.meta')
     }
 
-    String getId() {
+    ContextId getId() {
         id
     }
 
@@ -42,5 +43,16 @@ final class ContextAttributes implements Serializable {
 
     void addExecutedStep(Step step) {
         executedSteps[step.name] = step
+    }
+
+    String getScript() {
+        script
+    }
+
+    void setScript(String script) {
+        if (this.script) {
+            throw new RuntimeException('Script is already set. Cannot change.')
+        }
+        this.script = script
     }
 }
