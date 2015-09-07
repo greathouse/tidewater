@@ -12,12 +12,11 @@ class S3Upload extends AbstractStep {
     @Input String bucketName
     @Input String keyName
     @Input String upload
-    @Input int sleepInSeconds = 5
 
     @Override
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
-        AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider())
+        def s3client = new AmazonS3Client(new ProfileCredentialsProvider())
         File file = new File(upload)
         if (file.isDirectory()) {
             uploadDirectory(log, s3client, file)
@@ -31,19 +30,26 @@ class S3Upload extends AbstractStep {
     private void uploadDirectory(Closure log, AmazonS3 s3client, File directory) {
         log "Uploading directory ${directory.absolutePath}"
         def directoryTransferUtility = new TransferManager(s3client)
-        def upload = directoryTransferUtility.uploadDirectory(bucketName, '', directory, true)
-        while (!upload.done) { //TODO: Look into using a ProgressListener
-            def progress = upload.progress
-            log "${progress.percentTransferred as int}% (${progress.bytesTransferred} / ${progress.totalBytesToTransfer} bytes)"
-            sleep sleepInSeconds * 1000
-        }
+        def upload = directoryTransferUtility.uploadDirectory(bucketName, keyName ?: '', directory, true)
+        monitorUpload(upload, log)
+        upload.waitForCompletion()
         directoryTransferUtility.shutdownNow()
         log 'Upload successful'
     }
 
+    private monitorUpload(upload, Closure log) {
+        new Thread({
+            while (!upload.done) {
+                def progress = upload.progress
+                log "${progress.percentTransferred as int}% (${progress.bytesTransferred} / ${progress.totalBytesToTransfer} bytes)"
+                sleep 2000
+            }
+        }).start()
+    }
+
     private void uploadSingleFile(Closure log, AmazonS3Client s3client, File file) {
         log "Uploading file: ${file.absolutePath}"
-        def result = s3client.putObject(new PutObjectRequest(bucketName, keyName ?: file.name, file))
+        s3client.putObject(new PutObjectRequest(bucketName, keyName ?: file.name, file))
         log 'Upload successful'
     }
 
