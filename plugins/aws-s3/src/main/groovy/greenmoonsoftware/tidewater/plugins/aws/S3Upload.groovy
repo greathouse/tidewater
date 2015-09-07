@@ -7,16 +7,12 @@ import com.amazonaws.services.s3.transfer.TransferManager
 import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
-import greenmoonsoftware.tidewater.step.Output
 
 class S3Upload extends AbstractStep {
     @Input String bucketName
-    @Input String keyName = ''
+    @Input String keyName
     @Input String upload
     @Input int sleepInSeconds = 5
-
-    @Output String etag
-
 
     @Override
     boolean execute(Context context, File stepDirectory) {
@@ -36,18 +32,18 @@ class S3Upload extends AbstractStep {
         log "Uploading directory ${directory.absolutePath}"
         def directoryTransferUtility = new TransferManager(s3client)
         def upload = directoryTransferUtility.uploadDirectory(bucketName, '', directory, true)
-        while (!upload.done) {
+        while (!upload.done) { //TODO: Look into using a ProgressListener
             def progress = upload.progress
-            log "${progress.percentTransferred}% (${progress.bytesTransferred} / ${progress.totalBytesToTransfer} bytes)"
+            log "${progress.percentTransferred as int}% (${progress.bytesTransferred} / ${progress.totalBytesToTransfer} bytes)"
             sleep sleepInSeconds * 1000
         }
+        directoryTransferUtility.shutdownNow()
         log 'Upload successful'
     }
 
     private void uploadSingleFile(Closure log, AmazonS3Client s3client, File file) {
         log "Uploading file: ${file.absolutePath}"
-        def result = s3client.putObject(new PutObjectRequest(bucketName, keyName, file))
-        etag = result.ETag
+        def result = s3client.putObject(new PutObjectRequest(bucketName, keyName ?: file.name, file))
         log 'Upload successful'
     }
 
