@@ -8,13 +8,20 @@ class StepErroredEvent extends AbstractEvent {
     Step step
     Date endDate
     Duration duration
-    Exception exception
+    String stackTrace
 
     StepErroredEvent(Step s, Date end, Duration d, Exception e) {
         super(s.name, 'step.failed')
         step = s
         endDate = end
         duration = d
-        exception = e
+        stackTrace = convertToString(e)
+    }
+
+    private String convertToString(Exception e) {
+        def sw = new StringWriter()
+        def pw = new PrintWriter(sw)
+        e?.printStackTrace(pw)
+        return sw.toString()
     }
 }

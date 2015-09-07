@@ -45,7 +45,7 @@ final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(StepErroredEvent event) {
-        println "\u001B[31mErrored:\u001B[0m ${event.step.name}. (${event.exception?.message})"
+        println "\u001B[31mErrored:\u001B[0m ${event.step.name}. (${event.stackTrace})"
     }
 
     public String convert(long millis) {

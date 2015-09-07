@@ -60,7 +60,10 @@ class LogController {
             }
 
             private void handle(StepErroredEvent event) {
-                stepEnded(event.step).errored()
+                def a = stepEnded(event.step)
+                a.errored()
+                a.addLog(event.stackTrace)
+
             }
 
             private ArchiveStep stepEnded(Step step) {

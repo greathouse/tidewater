@@ -41,9 +41,9 @@ class StepRunner implements Serializable {
         }
     }
 
-    private StepErroredEvent handleErroredStep(Step step, Date startDate, Exception all) {
+    private StepErroredEvent handleErroredStep(Step step, Date startDate, Exception e) {
         def endDate = new Date()
-        raiseEvent(new StepErroredEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()), null))
+        raiseEvent(new StepErroredEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()), e))
     }
 
     private boolean executeStep(Step step, Date startDate) {
