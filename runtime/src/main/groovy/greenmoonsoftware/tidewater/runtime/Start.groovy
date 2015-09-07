@@ -11,7 +11,7 @@ class Start {
 
             step buildProject(type: Gradle) {
                 workingDir checkout.dir
-                tasks 'clean build1'
+                tasks 'clean build'
             }
 
             step custom {

@@ -24,6 +24,7 @@ final class NewContext implements Context, EventSubscriber<Event> {
         attributes.metaDirectory.mkdirs()
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         addEventSubscribers(
+                this,
                 new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource),
                 new ContextAttributeEventSubscriber(attributes)
         )
@@ -75,7 +76,7 @@ final class NewContext implements Context, EventSubscriber<Event> {
         EventApplier.apply(this, event)
     }
 
-    private void handl(StepStartedEvent event) {
+    private void handle(StepStartedEvent event) {
         currentStep = event.step
     }
 }
