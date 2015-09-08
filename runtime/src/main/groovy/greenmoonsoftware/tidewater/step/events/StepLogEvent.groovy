@@ -2,6 +2,7 @@ package greenmoonsoftware.tidewater.step.events
 
 import greenmoonsoftware.es.event.AbstractEvent
 import greenmoonsoftware.tidewater.step.Step
+import greenmoonsoftware.tidewater.step.StepDouble
 
 final class StepLogEvent extends AbstractEvent {
     Step step
@@ -9,7 +10,7 @@ final class StepLogEvent extends AbstractEvent {
 
     StepLogEvent(Step s, String msg) {
         super(s.name, 'log')
-        step = s
+        step = new StepDouble(s)
         message = msg
     }
 }

@@ -1,6 +1,7 @@
 package greenmoonsoftware.tidewater.step.events
 import greenmoonsoftware.es.event.AbstractEvent
 import greenmoonsoftware.tidewater.step.Step
+import greenmoonsoftware.tidewater.step.StepDouble
 
 import java.time.Duration
 
@@ -12,7 +13,7 @@ class StepErroredEvent extends AbstractEvent {
 
     StepErroredEvent(Step s, Date end, Duration d, Exception e) {
         super(s.name, 'step.failed')
-        step = s
+        step = new StepDouble(s)
         endDate = end
         duration = d
         stackTrace = convertToString(e)

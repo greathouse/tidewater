@@ -1,6 +1,7 @@
 package greenmoonsoftware.tidewater.step.events
 import greenmoonsoftware.es.event.AbstractEvent
 import greenmoonsoftware.tidewater.step.Step
+import greenmoonsoftware.tidewater.step.StepDouble
 
 import java.time.Duration
 
@@ -11,7 +12,7 @@ final class StepSuccessfullyCompletedEvent extends AbstractEvent {
 
     StepSuccessfullyCompletedEvent(Step s, Date end, Duration d) {
         super(s.name, "success")
-        step = s
+        step = new StepDouble(s)
         endDate = end
         duration = d
     }
