@@ -15,7 +15,7 @@ public class ObjectEventSerializer implements EventSerializer<Event> {
     }
 
     @Override
-    public Event deserialize(InputStream stream) throws IOException {
+    public Event deserialize(String eventType, InputStream stream) throws IOException {
         try {
             return (Event) new ObjectInputStream(stream).readObject();
         } catch (ClassNotFoundException e) {

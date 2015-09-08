@@ -33,7 +33,7 @@ public class JdbcEventQuery {
         ) {
             List<Event> events = new ArrayList<>();
             while(rs.next()) {
-                events.add(serializer.deserialize(rs.getBinaryStream("data")));
+                events.add(serializer.deserialize(rs.getString("eventType"), rs.getBinaryStream("data")));
             }
             return Collections.unmodifiableList(events);
         } catch (SQLException | IOException e) {

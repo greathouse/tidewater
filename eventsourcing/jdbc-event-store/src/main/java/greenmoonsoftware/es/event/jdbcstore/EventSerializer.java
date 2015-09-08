@@ -7,5 +7,5 @@ import java.io.InputStream;
 
 public interface EventSerializer<T extends Event> {
     InputStream serialize(T event) throws IOException;
-    T deserialize(InputStream stream) throws IOException;
+    T deserialize(String eventType, InputStream stream) throws IOException;
 }

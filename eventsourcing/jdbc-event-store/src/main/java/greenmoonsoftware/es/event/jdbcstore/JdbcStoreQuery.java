@@ -51,7 +51,7 @@ public abstract class JdbcStoreQuery<T extends Aggregate> implements StoreRetrie
         EventList events = new EventList();
         try (ResultSet rs = ps.executeQuery()) {
             while(rs.next()) {
-                events.add(serializer.deserialize(rs.getBinaryStream("data")));
+                events.add(serializer.deserialize(rs.getString("eventType"), rs.getBinaryStream("data")));
             }
         }
         aggregate.apply(events);
