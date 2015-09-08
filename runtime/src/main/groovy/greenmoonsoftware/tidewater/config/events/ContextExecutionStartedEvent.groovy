@@ -1,13 +1,13 @@
 package greenmoonsoftware.tidewater.config.events
 
-import greenmoonsoftware.es.event.AbstractEvent
+import greenmoonsoftware.tidewater.TidewaterEvent
 import greenmoonsoftware.tidewater.config.ContextAttributes
 
-final class ContextExecutionStartedEvent extends AbstractEvent {
+final class ContextExecutionStartedEvent extends TidewaterEvent {
     final ContextAttributes attributes
 
     ContextExecutionStartedEvent(ContextAttributes a) {
-        super(a.id, 'executionStarted')
+        super(a.id.toString())
         attributes = a
     }
 }
