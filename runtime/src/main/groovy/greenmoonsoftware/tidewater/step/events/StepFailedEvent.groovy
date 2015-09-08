@@ -1,18 +1,18 @@
 package greenmoonsoftware.tidewater.step.events
 
-import greenmoonsoftware.es.event.AbstractEvent
+import greenmoonsoftware.tidewater.TidewaterEvent
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDouble
 
 import java.time.Duration
 
-class StepFailedEvent extends AbstractEvent {
+class StepFailedEvent extends TidewaterEvent {
     Step step
     Date endDate
     Duration duration
 
     StepFailedEvent(Step s, Date end, Duration d) {
-        super(s.name, 'step.failed')
+        super(s.name)
         step = new StepDouble(s)
         endDate = end
         duration = d

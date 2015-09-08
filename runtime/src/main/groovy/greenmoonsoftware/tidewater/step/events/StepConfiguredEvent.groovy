@@ -1,14 +1,14 @@
 package greenmoonsoftware.tidewater.step.events
 
-import greenmoonsoftware.es.event.AbstractEvent
+import greenmoonsoftware.tidewater.TidewaterEvent
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDouble
 
-class StepConfiguredEvent extends AbstractEvent {
+class StepConfiguredEvent extends TidewaterEvent {
     Step step
 
     StepConfiguredEvent(Step s) {
-        super(s.name, 'step.configured')
+        super(s.name)
         step = new StepDouble(s)
     }
 }

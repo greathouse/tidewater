@@ -1,15 +1,15 @@
 package greenmoonsoftware.tidewater.step.events
 
-import greenmoonsoftware.es.event.AbstractEvent
+import greenmoonsoftware.tidewater.TidewaterEvent
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDouble
 
-final class StepLogEvent extends AbstractEvent {
+final class StepLogEvent extends TidewaterEvent {
     Step step
     String message
 
     StepLogEvent(Step s, String msg) {
-        super(s.name, 'log')
+        super(s.name)
         step = new StepDouble(s)
         message = msg
     }
