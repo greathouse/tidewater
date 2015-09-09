@@ -1,14 +1,12 @@
 package greenmoonsoftware.tidewater.config
-
 import greenmoonsoftware.tidewater.step.CustomStep
-import greenmoonsoftware.tidewater.step.StepConfiguration
-import greenmoonsoftware.tidewater.step.events.StepDefinedEvent
+import greenmoonsoftware.tidewater.step.StepDefinition
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 
 abstract class TidewaterBaseScript extends Script implements Serializable {
-    def step(StepConfiguration definition) {
-        this.binding.context.raiseEvent(new StepDefinedEvent(definition))
+    def step(StepDefinition definition) {
+        this.binding.context.addDefinedStep(definition)
     }
 
     def methodMissing(String name, args) {
@@ -18,15 +16,15 @@ abstract class TidewaterBaseScript extends Script implements Serializable {
         return stepConfiguration(name, args)
     }
 
-    private StepConfiguration stepConfiguration(String name, args) {
+    private StepDefinition stepConfiguration(String name, args) {
         def type = args[0].type
-        def configureClosure = args[-1]
-        return new StepConfiguration(name:name, type: type, configureClosure: configureClosure)
+        def configureClosure = args[-1] as Closure
+        return new StepDefinition(name:name, type: type, configureClosure: configureClosure.rehydrate(null, null, null))
     }
 
-    private StepConfiguration customStep(String name, args) {
-        Closure c = args[0]
-        return new StepConfiguration(name: name, type: CustomStep, configureClosure: { executable c})
+    private StepDefinition customStep(String name, args) {
+        Closure c = args[0] as Closure
+        return new StepDefinition(name: name, type: CustomStep, configureClosure: { executable c.rehydrate(null, null, null)})
     }
 
     void println(String s) {

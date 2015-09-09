@@ -7,8 +7,8 @@ class CustomStep extends AbstractStep {
 
     @Override
     boolean execute(Context context, File metaDirectory) {
-        def c = (Closure) executable.clone()
-        c.delegate = new StepDelegate(context, this)
+        def c = executable.rehydrate(new StepDelegate(context, this), this, this)
+        c.resolveStrategy = Closure.DELEGATE_ONLY
         c.call()
         return true
     }

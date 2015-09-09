@@ -20,9 +20,7 @@ final class StdoutLoggingSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(ContextExecutionStartedEvent event) {
-        def attributes = event.attributes
-        println "Workspace: ${attributes.workspace}"
-        println "Number of steps: ${attributes.definedSteps.size()}"
+        println "Workspace: ${event.workspace}"
     }
 
     private void handle(StepStartedEvent event) {

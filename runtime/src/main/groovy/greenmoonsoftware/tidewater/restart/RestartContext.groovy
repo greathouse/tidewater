@@ -9,7 +9,7 @@ import greenmoonsoftware.tidewater.config.*
 import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.restart.events.ContextExecutionRestartedEvent
 import greenmoonsoftware.tidewater.step.Step
-import greenmoonsoftware.tidewater.step.StepConfiguration
+import greenmoonsoftware.tidewater.step.StepDefinition
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 
@@ -49,7 +49,7 @@ class RestartContext implements EventSubscriber<Event>, Context {
         script.run()
     }
 
-    private List<StepConfiguration> determineRemainingSteps() {
+    private List<StepDefinition> determineRemainingSteps() {
         def definedSteps = attributes.definedSteps.values() as List
         def remainingSteps = definedSteps[definedSteps.findIndexOf {
             it.name == currentStep.name

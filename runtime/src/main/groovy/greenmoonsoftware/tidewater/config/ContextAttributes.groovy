@@ -1,12 +1,12 @@
 package greenmoonsoftware.tidewater.config
 
 import greenmoonsoftware.tidewater.step.Step
-import greenmoonsoftware.tidewater.step.StepConfiguration
+import greenmoonsoftware.tidewater.step.StepDefinition
 
 final class ContextAttributes implements Serializable {
     private final ContextId id
     private String script
-    private final definedSteps = [:] as LinkedHashMap<String, StepConfiguration>
+    private final definedSteps = [:] as LinkedHashMap<String, StepDefinition>
     private final executedSteps = [:] as LinkedHashMap<String, Step>
     private final File workspace
     private final File metaDirectory
@@ -29,11 +29,11 @@ final class ContextAttributes implements Serializable {
         metaDirectory
     }
 
-    Map<String, StepConfiguration> getDefinedSteps() {
+    Map<String, StepDefinition> getDefinedSteps() {
         definedSteps.asImmutable()
     }
 
-    void addDefinedStep(StepConfiguration stepDef) {
+    void addDefinedStep(StepDefinition stepDef) {
         definedSteps[stepDef.name] = stepDef
     }
 

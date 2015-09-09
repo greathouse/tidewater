@@ -1,7 +1,7 @@
 package greenmoonsoftware.tidewater.config
 
 import greenmoonsoftware.tidewater.step.Step
-import greenmoonsoftware.tidewater.step.StepConfiguration
+import greenmoonsoftware.tidewater.step.StepDefinition
 import greenmoonsoftware.tidewater.step.StepDelegate
 import greenmoonsoftware.tidewater.step.events.StepConfiguredEvent
 import greenmoonsoftware.tidewater.step.events.StepErroredEvent
@@ -13,9 +13,9 @@ import java.time.Duration
 
 class StepRunner implements Serializable {
     @Delegate private final Context context
-    private final List<StepConfiguration> steps
+    private final List<StepDefinition> steps
 
-    StepRunner(Context c, List<StepConfiguration> s) {
+    StepRunner(Context c, List<StepDefinition> s) {
         context = c
         steps = s
     }
@@ -63,10 +63,10 @@ class StepRunner implements Serializable {
         return stepDirectory
     }
 
-    private Step configure(StepConfiguration configured) {
-        def step = configured.type.newInstance() as Step
-        step.name = configured.name
-        def c = (Closure) configured.configureClosure.rehydrate(new StepDelegate(context, step), null, null)
+    private Step configure(StepDefinition defined) {
+        def step = defined.type.newInstance() as Step
+        step.name = defined.name
+        def c = (Closure) defined.configureClosure.rehydrate(new StepDelegate(context, step), null, null)
         c.resolveStrategy = Closure.DELEGATE_ONLY
         c.call()
         raiseEvent(new StepConfiguredEvent(step))

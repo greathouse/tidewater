@@ -7,6 +7,10 @@ class ContextId implements Serializable {
         this.value = id
     }
 
+    String getId() {
+        value
+    }
+
     @Override
     String toString() {
         value

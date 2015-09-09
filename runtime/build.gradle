@@ -4,6 +4,7 @@ dependencies {
     compile project(':eventsourcing:core')
     compile project(':eventsourcing:jdbc-event-store')
 
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
     compile 'com.h2database:h2:1.4.186'
     compile 'org.codehaus.groovy:groovy:2.4.4'
     compile 'org.codehaus.groovy:groovy-json:2.4.4'

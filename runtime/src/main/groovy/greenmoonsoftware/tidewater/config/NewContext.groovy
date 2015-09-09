@@ -6,7 +6,10 @@ import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
 import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
+import greenmoonsoftware.tidewater.json.JsonEventSerializer
 import greenmoonsoftware.tidewater.step.Step
+import greenmoonsoftware.tidewater.step.StepDefinition
+import greenmoonsoftware.tidewater.step.events.StepDefinedEvent
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 
@@ -25,7 +28,7 @@ final class NewContext implements Context, EventSubscriber<Event> {
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         addEventSubscribers(
                 this,
-                new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource),
+                new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource, new JsonEventSerializer()),
                 new ContextAttributeEventSubscriber(attributes)
         )
     }
@@ -42,6 +45,12 @@ final class NewContext implements Context, EventSubscriber<Event> {
     @Override
     Step findExecutedStep(String name) {
         attributes.executedSteps[name]
+    }
+
+    @Override
+    void addDefinedStep(StepDefinition definition) {
+        attributes.addDefinedStep(definition)
+        raiseEvent(new StepDefinedEvent(definition))
     }
 
     def execute(String scriptText) {

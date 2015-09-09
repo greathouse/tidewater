@@ -2,7 +2,6 @@ package greenmoonsoftware.tidewater.web.archive
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
-import greenmoonsoftware.tidewater.config.ContextAttributes
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.replay.ReplayContext
@@ -22,7 +21,8 @@ class LogController {
         def replay = new ReplayContext(new ContextId(contextId))
         def steps = [:] as LinkedHashMap<String, ArchiveStep>
         String scriptText = ''
-        ContextAttributes attributes
+        File workspace
+        File metaDirectory
 
         replay.addEventSubscribers(new EventSubscriber<Event>() {
             @Override
@@ -31,13 +31,14 @@ class LogController {
             }
 
             private void handle(ContextExecutionStartedEvent event) {
-                scriptText = event.attributes.script
-                attributes = event.attributes
+                scriptText = event.script
+                workspace = event.workspace
+                metaDirectory = event.metaDirectory
             }
 
             private void handle(StepDefinedEvent event) {
-                if (!steps[event.definition.name]) {
-                    steps[event.definition.name] = new ArchiveStep(event.definition.name, event.definition.type.simpleName)
+                if (!steps[event.name]) {
+                    steps[event.name] = new ArchiveStep(event.name, event.stepType.simpleName)
                 }
             }
 
@@ -77,12 +78,12 @@ class LogController {
             }
         })
         replay.replay()
-        model.put('contextId', attributes.id)
+        model.put('contextId', contextId)
         model.put('script', scriptText)
         model.put('attributes', [
-                new Kv('id', attributes.id.toString()),
-                new Kv('workspace', attributes.workspace.absolutePath),
-                new Kv('metaDirectory', attributes.metaDirectory.absolutePath)
+                new Kv('id', contextId),
+                new Kv('workspace', workspace.absolutePath),
+                new Kv('metaDirectory', metaDirectory.absolutePath)
         ])
         model.put('steps', new ArrayList<ArchiveStep>(steps.values()))
         return 'archive/index'
