@@ -19,11 +19,19 @@ public class JdbcEventQuery {
 
     public JdbcEventQuery(
             JdbcStoreConfiguration config,
-            DataSource ds
+            DataSource ds,
+            EventSerializer s
     ) {
         configuration = config;
         datasource = ds;
-        serializer = new ObjectEventSerializer();
+        serializer = s;
+    }
+
+    public JdbcEventQuery(
+            JdbcStoreConfiguration config,
+            DataSource ds
+    ) {
+        this(config, ds, new ObjectEventSerializer());
     }
 
     public List<Event> getEvents() {

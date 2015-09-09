@@ -9,6 +9,12 @@ public abstract class AbstractEvent implements Event {
     private final String type;
     private final Instant eventDateTime = Instant.now();
 
+    //Dummy constructor to enable reflection-based deserialization
+    protected AbstractEvent() {
+        aggregateId = "";
+        type = "";
+    }
+
     public AbstractEvent(String aggregateId, String type) {
         this.aggregateId = aggregateId;
         this.type = type;

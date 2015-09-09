@@ -17,10 +17,17 @@ public class JdbcStoreEventSubscriber implements EventSubscriber<Event> {
 
     public JdbcStoreEventSubscriber(
             JdbcStoreConfiguration config,
-            DataSource ds) {
+            DataSource ds,
+            EventSerializer<Event> s) {
         configuration = config;
         datasource = ds;
-        serilalizer = new ObjectEventSerializer();
+        serilalizer = s;
+    }
+
+    public JdbcStoreEventSubscriber(
+            JdbcStoreConfiguration config,
+            DataSource ds) {
+        this(config, ds, new ObjectEventSerializer());
     }
 
     @Override
