@@ -13,8 +13,8 @@ import greenmoonsoftware.tidewater.step.StepDefinition
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 
-class RestartContext implements EventSubscriber<Event>, Context {
-    @Delegate private final ContextAttributes attributes
+class RestartContext extends AbstractContext implements EventSubscriber<Event>, Context {
+    final ContextAttributes attributes
     private final JdbcEventQuery eventQuery
     private final eventBus = new SimpleEventBus()
     private final List<EventSubscriber<Event>> subscribers = []
@@ -72,8 +72,13 @@ class RestartContext implements EventSubscriber<Event>, Context {
     }
 
     @Override
-    Step findExecutedStep(String name) {
-        attributes.executedSteps[name]
+    File getWorkspace() {
+        attributes.workspace
+    }
+
+    @Override
+    File getMetaDirectory() {
+        attributes.metaDirectory
     }
 
     @Override

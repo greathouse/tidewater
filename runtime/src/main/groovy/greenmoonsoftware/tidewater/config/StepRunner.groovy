@@ -12,7 +12,7 @@ import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 import java.time.Duration
 
 class StepRunner implements Serializable {
-    @Delegate private final Context context
+    private final Context context
     private final List<StepDefinition> steps
 
     StepRunner(Context c, List<StepDefinition> s) {
@@ -31,7 +31,7 @@ class StepRunner implements Serializable {
 
     private boolean start(Step step) {
         def startDate = new Date()
-        raiseEvent(new StepStartedEvent(step, startDate))
+        context.raiseEvent(new StepStartedEvent(step, startDate))
         try {
             return executeStep(step, startDate)
         } catch (all) {
@@ -43,16 +43,16 @@ class StepRunner implements Serializable {
 
     private StepErroredEvent handleErroredStep(Step step, Date startDate, Exception e) {
         def endDate = new Date()
-        raiseEvent(new StepErroredEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()), e))
+        context.raiseEvent(new StepErroredEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()), e))
     }
 
     private boolean executeStep(Step step, Date startDate) {
         def success = step.execute(context, setupStepMetaDirectory(step))
         def endDate = new Date()
         if (success) {
-            raiseEvent(new StepSuccessfullyCompletedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
+            context.raiseEvent(new StepSuccessfullyCompletedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
         } else {
-            raiseEvent(new StepFailedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
+            context.raiseEvent(new StepFailedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
         }
         return success
     }
@@ -69,7 +69,7 @@ class StepRunner implements Serializable {
         def c = (Closure) defined.configureClosure.rehydrate(new StepDelegate(context, step), null, null)
         c.resolveStrategy = Closure.DELEGATE_ONLY
         c.call()
-        raiseEvent(new StepConfiguredEvent(step))
+        context.raiseEvent(new StepConfiguredEvent(step))
         return step
     }
 }

@@ -13,8 +13,8 @@ import greenmoonsoftware.tidewater.step.events.StepDefinedEvent
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 
-final class NewContext implements Context, EventSubscriber<Event> {
-    @Delegate private final ContextAttributes attributes
+final class NewContext extends AbstractContext implements Context, EventSubscriber<Event> {
+    final ContextAttributes attributes
     private Step currentStep
     private final eventBus = new SimpleEventBus()
 
@@ -29,7 +29,7 @@ final class NewContext implements Context, EventSubscriber<Event> {
         addEventSubscribers(
                 this,
                 new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource, new JsonEventSerializer()),
-                new ContextAttributeEventSubscriber(attributes)
+                new ContextAttributeEventSubscriber(this, attributes)
         )
     }
 
@@ -43,13 +43,18 @@ final class NewContext implements Context, EventSubscriber<Event> {
     }
 
     @Override
-    Step findExecutedStep(String name) {
-        attributes.executedSteps[name]
+    File getWorkspace() {
+        attributes.workspace
+    }
+
+    @Override
+    File getMetaDirectory() {
+        attributes.metaDirectory
     }
 
     @Override
     void addDefinedStep(StepDefinition definition) {
-        attributes.addDefinedStep(definition)
+        super.addDefinedStep(definition)
         raiseEvent(new StepDefinedEvent(definition))
     }
 
@@ -64,7 +69,7 @@ final class NewContext implements Context, EventSubscriber<Event> {
     }
 
     private executeSteps() {
-        new StepRunner(this, attributes.definedSteps.values() as List).run()
+        new StepRunner(this, definedSteps.values() as List).run()
     }
 
     private void processScript(String scriptText) {

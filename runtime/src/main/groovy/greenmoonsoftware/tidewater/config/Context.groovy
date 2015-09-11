@@ -4,9 +4,11 @@ import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
 
 interface Context {
-    File getWorkspace()
-    File getMetaDirectory()
+    ContextAttributes getAttributes()
+    @Deprecated File getWorkspace()
+    @Deprecated File getMetaDirectory()
     void addDefinedStep(StepDefinition definition)
+    void addExecutedStep(Step step)
     Step findExecutedStep(String name)
     void raiseEvent(Event event)
     void log(Step s, String message)

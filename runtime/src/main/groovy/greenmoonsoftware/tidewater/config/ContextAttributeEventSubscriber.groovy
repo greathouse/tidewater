@@ -6,9 +6,11 @@ import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 
 class ContextAttributeEventSubscriber implements EventSubscriber<Event> {
+    private final Context context
     private final ContextAttributes attributes
 
-    ContextAttributeEventSubscriber(ContextAttributes a) {
+    ContextAttributeEventSubscriber(Context c, ContextAttributes a) {
+        context = c
         attributes = a
     }
 
@@ -24,6 +26,6 @@ class ContextAttributeEventSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(StepSuccessfullyCompletedEvent event) {
-        attributes.addExecutedStep(event.step)
+        context.addExecutedStep(event.step)
     }
 }

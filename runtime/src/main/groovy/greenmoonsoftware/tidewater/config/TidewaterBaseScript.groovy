@@ -5,6 +5,10 @@ import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 
 abstract class TidewaterBaseScript extends Script implements Serializable {
+    def properties(Closure c) {
+
+    }
+
     def step(StepDefinition definition) {
         this.binding.context.addDefinedStep(definition)
     }

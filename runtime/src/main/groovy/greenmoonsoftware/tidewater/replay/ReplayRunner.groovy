@@ -9,12 +9,12 @@ import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.json.JsonEventSerializer
 import greenmoonsoftware.tidewater.config.TidewaterEventStoreConfiguration
 
-public class ReplayContext {
+public class ReplayRunner {
     private final ContextAttributes attributes
     private final JdbcEventQuery eventQuery
     private final eventBus = new SimpleEventBus()
 
-    ReplayContext(ContextId id) {
+    ReplayRunner(ContextId id) {
         attributes = new ContextAttributes(id)
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         eventQuery = new JdbcEventQuery(storage.toConfiguration(), storage.datasource, new JsonEventSerializer())

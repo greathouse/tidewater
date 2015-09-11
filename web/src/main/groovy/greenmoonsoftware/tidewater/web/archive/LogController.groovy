@@ -4,7 +4,7 @@ import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
-import greenmoonsoftware.tidewater.replay.ReplayContext
+import greenmoonsoftware.tidewater.replay.ReplayRunner
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.events.*
 import org.springframework.stereotype.Controller
@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 class LogController {
     @RequestMapping('/archive/{contextId}')
     String index(Map<String, Object> model, @PathVariable('contextId') String contextId) {
-        def replay = new ReplayContext(new ContextId(contextId))
+        def replay = new ReplayRunner(new ContextId(contextId))
         def steps = [:] as LinkedHashMap<String, ArchiveStep>
         String scriptText = ''
         File workspace
