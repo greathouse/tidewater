@@ -8,26 +8,26 @@ class Start {
                 url 'https://github.com/greathouse/green-tea-test.git'
                 dir 'green-tea-test'
             }
-
-            step buildProject(type: Gradle) {
-                workingDir checkout.dir
-                tasks 'clean build'
-            }
+//
+//            step buildProject(type: Gradle) {
+//                workingDir checkout.dir
+//                tasks 'clean build'
+//            }
 
             step custom {
                 println 'Workspace: ' + context.workspace
                 println 'Checkout dir: ' + checkout.dir
                 println 'Sha from checkout: ' + checkout.sha
             }
-
-            step shell(type: Shell) {
-                env (['name': 'Robert'])
-                contents \'\'\'\\
-                    #!/bin/bash
-                    echo hello $name, from the shell
-                    whoami
-                \'\'\'.stripIndent()
-            }
+//
+//            step shell(type: Shell) {
+//                env (['name': 'Robert'])
+//                contents \'\'\'\\
+//                    #!/bin/bash
+//                    echo hello $name, from the shell
+//                    whoami
+//                \'\'\'.stripIndent()
+//            }
         '''.stripIndent())
     }
 

@@ -23,12 +23,12 @@ abstract class TidewaterBaseScript extends Script implements Serializable {
     private StepDefinition stepConfiguration(String name, args) {
         def type = args[0].type
         def configureClosure = args[-1] as Closure
-        return new StepDefinition(name:name, type: type, configureClosure: configureClosure.rehydrate(null, null, null))
+        return new StepDefinition(name:name, type: type, configureClosure: configureClosure)
     }
 
     private StepDefinition customStep(String name, args) {
         Closure c = args[0] as Closure
-        return new StepDefinition(name: name, type: CustomStep, configureClosure: { executable c.rehydrate(null, null, null)})
+        return new StepDefinition(name: name, type: CustomStep, configureClosure: { executable c})
     }
 
     void println(String s) {
