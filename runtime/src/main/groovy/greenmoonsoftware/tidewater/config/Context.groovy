@@ -4,6 +4,9 @@ import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
 
 interface Context {
+    String getParameter(String name)
+    void setParameter(String name, String value)
+    Map<String, String> getParameters()
     ContextAttributes getAttributes()
     def getExt(String name)
     void setExt(String name, Object value)

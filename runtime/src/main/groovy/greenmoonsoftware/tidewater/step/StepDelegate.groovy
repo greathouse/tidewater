@@ -14,6 +14,9 @@ final class StepDelegate {
         if (name == 'context') {
             return context
         }
+        if (name == 'parameters') {
+            return context.parameters
+        }
         def executedStep = context.findExecutedStep(name)
         if (!executedStep) {
             println """\

@@ -5,6 +5,12 @@ import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 
 abstract class TidewaterBaseScript extends Script implements Serializable {
+    def parameters(List parameterNames) {
+        new ParameterResolver(parameterNames).resolve().each {
+            this.binding.context.setParameter(it.key, it.value)
+        }
+    }
+
     def properties(Closure c) {
         this.binding.context.with c
     }

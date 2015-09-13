@@ -4,9 +4,25 @@ import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
 
 abstract class AbstractContext implements Context {
+    private final Map<String, String> parameters = [:]
     private final ext = [:]
     protected final definedSteps = [:] as LinkedHashMap<String, StepDefinition>
     protected final executedSteps = [:] as LinkedHashMap<String, Step>
+
+    @Override
+    final String getParameter(String name) {
+        parameters[name]
+    }
+
+    @Override
+    final void setParameter(String name, String value) {
+        parameters[name] = value
+    }
+
+    @Override
+    final Map<String, String> getParameters() {
+        parameters.asImmutable()
+    }
 
     @Override
     final getExt(String name) {

@@ -4,6 +4,10 @@ import greenmoonsoftware.tidewater.config.NewContext
 class Start {
     static void main(String[] args) {
         new Start().start('''\
+            parameters ([
+                'gitBranch'
+            ])
+
             properties {
                 gitUrl 'https://github.com/greathouse/green-tea-test.git'
             }
@@ -11,6 +15,7 @@ class Start {
             step checkout(type: GitClone) {
                 url context.gitUrl
                 dir 'green-tea-test'
+                ref parameters.gitBranch
             }
 //
 //            step buildProject(type: Gradle) {
