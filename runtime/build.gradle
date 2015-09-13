@@ -15,3 +15,7 @@ dependencies {
 
     testCompile 'org.testng:testng:6.9.6'
 }
+
+test {
+    useTestNG()
+}

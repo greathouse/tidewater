@@ -12,13 +12,13 @@ class GradleTest {
         def buildFile = 'build.gradle'
         def tasks = 'clean build deploy'
         def workingDir = UUID.randomUUID().toString()
-        def actual = new Gradle(executable: executable, buildFile: buildFile, tasks: tasks)
-                .setWorkingDir(workingDir)
-                .inputs
+        def task = new Gradle(executable: executable, buildFile: buildFile, tasks: tasks)
+        task.setWorkingDir(workingDir)
+        def actual = task.inputs
 
         assert actual.size() == 4
 
-        assert actual['workingDir'] == new File(context.workspace, workingDir)
+        assert actual['workingDir'] == workingDir
         assert actual['executable'] == executable
         assert actual['buildFile'] == buildFile
         assert actual['tasks'] == tasks
