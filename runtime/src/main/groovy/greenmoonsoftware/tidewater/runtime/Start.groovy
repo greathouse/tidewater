@@ -4,8 +4,12 @@ import greenmoonsoftware.tidewater.config.NewContext
 class Start {
     static void main(String[] args) {
         new Start().start('''\
+            properties {
+                gitUrl 'https://github.com/greathouse/green-tea-test.git'
+            }
+
             step checkout(type: GitClone) {
-                url 'https://github.com/greathouse/green-tea-test.git'
+                url context.gitUrl
                 dir 'green-tea-test'
             }
 //

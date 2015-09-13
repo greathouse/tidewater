@@ -27,7 +27,7 @@ class Gradle extends AbstractStep {
 
     private ProcessBuilder buildProcess(Context context) {
         new ProcessBuilder("${executable} -b ${buildFile} ${tasks}".split(' ')).with {
-            directory new File(context.workspace, workingDir)
+            directory new File(context.attributes.workspace, workingDir)
             redirectErrorStream(true)
             delegate
         } as ProcessBuilder

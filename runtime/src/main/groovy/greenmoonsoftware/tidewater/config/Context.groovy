@@ -5,6 +5,8 @@ import greenmoonsoftware.tidewater.step.StepDefinition
 
 interface Context {
     ContextAttributes getAttributes()
+    def getExt(String name)
+    void setExt(String name, Object value)
     @Deprecated File getWorkspace()
     @Deprecated File getMetaDirectory()
     void addDefinedStep(StepDefinition definition)

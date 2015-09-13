@@ -4,8 +4,19 @@ import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
 
 abstract class AbstractContext implements Context {
+    private final ext = [:]
     protected final definedSteps = [:] as LinkedHashMap<String, StepDefinition>
     protected final executedSteps = [:] as LinkedHashMap<String, Step>
+
+    @Override
+    final getExt(String name) {
+        ext[name] ?: ''
+    }
+
+    @Override
+    final void setExt(String name, def value) {
+        ext[name] = value
+    }
 
     @Override
     void addDefinedStep(StepDefinition stepDef) {
@@ -25,5 +36,13 @@ abstract class AbstractContext implements Context {
     @Override
     Step findExecutedStep(String name) {
         executedSteps[name]
+    }
+
+    def methodMissing(String name, def value) {
+        setExt(name, value[0])
+    }
+
+    def propertyMissing(String name) {
+        getExt(name)
     }
 }
