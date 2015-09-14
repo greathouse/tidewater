@@ -8,6 +8,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 @SpringBootApplication
 class Application {
     static void main(String[] args) {
+        def opts = parseArguments(args)
+        def file = opts.f
+
+        if (file) {
+            executeFile(file)
+        }
+        else {
+            TidewaterServerProperties.SCRIPT_REPO_DIRECTORY.mkdirs()
+            SpringApplication.run(Application.class, args)
+        }
+    }
+
+    private static OptionAccessor parseArguments(String[] args) {
         def cli = new CliBuilder(usage: 'java -jar tidewater.jar [options]')
         cli.with {
             f longOpt: 'file', args: 1, required: false, 'Path to script file. Runs the script and exits.'
@@ -17,15 +30,7 @@ class Application {
             cli.usage()
             System.exit(1)
         }
-
-        def file = opts.f
-
-        if (file) {
-            executeFile(file)
-        }
-        else {
-            SpringApplication.run(Application.class, args)
-        }
+        opts
     }
 
     static void executeFile(String filepath) {
