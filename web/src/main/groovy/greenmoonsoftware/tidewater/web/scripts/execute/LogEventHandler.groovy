@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.execute
+package greenmoonsoftware.tidewater.web.scripts.execute
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
@@ -24,10 +24,14 @@ class LogEventHandler implements EventSubscriber<Event> {
     }
 
     void handle(StepLogEvent event) {
-        send(base(event) {
-            step = new StepSpec(event.step)
-            message = event.message
-        })
+        try {
+            send(base(event) {
+                step = new StepSpec(event.step)
+                message = event.message
+            })
+        } catch (all) {
+            all.printStackTrace()
+        }
     }
 
     void handle(StepSuccessfullyCompletedEvent event) {
@@ -50,7 +54,12 @@ class LogEventHandler implements EventSubscriber<Event> {
     }
 
     private send(message) {
-        messagingTemplate.convertAndSend("/topic/greetings/${context.id}".toString(), message)
+        try {
+            messagingTemplate.convertAndSend("/topic/greetings/${context.id}".toString(), message)
+            println '!!!!!!!!!!!!!!!!!!!!!!! SENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        } catch (all) {
+            all.printStackTrace()
+        }
     }
 
     private base(Event e) {

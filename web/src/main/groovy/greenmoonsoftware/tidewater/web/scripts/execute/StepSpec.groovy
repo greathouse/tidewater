@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.execute
+package greenmoonsoftware.tidewater.web.scripts.execute
 
 import greenmoonsoftware.tidewater.step.Step
 

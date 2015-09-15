@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.execute
+package greenmoonsoftware.tidewater.web.scripts.execute
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

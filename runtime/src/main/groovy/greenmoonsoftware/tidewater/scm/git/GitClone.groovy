@@ -23,7 +23,7 @@ class GitClone extends AbstractStep {
         Git.cloneRepository()
             .setURI(url)
             .setDirectory(directory)
-            .setBranch(ref)
+            .setBranch(ref ?: 'master')
             .call()
 
         FileRepositoryBuilder builder = new FileRepositoryBuilder();
