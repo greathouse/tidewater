@@ -5,9 +5,9 @@ create table PipelineEvents (
     eventDateTime TIMESTAMP,
     savedTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     data BLOB
-)
+);
 
-create table pipeline(
+create table Pipeline (
     id VARCHAR,
     name VARCHAR,
     lastSuccessfulRun TIMESTAMP,
