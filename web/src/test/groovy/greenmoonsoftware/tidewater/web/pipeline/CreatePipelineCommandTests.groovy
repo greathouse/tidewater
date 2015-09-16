@@ -5,7 +5,7 @@ import org.testng.Assert
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
 
-class CreatePipelineCommandTest {
+class CreatePipelineCommandTests {
     @Test
     void shouldRaisePipelineCreatedEvent() {
         def expectedName = UUID.randomUUID().toString()
