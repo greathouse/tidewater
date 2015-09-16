@@ -15,7 +15,7 @@ class CreatePipelineCommandTest {
 
         assert actual.size() == 1
         def aEvent = actual[0] as PipelineCreatedEvent
-        assert aEvent.name == expectedName
+        assert aEvent.aggregateId == expectedName
         assert aEvent.scriptText == expectedScript
     }
 

@@ -23,6 +23,6 @@ class PipelineViewEventSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(PipelineCreatedEvent event) {
-        sql.executeInsert("insert into pipeline (name, script) values (${event.name}, ${event.scriptText})")
+        sql.executeInsert("insert into pipeline (name, script) values (${event.aggregateId}, ${event.scriptText})")
     }
 }
