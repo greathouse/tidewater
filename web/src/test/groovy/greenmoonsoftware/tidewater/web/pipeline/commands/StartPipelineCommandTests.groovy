@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.pipeline
+package greenmoonsoftware.tidewater.web.pipeline.commands
 
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
 import org.testng.annotations.Test

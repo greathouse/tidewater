@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.pipeline
+package greenmoonsoftware.tidewater.web.pipeline.commands
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import groovy.transform.Immutable

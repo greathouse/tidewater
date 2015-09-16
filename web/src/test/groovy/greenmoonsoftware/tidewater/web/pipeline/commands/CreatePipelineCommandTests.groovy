@@ -1,5 +1,6 @@
-package greenmoonsoftware.tidewater.web.pipeline
+package greenmoonsoftware.tidewater.web.pipeline.commands
 
+import greenmoonsoftware.tidewater.web.pipeline.commands.CreatePipelineCommand
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import org.testng.Assert
 import org.testng.annotations.DataProvider
