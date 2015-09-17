@@ -26,7 +26,7 @@ class StartPipelineCommandTests {
     void shouldCallExecuteWithAppropriateScript() {
         def expectedPipelineName = 'EXPECTED'
         def executingContext = new DummyExecutingContext(new ContextId(UUID.randomUUID().toString()))
-        def expectedScript = "{EXPECTED: ${UUID.randomUUID()}"
+        String expectedScript = "{EXPECTED: ${UUID.randomUUID()}"
 
         execute(expectedPipelineName, executingContext) {name ->
             return (name == expectedPipelineName) ? expectedScript : "Name No Match: ${name}"
@@ -49,12 +49,7 @@ class StartPipelineCommandTests {
     }
 
     private static PipelineQueryService setupQueryService(Closure getScript) {
-        new PipelineQueryService() {
-            @Override
-            String getScript(String name) {
-                getScript.call(name)
-            }
-        }
+        [getScript: { name -> getScript.call(name) }] as PipelineQueryService
     }
 
     class DummyExecutingContext implements StartPipelineCommand.ExecutingContext {
