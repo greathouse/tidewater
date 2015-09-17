@@ -50,7 +50,7 @@ class RestartContext extends AbstractContext implements EventSubscriber<Event>, 
     }
 
     private List<StepDefinition> determineRemainingSteps() {
-        def definedSteps = attributes.definedSteps.values() as List
+        def definedSteps = definedSteps.values() as List
         def remainingSteps = definedSteps[definedSteps.findIndexOf {
             it.name == currentStep.name
         }..<definedSteps.size()]
