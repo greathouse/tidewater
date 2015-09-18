@@ -3,3 +3,9 @@
 *.iml
 *build/
 *.tw
+
+.DS_Store
+node_modules
+npm-debug.log
+bower_components
+.sass-cache
