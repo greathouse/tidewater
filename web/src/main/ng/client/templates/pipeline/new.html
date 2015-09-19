@@ -7,12 +7,12 @@ controller: NewController
 <div class="grid-content">
   <div class="align-center grid-block">
     <div class="large-9">
-      <form>
-        <input type="text" placeholder="Name" />
-        <textarea rows="10" placeholder="Script"></textarea>
+      <form novalidate>
+        <input type="text" placeholder="Name" ng-model="formData.name" />
+        <textarea rows="10" placeholder="Script" ng-model="formData.script"></textarea>
         <div class="float-right">
-          <input type="submit" class="button" value="Submit" />
-          <buton class="button secondary" ng-click="sayHi()">Reset</button>
+          <button class="button" ng-click="postScript(formData)">Submit</button>
+          <button class="button secondary">Reset</button>
         </div>
       </form>
     </div>
