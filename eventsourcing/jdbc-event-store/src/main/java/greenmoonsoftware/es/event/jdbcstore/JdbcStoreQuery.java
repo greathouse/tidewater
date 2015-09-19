@@ -18,11 +18,19 @@ public abstract class JdbcStoreQuery<T extends Aggregate> implements StoreRetrie
 
     public JdbcStoreQuery(
             JdbcStoreConfiguration config,
-            DataSource ds
+            DataSource ds,
+            EventSerializer s
     ) {
         configuration = config;
         datasource = ds;
-        serializer = new ObjectEventSerializer();
+        serializer = s;
+    }
+
+    public JdbcStoreQuery(
+            JdbcStoreConfiguration config,
+            DataSource ds
+    ) {
+        this(config, ds, new ObjectEventSerializer());
     }
 
     protected abstract T create();
