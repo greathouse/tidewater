@@ -1,15 +1,15 @@
 package greenmoonsoftware.tidewater.web.pipeline.commands
-import greenmoonsoftware.es.event.Event
-import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
+
+import greenmoonsoftware.es.command.Command
 import groovy.transform.Immutable
 
 @Immutable
-class CreatePipelineCommand {
+class CreatePipelineCommand implements Command {
     String name
     String scriptText
 
-    List<Event> execute() {
-        if (!name) { throw new IllegalArgumentException('Parameter "name" is required.')}
-        [new PipelineCreatedEvent(name, scriptText)]
+    @Override
+    String getAggregateId() {
+        name
     }
 }
