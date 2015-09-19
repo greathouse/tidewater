@@ -19,7 +19,7 @@ class PipelineServiceTests {
 
         def expectedName = UUID.randomUUID().toString()
         def expectedScript = UUID.randomUUID().toString()
-        service.handle(new CreatePipelineCommand(expectedName, expectedScript))
+        service.execute(new CreatePipelineCommand(expectedName, expectedScript))
 
         def query = new JdbcStoreQuery<PipelineAggregate>(storeConfiguration.toConfiguration(), storeConfiguration.datasource, new JsonEventSerializer()) {
             @Override

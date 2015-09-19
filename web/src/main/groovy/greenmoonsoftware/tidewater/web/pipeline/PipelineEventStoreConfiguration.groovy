@@ -1,20 +1,19 @@
 package greenmoonsoftware.tidewater.web.pipeline
-
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreConfiguration
-import greenmoonsoftware.tidewater.config.Tidewater
 import org.h2.jdbcx.JdbcDataSource
 
 import javax.sql.DataSource
 
 class PipelineEventStoreConfiguration {
-    final DataSource datasource = new JdbcDataSource()
+    final DataSource datasource
     final tablename = 'PipelineEvents'
 
-    PipelineEventStoreConfiguration() {
-        this(Tidewater.WORKSPACE_ROOT)
+    PipelineEventStoreConfiguration(DataSource d) {
+        datasource = d
     }
 
     PipelineEventStoreConfiguration(String rootDir) {
+        datasource = new JdbcDataSource()
         initalizeDatasource(rootDir)
     }
 

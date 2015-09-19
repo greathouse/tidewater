@@ -25,7 +25,7 @@ class PipelineService {
         }
     }
 
-    void handle(Command command) {
+    void execute(Command command) {
         def pipeline = query.retrieve(command.aggregateId)
 
         def newEvents = AggregateCommandApplier.apply(pipeline, command)
