@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.pipeline
+package greenmoonsoftware.tidewater.web.pipeline.commands
 import greenmoonsoftware.es.Bus
 import greenmoonsoftware.es.command.AggregateCommandApplier
 import greenmoonsoftware.es.command.Command
@@ -7,6 +7,7 @@ import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreQuery
 import greenmoonsoftware.tidewater.json.JsonEventSerializer
+import greenmoonsoftware.tidewater.web.pipeline.PipelineEventStoreConfiguration
 
 class PipelineService {
     private final Bus<Event, EventSubscriber> eventBus

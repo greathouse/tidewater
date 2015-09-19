@@ -1,8 +1,8 @@
-package greenmoonsoftware.tidewater.web.pipeline
+package greenmoonsoftware.tidewater.web.pipeline.commands
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreQuery
 import greenmoonsoftware.tidewater.json.JsonEventSerializer
-import greenmoonsoftware.tidewater.web.pipeline.commands.CreatePipelineCommand
+import greenmoonsoftware.tidewater.web.pipeline.PipelineEventStoreConfiguration
 import org.flywaydb.core.Flyway
 import org.testng.annotations.Test
 
