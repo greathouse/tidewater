@@ -8,7 +8,9 @@
     //foundation
     'foundation',
     'foundation.dynamicRouting',
-    'foundation.dynamicRouting.animations'
+    'foundation.dynamicRouting.animations',
+    
+    'pipelineModule'
   ])
     .config(config)
     .run(run)
