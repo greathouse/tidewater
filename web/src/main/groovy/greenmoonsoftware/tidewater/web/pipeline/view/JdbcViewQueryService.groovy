@@ -22,4 +22,13 @@ class JdbcViewQueryService implements ViewQueryService {
         }
         return script
     }
+
+    @Override
+    List<PipelineView> getPipelines() {
+        def rtn = []
+        sql.eachRow("select name, script from Pipeline") { row ->
+            rtn << new PipelineView(row.name, row.script.asciiStream.text)
+        }
+        return rtn
+    }
 }

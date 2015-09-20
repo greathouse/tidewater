@@ -1,22 +1,27 @@
-package greenmoonsoftware.tidewater.web.pipeline
+package greenmoonsoftware.tidewater.web.pipeline.view
+
 import greenmoonsoftware.es.Bus
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
-import greenmoonsoftware.tidewater.web.pipeline.commands.CommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+import javax.annotation.PostConstruct
 import javax.sql.DataSource
 
 @Configuration
-class PipelineModuleConfiguration {
+class PipelineViewModuleConfiguration {
     @Autowired Bus<Event, EventSubscriber> eventBus
     @Autowired DataSource ds
 
     @Bean
-    PipelineEventStoreConfiguration eventStoreConfiguration() { new PipelineEventStoreConfiguration(ds) }
+    ViewQueryService queryService() {
+        new JdbcViewQueryService(ds)
+    }
 
-    @Bean
-    CommandService pipelineService() { new CommandService(eventBus, eventStoreConfiguration()) }
+    @PostConstruct
+    void postConstruct() {
+        eventBus.register(new PipelineViewEventSubscriber(ds))
+    }
 }

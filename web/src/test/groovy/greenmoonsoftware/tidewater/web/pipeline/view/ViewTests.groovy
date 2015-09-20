@@ -1,5 +1,4 @@
 package greenmoonsoftware.tidewater.web.pipeline.view
-
 import greenmoonsoftware.tidewater.web.pipeline.DatabaseInitializer
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import org.testng.Assert
@@ -36,7 +35,20 @@ class ViewTests {
         }
     }
 
-    void createPipeline(PipelineViewEventSubscriber s) {
-        s.onEvent(new PipelineCreatedEvent(UUID.randomUUID().toString(), UUID.randomUUID().toString()))
+    @Test
+    void givenMultiplePipelines_shouldBeAbleToQueryForAList() {
+        def ds = DatabaseInitializer.initalize()
+        def eventSubscriber = new PipelineViewEventSubscriber(ds)
+        def expectedList = (0..5).collect { createPipeline(eventSubscriber) }
+
+        def actual = new JdbcViewQueryService(ds).pipelines
+
+        assert actual.containsAll(expectedList)
+    }
+
+    PipelineView createPipeline(PipelineViewEventSubscriber s) {
+        def v = new PipelineView(UUID.randomUUID().toString(), UUID.randomUUID().toString())
+        s.onEvent(new PipelineCreatedEvent(v.name, v.script))
+        return v
     }
 }
