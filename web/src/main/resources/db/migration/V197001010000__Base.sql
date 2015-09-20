@@ -10,7 +10,12 @@ create table PipelineEvents (
 create table Pipeline (
     id VARCHAR,
     name VARCHAR,
-    lastSuccessfulRun TIMESTAMP,
-    lastFailure TIMESTAMP,
     script CLOB
+);
+
+create table PipelineRun (
+    pipelineName VARCHAR,
+    contextId VARCHAR,
+    startTime TIMESTAMP,
+    endTime TIMESTAMP
 );

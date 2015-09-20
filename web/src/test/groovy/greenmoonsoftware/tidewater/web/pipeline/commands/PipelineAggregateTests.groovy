@@ -25,7 +25,7 @@ class PipelineAggregateTests {
     void givenExistingAggregate_whenCreatePipelineCommand_shouldThrowException() {
         def name = 'InitialName'
         try {
-            AggregateCommandApplier.apply(new PipelineAggregate(id: name), new CreatePipelineCommand(name, 'Doesnt Matter'))
+            AggregateCommandApplier.apply(new PipelineAggregate(name: name), new CreatePipelineCommand(name, 'Doesnt Matter'))
             Assert.fail('Should have raised an exception')
         }
         catch (RuntimeException e) {
@@ -34,9 +34,11 @@ class PipelineAggregateTests {
     }
 
     @DataProvider
-    Object[][] invalidNames() {[
-            [null], ['']
-    ]}
+    Object[][] invalidNames() {
+        [
+                [null], ['']
+        ]
+    }
 
     @Test(dataProvider = 'invalidNames')
     void givenCreatePipelineCommand_withNullOrEmptyName_shouldThrowException(String name) {
