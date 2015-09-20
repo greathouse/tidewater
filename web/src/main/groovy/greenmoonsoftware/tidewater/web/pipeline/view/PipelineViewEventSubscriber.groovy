@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.pipeline
+package greenmoonsoftware.tidewater.web.pipeline.view
 
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier

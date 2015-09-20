@@ -3,8 +3,8 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.config.NewContext
-import greenmoonsoftware.tidewater.web.pipeline.JdbcPipelineQueryService
-import greenmoonsoftware.tidewater.web.pipeline.PipelineQueryService
+import greenmoonsoftware.tidewater.web.pipeline.view.JdbcViewQueryService
+import greenmoonsoftware.tidewater.web.pipeline.view.ViewQueryService
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
 
 import java.time.Instant
@@ -12,13 +12,13 @@ import java.time.Instant
 class StartPipelineCommand {
     private final String name
     private final ExecutingContext executingContext
-    private final PipelineQueryService queryService
+    private final ViewQueryService queryService
 
     StartPipelineCommand(String name) {
-        this(name, new DefaultExecutingContext(), new JdbcPipelineQueryService())
+        this(name, new DefaultExecutingContext(), new JdbcViewQueryService())
     }
 
-    StartPipelineCommand(String name, ExecutingContext e, PipelineQueryService q) {
+    StartPipelineCommand(String name, ExecutingContext e, ViewQueryService q) {
         this.name = name
         executingContext = e
         queryService = q

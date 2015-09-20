@@ -2,6 +2,7 @@ package greenmoonsoftware.tidewater.web.pipeline
 
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
+import greenmoonsoftware.tidewater.web.pipeline.view.PipelineViewEventSubscriber
 import groovy.sql.Sql
 import org.flywaydb.core.Flyway
 import org.h2.jdbcx.JdbcDataSource
