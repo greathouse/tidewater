@@ -11,6 +11,6 @@ class ListController {
 
     @RequestMapping(value = '/pipelines', method = RequestMethod.GET)
     List<PipelineView> index() {
-//        query.
+        query.pipelines
     }
 }

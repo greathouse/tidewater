@@ -1,0 +1,16 @@
+---
+name: pipeline-list
+url: /pipelines
+controller: ListController
+---
+<div class="grid-content">
+    <div class="align-center grid-block">
+        <div class="large-9">
+            <div ng-repeat="p in pipelines">
+                <div class="large-3">
+                    {{p.name}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

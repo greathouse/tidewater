@@ -13,7 +13,7 @@ class JdbcViewQueryService implements ViewQueryService {
 
     @Override
     String getScript(String name) {
-        String script
+        String script = null
         sql.eachRow("select script from Pipeline where name = ${name}") { row ->
             script = row.script.asciiStream.text
         }
