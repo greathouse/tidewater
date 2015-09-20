@@ -6,9 +6,13 @@ controller: ListController
 <div class="grid-content">
     <div class="align-center grid-block">
         <div class="large-9">
-            <div ng-repeat="p in pipelines">
+            <div class="grid-block" ng-repeat="p in pipelines">
                 <div class="large-3">
-                    {{p.name}}
+                    <h4>{{p.name}}</h4>
+                </div>
+                <div class="large-6">&nbsp;</div>
+                <div class="large-3 float-right">
+                    <a class="button dark">Start</a>
                 </div>
             </div>
         </div>
