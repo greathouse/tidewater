@@ -9,20 +9,15 @@ import greenmoonsoftware.es.event.jdbcstore.JdbcStoreQuery
 import greenmoonsoftware.tidewater.json.JsonEventSerializer
 import greenmoonsoftware.tidewater.web.pipeline.PipelineEventStoreConfiguration
 
-class PipelineService {
+class CommandService {
     private final Bus<Event, EventSubscriber> eventBus
     private final JdbcStoreEventSubscriber eventStore
     private final JdbcStoreQuery<PipelineAggregate> query
 
-    PipelineService(Bus<Event, EventSubscriber> b, PipelineEventStoreConfiguration c) {
+    CommandService(Bus<Event, EventSubscriber> b, PipelineEventStoreConfiguration c) {
         eventBus = b
         eventStore = new JdbcStoreEventSubscriber(c.toConfiguration(), c.datasource, new JsonEventSerializer())
-        query = new JdbcStoreQuery<PipelineAggregate>(c.toConfiguration(), c.datasource, new JsonEventSerializer()) {
-            @Override
-            protected PipelineAggregate create() {
-                new PipelineAggregate()
-            }
-        }
+        query = new CommandQuery(c.toConfiguration(), c.datasource)
     }
 
     void execute(Command command) {
