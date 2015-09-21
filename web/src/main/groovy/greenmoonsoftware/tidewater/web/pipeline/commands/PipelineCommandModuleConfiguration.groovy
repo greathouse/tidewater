@@ -14,5 +14,5 @@ class PipelineCommandModuleConfiguration {
     @Autowired PipelineEventStoreConfiguration storeConfiguration
 
     @Bean
-    CommandService pipelineService() { new CommandService(eventBus, storeConfiguration) }
+    PipelineCommandService pipelineService() { new PipelineCommandService(eventBus, storeConfiguration) }
 }

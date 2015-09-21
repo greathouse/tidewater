@@ -13,6 +13,15 @@ create table Pipeline (
     script CLOB
 );
 
+create table PipelineRunEvents (
+    id VARCHAR,
+    aggregateId VARCHAR,
+    eventType VARCHAR,
+    eventDateTime TIMESTAMP,
+    savedTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    data BLOB
+);
+
 create table PipelineRun (
     pipelineName VARCHAR,
     contextId VARCHAR,

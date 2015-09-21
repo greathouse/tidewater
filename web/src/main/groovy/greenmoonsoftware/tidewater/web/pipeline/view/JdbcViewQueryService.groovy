@@ -18,7 +18,7 @@ class JdbcViewQueryService implements ViewQueryService {
             script = row.script.asciiStream.text
         }
         if (!script) {
-            throw new PipelineNotFoundException("Unable to find pipeline with name \"${name}\"")
+            throw new PipelineNotFoundException()
         }
         return script
     }

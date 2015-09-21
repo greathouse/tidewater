@@ -9,7 +9,7 @@ class PipelineServiceTests {
     void givenCreatePipelineCommand_shouldCreateNewPipeline() {
         def storeConfiguration = new PipelineEventStoreConfiguration(DatabaseInitializer.initalize())
         def bus = new SimpleEventBus()
-        def service = new CommandService(bus, storeConfiguration)
+        def service = new PipelineCommandService(bus, storeConfiguration)
 
         def expectedName = UUID.randomUUID().toString()
         def expectedScript = UUID.randomUUID().toString()

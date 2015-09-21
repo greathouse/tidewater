@@ -62,6 +62,7 @@ class PipelineAggregateTests {
 
         assert actual.size() == 1
         def aEvent = actual[0] as PipelineStartedEvent
+        assert aEvent.aggregateId == name
         assert aEvent.contextId.toString().contains(name)
         assert aEvent.start
         assert aEvent.script == script
