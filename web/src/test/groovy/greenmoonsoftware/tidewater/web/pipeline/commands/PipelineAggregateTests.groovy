@@ -2,6 +2,7 @@ package greenmoonsoftware.tidewater.web.pipeline.commands
 
 import greenmoonsoftware.es.command.AggregateCommandApplier
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
+import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
 import org.testng.Assert
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
@@ -49,5 +50,20 @@ class PipelineAggregateTests {
         catch (RuntimeException e) {
             assert true
         }
+    }
+
+    @Test
+    void givenStartPipelineCommand_shouldReturnPipelineStartedEvent() {
+        def name = UUID.randomUUID().toString()
+        def script = UUID.randomUUID().toString()
+        def aggregate = new PipelineAggregate(name: name, script: script)
+
+        def actual = AggregateCommandApplier.apply(aggregate, new StartPipelineCommand(name))
+
+        assert actual.size() == 1
+        def aEvent = actual[0] as PipelineStartedEvent
+        assert aEvent.contextId.toString().contains(name)
+        assert aEvent.start
+        assert aEvent.script == script
     }
 }
