@@ -10,6 +10,7 @@ buildscript {
 
 apply plugin: 'spring-boot'
 apply plugin: 'groovy'
+apply from: "${rootDir}/gradle/integrationTests.gradle"
 
 configurations.all {
     resolutionStrategy {
