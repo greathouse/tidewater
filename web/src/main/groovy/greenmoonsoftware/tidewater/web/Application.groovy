@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 
 import javax.sql.DataSource
+import java.nio.file.Files
 
 @SpringBootApplication
 class Application {
@@ -51,6 +53,7 @@ class Application {
     }
 
     @Bean
+    @Profile('production')
     DataSource datasource() {
         def d = new JdbcDataSource()
         d.with {
@@ -58,5 +61,16 @@ class Application {
             url = "jdbc:h2:${Tidewater.WORKSPACE_ROOT}/web".toString()
         }
         return d
+    }
+
+    @Bean
+    @Profile('test')
+    DataSource initalize() {
+        def datasource = new JdbcDataSource()
+        datasource.with {
+            user = 'testuser'
+            url = "jdbc:h2:${Files.createTempDirectory('tidewater-test').toString()}/web".toString()
+        }
+        return datasource
     }
 }

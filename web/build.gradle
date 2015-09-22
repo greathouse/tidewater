@@ -37,6 +37,7 @@ dependencies {
         runtime it.value
     }
 
+    testCompile 'org.springframework:spring-test'
     testCompile 'org.testng:testng:6.9.6'
 }
 

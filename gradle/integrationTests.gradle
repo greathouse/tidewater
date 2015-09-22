@@ -23,6 +23,7 @@ configurations {
 
 task integrationTest(type: Test) {
     useTestNG()
+    jvmArgs = ['-noverify']
     testClassesDir = sourceSets.integrationTest.output.classesDir
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
