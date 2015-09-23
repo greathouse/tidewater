@@ -9,6 +9,6 @@ import greenmoonsoftware.tidewater.web.pipeline.runs.PipelineRunEventStoreConfig
 
 class PipelineRunCommandService extends AbstractCommandService {
     PipelineRunCommandService(Bus<Event, EventSubscriber> b, PipelineRunEventStoreConfiguration c) {
-        super(b, new JdbcStoreEventSubscriber(c.toConfiguration(), c.datasource, new JsonEventSerializer()), new CommandQuery(c.toConfiguration(), c.datasource))
+        super(b, new JdbcStoreEventSubscriber(c.toConfiguration(), c.datasource, new JsonEventSerializer()), new PipelineRunQuery(c.toConfiguration(), c.datasource))
     }
 }

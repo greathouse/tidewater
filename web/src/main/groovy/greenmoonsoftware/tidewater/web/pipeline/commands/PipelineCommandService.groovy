@@ -11,7 +11,7 @@ class PipelineCommandService extends AbstractCommandService {
     PipelineCommandService(Bus<Event, EventSubscriber> b, PipelineEventStoreConfiguration c) {
         super(b,
                 new JdbcStoreEventSubscriber(c.toConfiguration(), c.datasource, new JsonEventSerializer()),
-                new CommandQuery(c.toConfiguration(), c.datasource)
+                new PipelineQuery(c.toConfiguration(), c.datasource)
         )
     }
 }

@@ -15,4 +15,7 @@ class PipelineCommandModuleConfiguration {
 
     @Bean
     PipelineCommandService pipelineService() { new PipelineCommandService(eventBus, storeConfiguration) }
+
+    @Bean
+    PipelineQuery pipelineQuery() { new PipelineQuery(storeConfiguration.toConfiguration(), storeConfiguration.datasource)}
 }

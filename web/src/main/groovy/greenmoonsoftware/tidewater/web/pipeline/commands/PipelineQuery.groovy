@@ -5,8 +5,8 @@ import greenmoonsoftware.tidewater.json.JsonEventSerializer
 
 import javax.sql.DataSource
 
-class CommandQuery extends JdbcStoreQuery<PipelineAggregate> {
-    CommandQuery(JdbcStoreConfiguration config, DataSource ds) {
+class PipelineQuery extends JdbcStoreQuery<PipelineAggregate> {
+    PipelineQuery(JdbcStoreConfiguration config, DataSource ds) {
         super(config, ds, new JsonEventSerializer())
     }
 

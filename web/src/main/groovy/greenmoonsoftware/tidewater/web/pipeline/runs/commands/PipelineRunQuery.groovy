@@ -6,8 +6,8 @@ import greenmoonsoftware.tidewater.web.pipeline.runs.PipelineRunAggregate
 
 import javax.sql.DataSource
 
-class CommandQuery extends JdbcStoreQuery<PipelineRunAggregate> {
-    CommandQuery(JdbcStoreConfiguration config, DataSource ds) {
+class PipelineRunQuery extends JdbcStoreQuery<PipelineRunAggregate> {
+    PipelineRunQuery(JdbcStoreConfiguration config, DataSource ds) {
         super(config, ds, new JsonEventSerializer())
     }
 

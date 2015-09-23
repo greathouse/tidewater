@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.jdbcstore.EventSerializer
+import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.json.contextId.ContextIdDeserializer
+import greenmoonsoftware.tidewater.json.contextId.ContextIdSerializer
 import greenmoonsoftware.tidewater.json.duration.DurationDeserializer
 import greenmoonsoftware.tidewater.json.duration.DurationSerializer
 import greenmoonsoftware.tidewater.json.instant.InstantDeserializer
@@ -22,8 +25,9 @@ class JsonEventSerializer implements EventSerializer<Event> {
         def mapper = new ObjectMapper()
         mapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.ANY)
         def module = new SimpleModule()
-        module.addSerializer(Instant.class, new InstantSerializer())
-        module.addSerializer(Duration.class, new DurationSerializer())
+        module.addSerializer(ContextId, new ContextIdSerializer())
+        module.addSerializer(Duration, new DurationSerializer())
+        module.addSerializer(Instant, new InstantSerializer())
         mapper.registerModule(module)
 
         new ByteArrayInputStream(mapper.writeValueAsString(event).getBytes("UTF-8"))
@@ -35,8 +39,10 @@ class JsonEventSerializer implements EventSerializer<Event> {
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
 
         def module = new SimpleModule()
-        module.addDeserializer(Instant.class, new InstantDeserializer())
-        module.addDeserializer(Duration.class, new DurationDeserializer())
+        module.addDeserializer(ContextId, new ContextIdDeserializer())
+        module.addDeserializer(Duration, new DurationDeserializer())
+        module.addDeserializer(Instant, new InstantDeserializer())
+
         module.addAbstractTypeMapping(Step, StepDouble)
         mapper.registerModule(module)
 

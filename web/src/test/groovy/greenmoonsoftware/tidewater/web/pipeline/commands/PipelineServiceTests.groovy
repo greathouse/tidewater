@@ -15,7 +15,7 @@ class PipelineServiceTests {
         def expectedScript = UUID.randomUUID().toString()
         service.execute(new CreatePipelineCommand(expectedName, expectedScript))
 
-        def query = new CommandQuery(storeConfiguration.toConfiguration(), storeConfiguration.datasource)
+        def query = new PipelineQuery(storeConfiguration.toConfiguration(), storeConfiguration.datasource)
         def actual = query.retrieve(expectedName)
         assert actual.id == expectedName
         assert actual.script == expectedScript
