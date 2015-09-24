@@ -4,6 +4,7 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.NewContext
+import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
 import greenmoonsoftware.tidewater.web.pipeline.runs.commands.PipelineRunCommandService
 import greenmoonsoftware.tidewater.web.pipeline.runs.commands.StartPipelineRunCommand
@@ -33,7 +34,8 @@ class PipelineLifecycleManagementEventSubscriber implements EventSubscriber<Even
         context.execute(event.script)
     }
 
-//    private void handle(ContextExecutionEndedEvent event) {
-//        eventBus.post(event)
-//    }
+    private void handle(ContextExecutionEndedEvent event) {
+
+        eventBus.post(event)
+    }
 }

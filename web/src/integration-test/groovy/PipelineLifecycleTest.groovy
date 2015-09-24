@@ -46,7 +46,7 @@ class PipelineLifecycleTest extends AbstractTestNGSpringContextTests {
     void createPipeline() {
         def logMessage = 'Hello'
         pipelineCommandService.execute(new CreatePipelineCommand(pipelineName, """
-            step test(type: Groovy) { println '${logMessage}' }
+            step test { println '${logMessage}' }
         """))
         assert findEventOfType(PipelineCreatedEvent)
     }
@@ -58,6 +58,11 @@ class PipelineLifecycleTest extends AbstractTestNGSpringContextTests {
         def runEvent = findEventOfType(PipelineRunStartedEvent)
         assert runEvent
         runAggregateId = runEvent.aggregateId
+
+//        RetryableAssert.run {
+//            def contextEndEvent = findEventOfType(PipelineRunEndedEvent)
+//            assert contextEndEvent
+//        }
     }
 
     @Test(dependsOnMethods = 'createPipeline')
