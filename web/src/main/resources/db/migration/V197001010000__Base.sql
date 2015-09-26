@@ -25,6 +25,7 @@ create table PipelineRunEvents (
 create table PipelineRun (
     pipelineName VARCHAR,
     contextId VARCHAR,
+    script VARCHAR,
     startTime TIMESTAMP,
     endTime TIMESTAMP
 );

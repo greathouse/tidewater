@@ -1,5 +1,7 @@
 package greenmoonsoftware.tidewater.config
+import groovy.transform.Canonical
 
+@Canonical
 class ContextId implements Serializable {
     private final String value
 
