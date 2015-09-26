@@ -1,9 +1,9 @@
-package greenmoonsoftware.tidewater.web.pipeline.runs.view
+package greenmoonsoftware.tidewater.web.context.view
 
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
-import greenmoonsoftware.tidewater.web.pipeline.runs.events.PipelineRunStartedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelineRunStartedEvent
 import groovy.sql.Sql
 
 import javax.sql.DataSource

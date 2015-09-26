@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.pipeline.runs.view
+package greenmoonsoftware.tidewater.web.context.view
 
 import greenmoonsoftware.tidewater.config.ContextId
 

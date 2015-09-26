@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.pipeline.runs.commands
+package greenmoonsoftware.tidewater.web.context.commands
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreConfiguration
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreQuery
 import greenmoonsoftware.tidewater.json.JsonEventSerializer

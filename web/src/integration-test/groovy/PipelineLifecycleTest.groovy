@@ -8,8 +8,8 @@ import greenmoonsoftware.tidewater.web.pipeline.commands.PipelineQuery
 import greenmoonsoftware.tidewater.web.pipeline.commands.StartPipelineCommand
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
-import greenmoonsoftware.tidewater.web.pipeline.runs.commands.PipelineRunQuery
-import greenmoonsoftware.tidewater.web.pipeline.runs.events.PipelineRunStartedEvent
+import greenmoonsoftware.tidewater.web.context.commands.PipelineRunQuery
+import greenmoonsoftware.tidewater.web.context.events.PipelineRunStartedEvent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.ConfigFileApplicationContextInitializer
 import org.springframework.test.context.ActiveProfiles

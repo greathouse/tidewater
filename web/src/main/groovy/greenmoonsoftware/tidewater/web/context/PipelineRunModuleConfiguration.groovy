@@ -1,6 +1,6 @@
-package greenmoonsoftware.tidewater.web.pipeline.runs
+package greenmoonsoftware.tidewater.web.context
 
-import greenmoonsoftware.tidewater.web.pipeline.runs.commands.PipelineRunQuery
+import greenmoonsoftware.tidewater.web.context.commands.PipelineRunQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

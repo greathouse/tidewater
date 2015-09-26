@@ -1,7 +1,7 @@
-package greenmoonsoftware.tidewater.web.pipeline.runs.view
+package greenmoonsoftware.tidewater.web.context.view
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.web.pipeline.DatabaseInitializer
-import greenmoonsoftware.tidewater.web.pipeline.runs.events.PipelineRunStartedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelineRunStartedEvent
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 

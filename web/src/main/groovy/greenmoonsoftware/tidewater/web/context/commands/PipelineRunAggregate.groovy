@@ -1,11 +1,11 @@
-package greenmoonsoftware.tidewater.web.pipeline.runs.commands
+package greenmoonsoftware.tidewater.web.context.commands
 import greenmoonsoftware.es.event.Aggregate
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventList
 import greenmoonsoftware.tidewater.config.ContextId
-import greenmoonsoftware.tidewater.web.pipeline.runs.events.PipelineRunEndedEvent
-import greenmoonsoftware.tidewater.web.pipeline.runs.events.PipelineRunStartedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelineRunEndedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelineRunStartedEvent
 
 class PipelineRunAggregate implements Aggregate {
     private ContextId id

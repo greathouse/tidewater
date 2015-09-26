@@ -6,9 +6,9 @@ import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.NewContext
 import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
-import greenmoonsoftware.tidewater.web.pipeline.runs.commands.PipelineRunCommandService
-import greenmoonsoftware.tidewater.web.pipeline.runs.commands.StartPipelineRunCommand
-import greenmoonsoftware.tidewater.web.pipeline.runs.events.PipelineRunStartedEvent
+import greenmoonsoftware.tidewater.web.context.commands.PipelineRunCommandService
+import greenmoonsoftware.tidewater.web.context.commands.StartPipelineRunCommand
+import greenmoonsoftware.tidewater.web.context.events.PipelineRunStartedEvent
 
 class PipelineLifecycleManagementEventSubscriber implements EventSubscriber<Event> {
     private final Bus<Event, EventSubscriber> eventBus

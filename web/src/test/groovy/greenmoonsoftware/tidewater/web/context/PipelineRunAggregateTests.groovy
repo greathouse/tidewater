@@ -1,13 +1,13 @@
-package greenmoonsoftware.tidewater.web.pipeline.runs
+package greenmoonsoftware.tidewater.web.context
 
 import greenmoonsoftware.es.command.AggregateCommandApplier
 import greenmoonsoftware.es.event.EventList
 import greenmoonsoftware.tidewater.config.ContextId
-import greenmoonsoftware.tidewater.web.pipeline.runs.commands.EndPipelineRunCommand
-import greenmoonsoftware.tidewater.web.pipeline.runs.commands.PipelineRunAggregate
-import greenmoonsoftware.tidewater.web.pipeline.runs.commands.StartPipelineRunCommand
-import greenmoonsoftware.tidewater.web.pipeline.runs.events.PipelineRunEndedEvent
-import greenmoonsoftware.tidewater.web.pipeline.runs.events.PipelineRunStartedEvent
+import greenmoonsoftware.tidewater.web.context.commands.EndPipelineRunCommand
+import greenmoonsoftware.tidewater.web.context.commands.PipelineRunAggregate
+import greenmoonsoftware.tidewater.web.context.commands.StartPipelineRunCommand
+import greenmoonsoftware.tidewater.web.context.events.PipelineRunEndedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelineRunStartedEvent
 import org.testng.annotations.Test
 
 import java.time.Instant

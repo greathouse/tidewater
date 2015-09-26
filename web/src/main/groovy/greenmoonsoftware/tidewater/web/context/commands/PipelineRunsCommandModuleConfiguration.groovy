@@ -1,9 +1,9 @@
-package greenmoonsoftware.tidewater.web.pipeline.runs.commands
+package greenmoonsoftware.tidewater.web.context.commands
 
 import greenmoonsoftware.es.Bus
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
-import greenmoonsoftware.tidewater.web.pipeline.runs.PipelineRunEventStoreConfiguration
+import greenmoonsoftware.tidewater.web.context.PipelineRunEventStoreConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
