@@ -9,7 +9,7 @@ class ViewTests {
     void givenCreatePipelineEvent_shouldBeAbleToQueryForScript() {
         def ds = DatabaseInitializer.initalize()
         def eventSubscriber = new PipelineViewEventSubscriber(ds)
-        def query = new JdbcViewQueryService(ds)
+        def query = new JdbcPipelineViewQueryService(ds)
 
         def name = UUID.randomUUID().toString()
         def expectedScript = UUID.randomUUID().toString()
@@ -23,7 +23,7 @@ class ViewTests {
     void givenUnknownScript_shouldThrowNotFoundException() {
         def ds = DatabaseInitializer.initalize()
         def eventSubscriber = new PipelineViewEventSubscriber(ds)
-        def query = new JdbcViewQueryService(ds)
+        def query = new JdbcPipelineViewQueryService(ds)
         createPipeline(eventSubscriber) //negative pipeline
 
         try {
@@ -41,7 +41,7 @@ class ViewTests {
         def eventSubscriber = new PipelineViewEventSubscriber(ds)
         def expectedList = (0..5).collect { createPipeline(eventSubscriber) }
 
-        def actual = new JdbcViewQueryService(ds).pipelines
+        def actual = new JdbcPipelineViewQueryService(ds).pipelines
 
         assert actual.containsAll(expectedList)
     }

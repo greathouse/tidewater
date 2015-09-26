@@ -4,10 +4,10 @@ import groovy.sql.Sql
 
 import javax.sql.DataSource
 
-class JdbcViewQueryService implements ViewQueryService {
+class JdbcPipelineViewQueryService implements PipelineViewQueryService {
     private final Sql sql
 
-    JdbcViewQueryService(DataSource ds) {
+    JdbcPipelineViewQueryService(DataSource ds) {
         sql = new Sql(ds)
     }
 

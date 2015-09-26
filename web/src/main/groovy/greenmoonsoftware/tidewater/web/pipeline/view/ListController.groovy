@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class ListController {
-    @Autowired ViewQueryService query
+    @Autowired PipelineViewQueryService query
 
     @RequestMapping(value = '/pipelines', method = RequestMethod.GET)
     List<PipelineView> index() {

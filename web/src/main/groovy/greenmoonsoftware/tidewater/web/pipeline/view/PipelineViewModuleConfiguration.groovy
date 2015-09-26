@@ -16,8 +16,8 @@ class PipelineViewModuleConfiguration {
     @Autowired DataSource ds
 
     @Bean
-    ViewQueryService queryService() {
-        new JdbcViewQueryService(ds)
+    PipelineViewQueryService queryService() {
+        new JdbcPipelineViewQueryService(ds)
     }
 
     @PostConstruct
