@@ -6,15 +6,15 @@ import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.config.NewContext
 import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
-import greenmoonsoftware.tidewater.web.context.commands.PipelineRunCommandService
-import greenmoonsoftware.tidewater.web.context.commands.StartPipelineRunCommand
-import greenmoonsoftware.tidewater.web.context.events.PipelineRunStartedEvent
+import greenmoonsoftware.tidewater.web.context.commands.PipelineContextCommandService
+import greenmoonsoftware.tidewater.web.context.commands.StartPipelineContextCommand
+import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 
 class PipelineLifecycleManagementEventSubscriber implements EventSubscriber<Event> {
     private final Bus<Event, EventSubscriber> eventBus
-    private final PipelineRunCommandService pipelineRunService
+    private final PipelineContextCommandService pipelineRunService
 
-    PipelineLifecycleManagementEventSubscriber(Bus<Event, EventSubscriber> b, PipelineRunCommandService s) {
+    PipelineLifecycleManagementEventSubscriber(Bus<Event, EventSubscriber> b, PipelineContextCommandService s) {
         eventBus = b
         pipelineRunService = s
     }
@@ -25,10 +25,10 @@ class PipelineLifecycleManagementEventSubscriber implements EventSubscriber<Even
     }
 
     private void handle(PipelineStartedEvent event) {
-        pipelineRunService.execute(new StartPipelineRunCommand(event.aggregateId, event.contextId, event.script, event.start))
+        pipelineRunService.execute(new StartPipelineContextCommand(event.aggregateId, event.contextId, event.script, event.start))
     }
 
-    private void handle(PipelineRunStartedEvent event) {
+    private void handle(PipelineContextStartedEvent event) {
         def context = new NewContext(event.contextId)
         context.addEventSubscribers(this)
         context.execute(event.script)

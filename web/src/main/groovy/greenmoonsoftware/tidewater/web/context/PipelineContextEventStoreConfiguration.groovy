@@ -4,11 +4,11 @@ import greenmoonsoftware.es.event.jdbcstore.JdbcStoreConfiguration
 
 import javax.sql.DataSource
 
-class PipelineRunEventStoreConfiguration {
+class PipelineContextEventStoreConfiguration {
     final DataSource datasource
     final tablename = 'PipelineRunEvents'
 
-    PipelineRunEventStoreConfiguration(DataSource d) {
+    PipelineContextEventStoreConfiguration(DataSource d) {
         datasource = d
     }
 

@@ -8,8 +8,8 @@ import greenmoonsoftware.tidewater.web.pipeline.commands.PipelineQuery
 import greenmoonsoftware.tidewater.web.pipeline.commands.StartPipelineCommand
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
-import greenmoonsoftware.tidewater.web.context.commands.PipelineRunQuery
-import greenmoonsoftware.tidewater.web.context.events.PipelineRunStartedEvent
+import greenmoonsoftware.tidewater.web.context.commands.PipelineContextQuery
+import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.ConfigFileApplicationContextInitializer
 import org.springframework.test.context.ActiveProfiles
@@ -25,7 +25,7 @@ class PipelineLifecycleTest extends AbstractTestNGSpringContextTests {
     @Autowired Bus<Event, EventSubscriber> eventBus
     @Autowired PipelineCommandService pipelineCommandService
     @Autowired PipelineQuery pipelineQuery
-    @Autowired PipelineRunQuery pipelineRunQuery
+    @Autowired PipelineContextQuery pipelineRunQuery
 
     private IntegrationTestEventCollector eventCollector
     def pipelineName = "PipelineName-${UUID.randomUUID()}" as String
@@ -55,7 +55,7 @@ class PipelineLifecycleTest extends AbstractTestNGSpringContextTests {
     void startPipeline() {
         pipelineCommandService.execute(new StartPipelineCommand(pipelineName))
         assert findEventOfType(PipelineStartedEvent)
-        def runEvent = findEventOfType(PipelineRunStartedEvent)
+        def runEvent = findEventOfType(PipelineContextStartedEvent)
         assert runEvent
         runAggregateId = runEvent.aggregateId
 

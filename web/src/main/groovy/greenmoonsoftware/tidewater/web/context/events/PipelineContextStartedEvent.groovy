@@ -5,16 +5,16 @@ import greenmoonsoftware.tidewater.config.ContextId
 
 import java.time.Instant
 
-class PipelineRunStartedEvent extends AbstractEvent {
+class PipelineContextStartedEvent extends AbstractEvent {
     String pipelineName
     ContextId contextId
     String script
     Instant start
 
-    protected PipelineRunStartedEvent(){}
+    protected PipelineContextStartedEvent(){}
 
-    PipelineRunStartedEvent(String pipelineName, ContextId contextId, String script, Instant start) {
-        super(contextId.id, PipelineRunStartedEvent.canonicalName)
+    PipelineContextStartedEvent(String pipelineName, ContextId contextId, String script, Instant start) {
+        super(contextId.id, PipelineContextStartedEvent.canonicalName)
         this.pipelineName = pipelineName
         this.contextId = contextId
         this.script = script

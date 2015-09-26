@@ -4,12 +4,12 @@ import greenmoonsoftware.tidewater.config.ContextId
 
 import java.time.Instant
 
-class PipelineRunEndedEvent extends AbstractEvent {
+class PipelineContextEndedEvent extends AbstractEvent {
     private Instant endTime
-    protected PipelineRunEndedEvent(){}
+    protected PipelineContextEndedEvent(){}
 
-    PipelineRunEndedEvent(ContextId c, Instant endTime) {
-        super(c.id, PipelineRunEndedEvent.canonicalName)
+    PipelineContextEndedEvent(ContextId c, Instant endTime) {
+        super(c.id, PipelineContextEndedEvent.canonicalName)
         this.endTime = endTime
     }
 

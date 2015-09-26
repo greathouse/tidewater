@@ -5,13 +5,13 @@ import greenmoonsoftware.tidewater.json.JsonEventSerializer
 
 import javax.sql.DataSource
 
-class PipelineRunQuery extends JdbcStoreQuery<PipelineRunAggregate> {
-    PipelineRunQuery(JdbcStoreConfiguration config, DataSource ds) {
+class PipelineContextQuery extends JdbcStoreQuery<PipelineContextAggregate> {
+    PipelineContextQuery(JdbcStoreConfiguration config, DataSource ds) {
         super(config, ds, new JsonEventSerializer())
     }
 
     @Override
-    protected PipelineRunAggregate create() {
-        return new PipelineRunAggregate()
+    protected PipelineContextAggregate create() {
+        return new PipelineContextAggregate()
     }
 }

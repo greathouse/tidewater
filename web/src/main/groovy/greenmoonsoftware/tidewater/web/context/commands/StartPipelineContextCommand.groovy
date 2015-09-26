@@ -4,13 +4,13 @@ import greenmoonsoftware.tidewater.config.ContextId
 
 import java.time.Instant
 
-class StartPipelineRunCommand implements Command {
+class StartPipelineContextCommand implements Command {
     String pipelineName
     ContextId contextId
     String script
     Instant start
 
-    StartPipelineRunCommand(String pipelineName, ContextId id, String script, Instant start) {
+    StartPipelineContextCommand(String pipelineName, ContextId id, String script, Instant start) {
         this.pipelineName = pipelineName
         contextId = id
         this.script = script

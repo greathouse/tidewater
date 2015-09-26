@@ -1,7 +1,7 @@
 package greenmoonsoftware.tidewater.web.context.view
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.web.pipeline.DatabaseInitializer
-import greenmoonsoftware.tidewater.web.context.events.PipelineRunStartedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
@@ -9,14 +9,14 @@ import javax.sql.DataSource
 import java.time.Instant
 
 class ViewTests {
-    private PipelineRunViewEventSubscriber subscriber
+    private PipelineContextViewEventSubscriber subscriber
     private DataSource dataSource
     private PipelineRunViewQuery view
 
     @BeforeMethod
     void onSetup() {
         dataSource = DatabaseInitializer.initalize()
-        subscriber = new PipelineRunViewEventSubscriber(dataSource)
+        subscriber = new PipelineContextViewEventSubscriber(dataSource)
         view = new PipelineRunViewQuery(dataSource)
         postStartEvent('negative', new ContextId(UUID.randomUUID().toString()), '{negative}', Instant.now())
     }
@@ -39,6 +39,6 @@ class ViewTests {
     }
 
     private postStartEvent(String pipelineName, ContextId contextId, String script, Instant start) {
-        this.subscriber.onEvent(new PipelineRunStartedEvent(pipelineName, contextId, script, start))
+        this.subscriber.onEvent(new PipelineContextStartedEvent(pipelineName, contextId, script, start))
     }
 }

@@ -13,9 +13,9 @@ class PipelineRunViewQuery {
         sql = new Sql(ds)
     }
 
-    PipelineRunView getByContextId(ContextId contextId) {
+    PipelineContextView getByContextId(ContextId contextId) {
         def row = sql.firstRow("select pipelineName, contextId, script, startTime, endTime from PipelineRun where contextId = ${contextId.id}")
-        return new PipelineRunView(
+        return new PipelineContextView(
                 pipelineName: row.pipelineName,
                 contextId: new ContextId(row.contextId as String),
                 script: row.script,

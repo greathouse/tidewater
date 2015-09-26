@@ -4,7 +4,7 @@ import greenmoonsoftware.tidewater.config.ContextId
 
 import java.time.Instant
 
-class PipelineRunView {
+class PipelineContextView {
     String pipelineName
     ContextId contextId
     String script
