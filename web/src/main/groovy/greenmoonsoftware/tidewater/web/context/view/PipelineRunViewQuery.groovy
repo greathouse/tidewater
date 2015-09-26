@@ -14,11 +14,10 @@ class PipelineRunViewQuery {
     }
 
     PipelineContextView getByContextId(ContextId contextId) {
-        def row = sql.firstRow("select pipelineName, contextId, script, startTime, endTime from PipelineRun where contextId = ${contextId.id}")
+        def row = sql.firstRow("select pipelineName, contextId, startTime, endTime from PipelineContext where contextId = ${contextId.id}")
         return new PipelineContextView(
                 pipelineName: row.pipelineName,
                 contextId: new ContextId(row.contextId as String),
-                script: row.script,
                 startTime: row.startTime.toInstant()
         )
     }

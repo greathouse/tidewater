@@ -27,7 +27,6 @@ class PipelineRunAggregateTests {
         def aEvent = actual[0] as PipelineContextStartedEvent
         assert aEvent.pipelineName == pipelineName
         assert aEvent.contextId == contextId
-        assert aEvent.script == script
         assert aEvent.start == start
     }
 

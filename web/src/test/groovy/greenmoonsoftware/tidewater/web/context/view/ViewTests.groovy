@@ -33,7 +33,6 @@ class ViewTests {
         assert actual
         assert actual.pipelineName == pipelineName
         assert actual.contextId == contextId
-        assert actual.script == script
         assert actual.startTime == start
         assert !actual.endTime
     }

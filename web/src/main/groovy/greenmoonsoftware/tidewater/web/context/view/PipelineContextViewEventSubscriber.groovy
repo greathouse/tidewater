@@ -24,9 +24,9 @@ class PipelineContextViewEventSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(PipelineContextStartedEvent event) {
-        sql.execute("""insert into PipelineRun
-                (pipelineName, contextId, script, startTime, endTime)
-                values (${event.pipelineName}, ${event.contextId.id}, ${event.script}, ${Timestamp.from(event.start)}, null)"""
+        sql.execute("""insert into PipelineContext
+                (pipelineName, contextId, startTime, endTime)
+                values (${event.pipelineName}, ${event.contextId.id}, ${Timestamp.from(event.start)}, null)"""
         )
     }
 }

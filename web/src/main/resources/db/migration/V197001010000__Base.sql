@@ -22,10 +22,9 @@ create table PipelineRunEvents (
     data BLOB
 );
 
-create table PipelineRun (
+create table PipelineContext (
     pipelineName VARCHAR,
     contextId VARCHAR,
-    script VARCHAR,
     startTime TIMESTAMP,
     endTime TIMESTAMP
 );
