@@ -2,7 +2,6 @@ package greenmoonsoftware.tidewater.web.pipeline.runs.commands
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreConfiguration
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreQuery
 import greenmoonsoftware.tidewater.json.JsonEventSerializer
-import greenmoonsoftware.tidewater.web.pipeline.runs.PipelineRunAggregate
 
 import javax.sql.DataSource
 
