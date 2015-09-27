@@ -1,16 +1,14 @@
 package greenmoonsoftware.tidewater.web.context.commands
+
 import greenmoonsoftware.es.command.AggregateCommandApplier
 import greenmoonsoftware.es.command.Command
+import greenmoonsoftware.es.command.CommandNotAllowedException
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventList
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextAbortedEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextErrorredEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextFailedEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelinePausedEvent
+import greenmoonsoftware.tidewater.web.context.events.*
+import org.testng.Assert
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
 
@@ -82,5 +80,26 @@ class PipelineContextAggregateTests {
         def aggregate = new PipelineContextAggregate()
         aggregate.apply(new EventList(new PipelineContextStartedEvent(UUID.randomUUID().toString(), c, '{}', Instant.now())))
         return aggregate
+    }
+
+    @DataProvider
+    Object[][] invalidCommandsWhenAggregateIsCompleted() {[
+            [ErrorPipelineContextCommand],
+            [FailPipelineContextCommand],
+            [AbortPipelineContextCommand],
+            [PausePipelineContextCommand]
+    ]}
+
+    @Test(dataProvider = 'invalidCommandsWhenAggregateIsCompleted')
+    void givenCompletedContext_whenInvalidCommand_shouldThrowCommandNotAllowedException(Class<Command> commandClass) {
+        def id = new ContextId(UUID.randomUUID().toString())
+        def aggregate = new PipelineContextAggregate(status: PipelineContextStatus.COMPLETE, id: id)
+        try {
+            AggregateCommandApplier.apply(aggregate, commandClass.newInstance(id))
+            Assert.fail('Should have raised an exception')
+        }
+        catch (CommandNotAllowedException e) {
+            assert true
+        }
     }
 }

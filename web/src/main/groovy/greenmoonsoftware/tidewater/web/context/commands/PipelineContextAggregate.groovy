@@ -1,16 +1,13 @@
 package greenmoonsoftware.tidewater.web.context.commands
+
+import greenmoonsoftware.es.command.CommandNotAllowedException
 import greenmoonsoftware.es.event.Aggregate
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventList
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextAbortedEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextErrorredEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextFailedEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelinePausedEvent
+import greenmoonsoftware.tidewater.web.context.events.*
 
 class PipelineContextAggregate implements Aggregate {
     private ContextId id
@@ -30,19 +27,29 @@ class PipelineContextAggregate implements Aggregate {
     }
 
     private Collection<Event> handle(ErrorPipelineContextCommand command) {
+        ensureNotComplete()
         [new PipelineContextErrorredEvent(new ContextId(command.aggregateId))]
     }
 
     private Collection<Event> handle(FailPipelineContextCommand c) {
+        ensureNotComplete()
         [new PipelineContextFailedEvent(new ContextId(c.aggregateId))]
     }
 
     private Collection<Event> handle(AbortPipelineContextCommand c) {
+        ensureNotComplete()
         [new PipelineContextAbortedEvent(new ContextId(c.aggregateId))]
     }
 
     private Collection<Event> handle(PausePipelineContextCommand c) {
+        ensureNotComplete()
         [new PipelinePausedEvent(new ContextId(c.aggregateId))]
+    }
+
+    private void ensureNotComplete() {
+        if (status == PipelineContextStatus.COMPLETE) {
+            throw new CommandNotAllowedException('Unable to issue command since this PipelineContext is already COMPLETED')
+        }
     }
 
     @Override
