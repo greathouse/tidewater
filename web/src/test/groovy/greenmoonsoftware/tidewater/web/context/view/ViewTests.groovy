@@ -1,5 +1,6 @@
 package greenmoonsoftware.tidewater.web.context.view
 import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
 import greenmoonsoftware.tidewater.web.pipeline.DatabaseInitializer
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 import org.testng.annotations.BeforeMethod
@@ -22,7 +23,7 @@ class ViewTests {
     }
 
     @Test
-    void givenPipelineRunStartedEvent_shouldBeAbleToQueryForPipelineRunByContextId() {
+    void givenPipelineContextStartedEvent_shouldBeAbleToQueryForPipelineRunByContextId() {
         String pipelineName = "name-${UUID.randomUUID()}"
         def contextId = new ContextId(UUID.randomUUID().toString())
         def script = '{}'
@@ -37,7 +38,23 @@ class ViewTests {
         assert !actual.endTime
     }
 
+    @Test
+    void givenPipelineContextEndedEvent_shouldUpdateEndTimeOnAggregate() {
+        def contextId = new ContextId(UUID.randomUUID().toString())
+        postStartEvent(data(), contextId, data(), Instant.now())
+
+        def end = Instant.now().plusSeconds(100)
+        subscriber.onEvent(new PipelineContextEndedEvent(contextId, end))
+
+        def actual = view.getByContextId(contextId)
+        assert actual.endTime == end
+    }
+
     private postStartEvent(String pipelineName, ContextId contextId, String script, Instant start) {
         this.subscriber.onEvent(new PipelineContextStartedEvent(pipelineName, contextId, script, start))
+    }
+
+    private String data() {
+        UUID.randomUUID().toString()
     }
 }
