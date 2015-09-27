@@ -17,7 +17,7 @@ public class AggregateCommandApplier {
         try {
             return invoke(aggregate, method, command);
         } catch (Throwable throwable) {
-            throw new RuntimeException(throwable);
+            throw throwable instanceof RuntimeException ? (RuntimeException)throwable : new RuntimeException(throwable);
         }
     }
 
