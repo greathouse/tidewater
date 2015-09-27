@@ -3,6 +3,7 @@ import greenmoonsoftware.tidewater.config.ContextId
 import groovy.sql.Sql
 
 import javax.sql.DataSource
+import java.time.Instant
 
 class PipelineRunViewQuery {
     private final DataSource ds
@@ -26,7 +27,7 @@ class PipelineRunViewQuery {
                 pipelineName: row.pipelineName,
                 contextId: new ContextId(row.contextId as String),
                 startTime: row.startTime.toInstant(),
-                endTime: row.endTime?.toInstant()
+                endTime: row.endTime ? row.endTime.toInstant() : Instant.MAX
         )
     }
 }

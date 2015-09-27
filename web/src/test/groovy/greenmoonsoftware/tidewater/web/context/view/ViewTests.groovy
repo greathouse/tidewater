@@ -35,7 +35,7 @@ class ViewTests {
         assert actual.pipelineName == pipelineName
         assert actual.contextId == contextId
         assert actual.startTime == start
-        assert !actual.endTime
+        assert actual.endTime == Instant.MAX
     }
 
     @Test
