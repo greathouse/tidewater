@@ -10,6 +10,7 @@ import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextErrorredEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextFailedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelinePausedEvent
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
 
@@ -52,7 +53,8 @@ class PipelineContextAggregateTests {
     Object[][] abnormalCompletion() {[
             [ErrorPipelineContextCommand, PipelineContextErrorredEvent, PipelineContextStatus.ERROR],
             [FailPipelineContextCommand, PipelineContextFailedEvent, PipelineContextStatus.FAILURE],
-            [AbortPipelineContextCommand, PipelineContextAbortedEvent, PipelineContextStatus.ABORT]
+            [AbortPipelineContextCommand, PipelineContextAbortedEvent, PipelineContextStatus.ABORT],
+            [PausePipelineContextCommand, PipelinePausedEvent, PipelineContextStatus.PAUSE]
     ]}
 
     @Test(dataProvider = 'abnormalCompletion')

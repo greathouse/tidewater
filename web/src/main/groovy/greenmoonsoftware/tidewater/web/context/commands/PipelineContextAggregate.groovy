@@ -10,6 +10,7 @@ import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextErrorredEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextFailedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelinePausedEvent
 
 class PipelineContextAggregate implements Aggregate {
     private ContextId id
@@ -40,6 +41,10 @@ class PipelineContextAggregate implements Aggregate {
         [new PipelineContextAbortedEvent(new ContextId(c.aggregateId))]
     }
 
+    private Collection<Event> handle(PausePipelineContextCommand c) {
+        [new PipelinePausedEvent(new ContextId(c.aggregateId))]
+    }
+
     @Override
     void apply(EventList events) {
         events.forEach { event -> EventApplier.apply(this, event) }
@@ -55,5 +60,9 @@ class PipelineContextAggregate implements Aggregate {
 
     private void handle(PipelineContextAbortedEvent e) {
         status = PipelineContextStatus.ABORT
+    }
+
+    private void handle(PipelinePausedEvent e) {
+        status = PipelineContextStatus.PAUSE
     }
 }
