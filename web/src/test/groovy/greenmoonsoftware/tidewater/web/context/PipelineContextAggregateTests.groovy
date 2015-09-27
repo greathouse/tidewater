@@ -1,9 +1,9 @@
 package greenmoonsoftware.tidewater.web.context
-
 import greenmoonsoftware.es.command.AggregateCommandApplier
 import greenmoonsoftware.es.event.EventList
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.web.context.commands.EndPipelineContextCommand
+import greenmoonsoftware.tidewater.web.context.commands.ErrorPipelineContextCommand
 import greenmoonsoftware.tidewater.web.context.commands.PipelineContextAggregate
 import greenmoonsoftware.tidewater.web.context.commands.StartPipelineContextCommand
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
@@ -12,7 +12,7 @@ import org.testng.annotations.Test
 
 import java.time.Instant
 
-class PipelineRunAggregateTests {
+class PipelineContextAggregateTests {
     @Test
     void givenPipelineRunStartedCommand_shouldReturnPipelineRunStartedEvent() {
         def aggregate = new PipelineContextAggregate()
@@ -35,6 +35,20 @@ class PipelineRunAggregateTests {
         def contextId = new ContextId(UUID.randomUUID().toString())
         def aggregate = createAggregate(contextId)
         def endTime = Instant.now()
+        def actual = AggregateCommandApplier.apply(aggregate, new EndPipelineContextCommand(contextId, endTime))
+
+        assert actual.size() == 1
+        def aEvent = actual[0] as PipelineContextEndedEvent
+        assert aEvent
+        assert aEvent.aggregateId == contextId.id
+        assert aEvent.endTime == endTime
+    }
+
+    @Test
+    void givenErrorPipelineContextCommand_thenEndPipelineContextCommand_shouldReturnePipelineContextEndedEvent_withErrorStatus() {
+        def contextId = new ContextId(UUID.randomUUID().toString())
+        def aggregate = createAggregate(contextId)
+        AggregateCommandApplier.apply(aggregate, new ErrorPipelineContextCommand(contextId))
         def actual = AggregateCommandApplier.apply(aggregate, new EndPipelineContextCommand(contextId, endTime))
 
         assert actual.size() == 1

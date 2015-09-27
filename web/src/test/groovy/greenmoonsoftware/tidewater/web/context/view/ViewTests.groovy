@@ -1,8 +1,10 @@
 package greenmoonsoftware.tidewater.web.context.view
+
 import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
-import greenmoonsoftware.tidewater.web.pipeline.DatabaseInitializer
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
+import greenmoonsoftware.tidewater.web.pipeline.DatabaseInitializer
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
@@ -35,7 +37,7 @@ class ViewTests {
         assert actual.pipelineName == pipelineName
         assert actual.contextId == contextId
         assert actual.startTime == start
-        assert actual.status == PipelineContextView.Status.IN_PROGRESS
+        assert actual.status == PipelineContextStatus.IN_PROGRESS
         assert actual.endTime == Instant.EPOCH
     }
 
@@ -49,7 +51,7 @@ class ViewTests {
 
         def actual = view.getByContextId(contextId)
         assert actual.endTime == end
-        assert actual.status == PipelineContextView.Status.COMPLETE
+        assert actual.status == PipelineContextStatus.COMPLETE
     }
 
     private postStartEvent(String pipelineName, ContextId contextId, String script, Instant start) {

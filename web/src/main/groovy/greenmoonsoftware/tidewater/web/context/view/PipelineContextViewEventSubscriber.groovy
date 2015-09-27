@@ -3,6 +3,7 @@ package greenmoonsoftware.tidewater.web.context.view
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
+import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 import groovy.sql.Sql
@@ -36,7 +37,7 @@ class PipelineContextViewEventSubscriber implements EventSubscriber<Event> {
                 ) values (
                     ${event.pipelineName},
                     ${event.contextId.id},
-                    ${PipelineContextView.Status.IN_PROGRESS.value},
+                    ${PipelineContextStatus.IN_PROGRESS.value},
                     ${Timestamp.from(event.start)},
                     ${Timestamp.from(Instant.EPOCH)}
                 )"""
@@ -47,7 +48,7 @@ class PipelineContextViewEventSubscriber implements EventSubscriber<Event> {
         sql.execute("""
                 update PipelineContext set
                     endTime = ${Timestamp.from(event.endTime)},
-                    status = ${PipelineContextView.Status.COMPLETE.value}
+                    status = ${PipelineContextStatus.COMPLETE.value}
                 where contextId = ${event.aggregateId}""")
     }
 }

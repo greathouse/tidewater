@@ -1,5 +1,6 @@
 package greenmoonsoftware.tidewater.web.context.view
 import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
 import groovy.sql.Sql
 
 import javax.sql.DataSource
@@ -26,7 +27,7 @@ class PipelineRunViewQuery {
         return new PipelineContextView(
                 pipelineName: row.pipelineName,
                 contextId: new ContextId(row.contextId as String),
-                status: PipelineContextView.Status.fromValue(row.status as int),
+                status: PipelineContextStatus.fromValue(row.status as int),
                 startTime: row.startTime.toInstant(),
                 endTime: row.endTime.toInstant()
         )

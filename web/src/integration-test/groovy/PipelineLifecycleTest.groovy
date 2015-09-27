@@ -63,7 +63,7 @@ class PipelineLifecycleTest extends AbstractTestNGSpringContextTests {
 
         RetryableAssert.run {
             def contextEndEvent = findEventOfType(PipelineContextEndedEvent)
-            assert contextEndEvent
+            assert contextEndEvent.aggregateId == runAggregateId
         }
     }
 
