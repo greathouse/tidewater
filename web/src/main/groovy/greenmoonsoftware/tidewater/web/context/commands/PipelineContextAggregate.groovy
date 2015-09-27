@@ -5,7 +5,10 @@ import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventList
 import greenmoonsoftware.tidewater.config.ContextId
 import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
+import greenmoonsoftware.tidewater.web.context.events.PipelineContextAbortedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelineContextErrorredEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelineContextFailedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 
 class PipelineContextAggregate implements Aggregate {
@@ -26,12 +29,31 @@ class PipelineContextAggregate implements Aggregate {
     }
 
     private Collection<Event> handle(ErrorPipelineContextCommand command) {
-        status = PipelineContextStatus.ERROR
-        Collections.emptyList()
+        [new PipelineContextErrorredEvent(new ContextId(command.aggregateId))]
+    }
+
+    private Collection<Event> handle(FailPipelineContextCommand c) {
+        [new PipelineContextFailedEvent(new ContextId(c.aggregateId))]
+    }
+
+    private Collection<Event> handle(AbortPipelineContextCommand c) {
+        [new PipelineContextAbortedEvent(new ContextId(c.aggregateId))]
     }
 
     @Override
     void apply(EventList events) {
         events.forEach { event -> EventApplier.apply(this, event) }
+    }
+
+    private void handle(PipelineContextErrorredEvent e) {
+        status = PipelineContextStatus.ERROR
+    }
+
+    private void handle(PipelineContextFailedEvent e) {
+        status = PipelineContextStatus.FAILURE
+    }
+
+    private void handle(PipelineContextAbortedEvent e) {
+        status = PipelineContextStatus.ABORT
     }
 }
