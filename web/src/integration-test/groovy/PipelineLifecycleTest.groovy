@@ -1,15 +1,17 @@
 import greenmoonsoftware.es.Bus
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
+import greenmoonsoftware.test.RetryableAssert
 import greenmoonsoftware.tidewater.web.Application
+import greenmoonsoftware.tidewater.web.context.commands.PipelineContextQuery
+import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
+import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 import greenmoonsoftware.tidewater.web.pipeline.commands.CreatePipelineCommand
 import greenmoonsoftware.tidewater.web.pipeline.commands.PipelineCommandService
 import greenmoonsoftware.tidewater.web.pipeline.commands.PipelineQuery
 import greenmoonsoftware.tidewater.web.pipeline.commands.StartPipelineCommand
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
-import greenmoonsoftware.tidewater.web.context.commands.PipelineContextQuery
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.ConfigFileApplicationContextInitializer
 import org.springframework.test.context.ActiveProfiles
@@ -59,10 +61,10 @@ class PipelineLifecycleTest extends AbstractTestNGSpringContextTests {
         assert runEvent
         runAggregateId = runEvent.aggregateId
 
-//        RetryableAssert.run {
-//            def contextEndEvent = findEventOfType(PipelineRunEndedEvent)
-//            assert contextEndEvent
-//        }
+        RetryableAssert.run {
+            def contextEndEvent = findEventOfType(PipelineContextEndedEvent)
+            assert contextEndEvent
+        }
     }
 
     @Test(dependsOnMethods = 'createPipeline')
