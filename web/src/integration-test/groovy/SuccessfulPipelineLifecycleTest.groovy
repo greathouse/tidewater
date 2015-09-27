@@ -1,34 +1,15 @@
-import greenmoonsoftware.es.Bus
-import greenmoonsoftware.es.event.Event
-import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.test.RetryableAssert
-import greenmoonsoftware.tidewater.web.Application
-import greenmoonsoftware.tidewater.web.context.commands.PipelineContextQuery
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 import greenmoonsoftware.tidewater.web.pipeline.commands.CreatePipelineCommand
-import greenmoonsoftware.tidewater.web.pipeline.commands.PipelineCommandService
-import greenmoonsoftware.tidewater.web.pipeline.commands.PipelineQuery
 import greenmoonsoftware.tidewater.web.pipeline.commands.StartPipelineCommand
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.ConfigFileApplicationContextInitializer
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
-@ContextConfiguration(classes = [Application], initializers = ConfigFileApplicationContextInitializer)
-@ActiveProfiles('test')
-class PipelineLifecycleTest extends AbstractTestNGSpringContextTests {
-    @Autowired Bus<Event, EventSubscriber> eventBus
-    @Autowired PipelineCommandService pipelineCommandService
-    @Autowired PipelineQuery pipelineQuery
-    @Autowired PipelineContextQuery pipelineRunQuery
-
+class SuccessfulPipelineLifecycleTest extends AbstractTidewaterIntegrationTests {
     private IntegrationTestEventCollector eventCollector
     def pipelineName = "PipelineName-${UUID.randomUUID()}" as String
     String runAggregateId
@@ -75,8 +56,8 @@ class PipelineLifecycleTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test(dependsOnMethods = 'startPipeline')
-    void canQueryForPipelineRun() {
-        def run = pipelineRunQuery.retrieve(runAggregateId)
+    void canQueryForPipelineContext() {
+        def run = pipelineContextQuery.retrieve(runAggregateId)
         assert run
     }
 

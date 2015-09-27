@@ -8,7 +8,6 @@ create table PipelineEvents (
 );
 
 create table Pipeline (
-    id VARCHAR,
     name VARCHAR,
     script CLOB
 );
@@ -23,8 +22,8 @@ create table PipelineRunEvents (
 );
 
 create table PipelineContext (
-    pipelineName VARCHAR not null,
     contextId VARCHAR not null,
+    pipelineName VARCHAR not null,
     status int not null,
     startTime TIMESTAMP not null,
     endTime TIMESTAMP not null

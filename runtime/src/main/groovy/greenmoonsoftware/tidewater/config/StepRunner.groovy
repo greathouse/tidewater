@@ -52,7 +52,7 @@ class StepRunner implements Serializable {
         if (success) {
             context.raiseEvent(new StepSuccessfullyCompletedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
         } else {
-            context.raiseEvent(new StepFailedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
+            context.raiseEvent(new StepFailedEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
         }
         return success
     }

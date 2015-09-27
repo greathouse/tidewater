@@ -7,6 +7,6 @@ class PipelineContextFailedEvent extends AbstractEvent {
     protected PipelineContextFailedEvent(){}
 
     PipelineContextFailedEvent(ContextId c) {
-        super(c.id, PipelineContextErrorredEvent.canonicalName)
+        super(c.id, PipelineContextFailedEvent.canonicalName)
     }
 }

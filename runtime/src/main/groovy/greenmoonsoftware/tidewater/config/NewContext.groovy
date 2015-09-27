@@ -65,7 +65,7 @@ final class NewContext extends AbstractContext implements Context, EventSubscrib
             raiseEvent(new ContextExecutionStartedEvent(attributes))
             executeSteps()
             raiseEvent(new ContextExecutionEndedEvent(attributes))
-        }).start()
+        }, "ContextRunThread-${attributes.id}").start()
     }
 
     private executeSteps() {
