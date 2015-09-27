@@ -31,7 +31,7 @@ class PipelineContextAggregateTests {
     }
 
     @Test
-    void givenEndPipelineRunCommand_shouldReturnPipelineRunEndedEvent() {
+    void givenSuccessfulCompletion_shouldReturnPipelineRunEndedEvent_withCompleteStatus() {
         def contextId = new ContextId(UUID.randomUUID().toString())
         def aggregate = createAggregate(contextId)
         def endTime = Instant.now()
@@ -42,6 +42,7 @@ class PipelineContextAggregateTests {
         assert aEvent
         assert aEvent.aggregateId == contextId.id
         assert aEvent.endTime == endTime
+        assert aEvent.status == PipelineContextStatus.COMPLETE
     }
 
     @Test
@@ -49,13 +50,11 @@ class PipelineContextAggregateTests {
         def contextId = new ContextId(UUID.randomUUID().toString())
         def aggregate = createAggregate(contextId)
         AggregateCommandApplier.apply(aggregate, new ErrorPipelineContextCommand(contextId))
-        def actual = AggregateCommandApplier.apply(aggregate, new EndPipelineContextCommand(contextId, endTime))
+        def actual = AggregateCommandApplier.apply(aggregate, new EndPipelineContextCommand(contextId, Instant.now()))
 
         assert actual.size() == 1
         def aEvent = actual[0] as PipelineContextEndedEvent
-        assert aEvent
-        assert aEvent.aggregateId == contextId.id
-        assert aEvent.endTime == endTime
+        assert aEvent.status == PipelineContextStatus.ERROR
     }
 
     private PipelineContextAggregate createAggregate(ContextId c) {

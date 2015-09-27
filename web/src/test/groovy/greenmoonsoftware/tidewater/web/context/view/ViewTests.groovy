@@ -47,11 +47,12 @@ class ViewTests {
         postStartEvent(data(), contextId, data(), Instant.now())
 
         def end = Instant.now().plusSeconds(100)
-        subscriber.onEvent(new PipelineContextEndedEvent(contextId, end))
+        def status = PipelineContextStatus.COMPLETE
+        subscriber.onEvent(new PipelineContextEndedEvent(contextId, end, status))
 
         def actual = view.getByContextId(contextId)
         assert actual.endTime == end
-        assert actual.status == PipelineContextStatus.COMPLETE
+        assert actual.status == status
     }
 
     private postStartEvent(String pipelineName, ContextId contextId, String script, Instant start) {
