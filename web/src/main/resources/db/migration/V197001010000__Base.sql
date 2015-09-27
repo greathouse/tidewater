@@ -23,8 +23,9 @@ create table PipelineRunEvents (
 );
 
 create table PipelineContext (
-    pipelineName VARCHAR,
-    contextId VARCHAR,
-    startTime TIMESTAMP,
-    endTime TIMESTAMP
+    pipelineName VARCHAR not null,
+    contextId VARCHAR not null,
+    status int not null,
+    startTime TIMESTAMP not null,
+    endTime TIMESTAMP not null
 );

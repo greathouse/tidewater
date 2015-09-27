@@ -9,6 +9,7 @@ import groovy.sql.Sql
 
 import javax.sql.DataSource
 import java.sql.Timestamp
+import java.time.Instant
 
 class PipelineContextViewEventSubscriber implements EventSubscriber<Event> {
     private final DataSource dataSource
@@ -25,13 +26,28 @@ class PipelineContextViewEventSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(PipelineContextStartedEvent event) {
-        sql.execute("""insert into PipelineContext
-                (pipelineName, contextId, startTime, endTime)
-                values (${event.pipelineName}, ${event.contextId.id}, ${Timestamp.from(event.start)}, null)"""
+        sql.execute("""
+                insert into PipelineContext (
+                    pipelineName,
+                    contextId,
+                    status,
+                    startTime,
+                    endTime
+                ) values (
+                    ${event.pipelineName},
+                    ${event.contextId.id},
+                    ${PipelineContextView.Status.IN_PROGRESS.value},
+                    ${Timestamp.from(event.start)},
+                    ${Timestamp.from(Instant.EPOCH)}
+                )"""
         )
     }
 
     private void handle(PipelineContextEndedEvent event) {
-        sql.execute("""update PipelineContext set endTime = ${Timestamp.from(event.endTime)} where contextId = ${event.aggregateId}""")
+        sql.execute("""
+                update PipelineContext set
+                    endTime = ${Timestamp.from(event.endTime)},
+                    status = ${PipelineContextView.Status.COMPLETE.value}
+                where contextId = ${event.aggregateId}""")
     }
 }

@@ -35,7 +35,8 @@ class ViewTests {
         assert actual.pipelineName == pipelineName
         assert actual.contextId == contextId
         assert actual.startTime == start
-        assert actual.endTime == Instant.MAX
+        assert actual.status == PipelineContextView.Status.IN_PROGRESS
+        assert actual.endTime == Instant.EPOCH
     }
 
     @Test
@@ -48,6 +49,7 @@ class ViewTests {
 
         def actual = view.getByContextId(contextId)
         assert actual.endTime == end
+        assert actual.status == PipelineContextView.Status.COMPLETE
     }
 
     private postStartEvent(String pipelineName, ContextId contextId, String script, Instant start) {
