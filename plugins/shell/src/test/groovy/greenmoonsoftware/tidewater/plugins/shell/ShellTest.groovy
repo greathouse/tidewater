@@ -1,12 +1,12 @@
 package greenmoonsoftware.tidewater.plugins.shell
 
-import greenmoonsoftware.tidewater.config.NewContext
+import greenmoonsoftware.tidewater.run.RunContext
 import org.testng.annotations.Test
 
 class ShellTest {
     @Test
     void shouldIncludeAllInputs() {
-        def context = new NewContext()
+        def context = new RunContext()
         def contents = 'echo Test'
         def workingDir = UUID.randomUUID().toString()
         def env = [name: 'value']

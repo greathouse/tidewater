@@ -2,7 +2,7 @@ package greenmoonsoftware.tidewater.web.scripts.execute
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
-import greenmoonsoftware.tidewater.config.NewContext
+import greenmoonsoftware.tidewater.run.RunContext
 import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
@@ -11,9 +11,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate
 
 class LogEventHandler implements EventSubscriber<Event> {
     private SimpMessagingTemplate messagingTemplate
-    private NewContext context
+    private RunContext context
 
-    LogEventHandler(NewContext c, SimpMessagingTemplate t) {
+    LogEventHandler(RunContext c, SimpMessagingTemplate t) {
         context = c
         messagingTemplate = t
     }

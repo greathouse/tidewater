@@ -1,9 +1,17 @@
-package greenmoonsoftware.tidewater.config
+package greenmoonsoftware.tidewater.run
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
+import greenmoonsoftware.tidewater.config.AbstractContext
+import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.config.ContextAttributeEventSubscriber
+import greenmoonsoftware.tidewater.config.ContextAttributes
+import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.config.StepRunner
+import greenmoonsoftware.tidewater.config.TidewaterBaseScript
+import greenmoonsoftware.tidewater.config.TidewaterEventStoreConfiguration
 import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.json.JsonEventSerializer
@@ -13,16 +21,16 @@ import greenmoonsoftware.tidewater.step.events.StepDefinedEvent
 import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 
-final class NewContext extends AbstractContext implements Context, EventSubscriber<Event> {
+final class RunContext extends AbstractContext implements Context, EventSubscriber<Event> {
     final ContextAttributes attributes
     private Step currentStep
     private final eventBus = new SimpleEventBus()
 
-    NewContext() {
+    RunContext() {
         this(new ContextId(new Date().format('yyyy-MM-dd_HH-mm-ss')))
     }
 
-    NewContext(ContextId id) {
+    RunContext(ContextId id) {
         attributes = new ContextAttributes(id)
         attributes.metaDirectory.mkdirs()
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)

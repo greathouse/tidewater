@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.web
 
-import greenmoonsoftware.tidewater.config.NewContext
+import greenmoonsoftware.tidewater.run.RunContext
 import greenmoonsoftware.tidewater.config.Tidewater
 import greenmoonsoftware.tidewater.runtime.StdoutLoggingSubscriber
 import org.h2.jdbcx.JdbcDataSource
@@ -47,7 +47,7 @@ class Application {
 
     static void executeFile(String filepath) {
         def script = new File(filepath).text
-        def context = new NewContext()
+        def context = new RunContext()
         context.addEventSubscribers(new StdoutLoggingSubscriber())
         context.execute(script)
     }

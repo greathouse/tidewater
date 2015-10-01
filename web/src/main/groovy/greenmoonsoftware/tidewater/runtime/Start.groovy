@@ -1,5 +1,5 @@
 package greenmoonsoftware.tidewater.runtime
-import greenmoonsoftware.tidewater.config.NewContext
+import greenmoonsoftware.tidewater.run.RunContext
 
 class Start {
     static void main(String[] args) {
@@ -41,7 +41,7 @@ class Start {
     }
 
     public void start(String script) {
-        def context = new NewContext()
+        def context = new RunContext()
         context.addEventSubscribers(new StdoutLoggingSubscriber())
         context.execute(script)
     }

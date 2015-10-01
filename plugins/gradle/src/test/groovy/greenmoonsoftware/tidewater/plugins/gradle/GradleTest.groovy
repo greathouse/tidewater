@@ -1,13 +1,13 @@
 package greenmoonsoftware.tidewater.plugins.gradle
 
-import greenmoonsoftware.tidewater.config.NewContext
+import greenmoonsoftware.tidewater.run.RunContext
 import org.testng.annotations.Test
 
 class GradleTest {
 
     @Test
     void shouldReturnAllInputs() {
-        def context = new NewContext()
+        def context = new RunContext()
         def executable = 'gradle'
         def buildFile = 'build.gradle'
         def tasks = 'clean build deploy'
