@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.gradle
+package greenmoonsoftware.tidewater.plugins.gradle
 import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input

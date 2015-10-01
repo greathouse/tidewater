@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.gradle
+package greenmoonsoftware.tidewater.plugins.gradle
 
 import greenmoonsoftware.tidewater.config.NewContext
 import org.testng.annotations.Test
