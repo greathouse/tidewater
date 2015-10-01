@@ -2,7 +2,6 @@ package greenmoonsoftware.tidewater.gradle
 import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
-import greenmoonsoftware.tidewater.step.events.StepLogEvent
 import groovy.transform.ToString
 
 @ToString
@@ -15,7 +14,7 @@ class Gradle extends AbstractStep {
     @Override
     boolean execute(Context c, File metaDirectory) {
         return executeProcess(buildProcess(c)) {
-            c.raiseEvent(new StepLogEvent(this, it))
+            c.log(this, it)
         }
     }
 

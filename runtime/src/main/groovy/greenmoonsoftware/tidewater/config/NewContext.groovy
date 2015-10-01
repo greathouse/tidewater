@@ -55,7 +55,7 @@ final class NewContext extends AbstractContext implements Context, EventSubscrib
     @Override
     void addDefinedStep(StepDefinition definition) {
         super.addDefinedStep(definition)
-        raiseEvent(new StepDefinedEvent(definition))
+        raiseEvent(new StepDefinedEvent(definition, attributes.id))
     }
 
     def execute(String scriptText) {
@@ -82,7 +82,7 @@ final class NewContext extends AbstractContext implements Context, EventSubscrib
     }
 
     void log(Step step, String message) {
-        raiseEvent(new StepLogEvent(step, message))
+        raiseEvent(new StepLogEvent(step, attributes.id, message))
     }
 
     @Override

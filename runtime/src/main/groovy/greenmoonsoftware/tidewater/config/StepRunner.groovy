@@ -43,7 +43,7 @@ class StepRunner implements Serializable {
 
     private StepErroredEvent handleErroredStep(Step step, Date startDate, Exception e) {
         def endDate = new Date()
-        context.raiseEvent(new StepErroredEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()), e))
+        context.raiseEvent(new StepErroredEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()), e))
     }
 
     private boolean executeStep(Step step, Date startDate) {
@@ -69,7 +69,7 @@ class StepRunner implements Serializable {
         def c = (Closure) defined.configureClosure.rehydrate(new StepDelegate(context, step), null, null)
         c.resolveStrategy = Closure.DELEGATE_ONLY
         c.call()
-        context.raiseEvent(new StepConfiguredEvent(step))
+        context.raiseEvent(new StepConfiguredEvent(step, context.attributes.id))
         return step
     }
 }
