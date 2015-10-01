@@ -4,10 +4,10 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
 import greenmoonsoftware.tidewater.json.JsonEventSerializer
-import greenmoonsoftware.tidewater.web.AbstractCommandService
+import greenmoonsoftware.tidewater.web.AbstractJdbcCommandService
 import greenmoonsoftware.tidewater.web.pipeline.PipelineEventStoreConfiguration
 
-class PipelineCommandService extends AbstractCommandService {
+class PipelineCommandService extends AbstractJdbcCommandService {
     PipelineCommandService(Bus<Event, EventSubscriber> b, PipelineEventStoreConfiguration c) {
         super(b,
                 new JdbcStoreEventSubscriber(c.toConfiguration(), c.datasource, new JsonEventSerializer()),

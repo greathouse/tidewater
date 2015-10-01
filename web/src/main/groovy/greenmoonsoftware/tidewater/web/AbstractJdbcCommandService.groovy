@@ -8,12 +8,12 @@ import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreQuery
 
-abstract class AbstractCommandService {
+abstract class AbstractJdbcCommandService {
     protected final Bus<Event, EventSubscriber> eventBus
     protected final JdbcStoreEventSubscriber eventStore
     protected final JdbcStoreQuery<Aggregate> query
 
-    AbstractCommandService(Bus<Event, EventSubscriber> b, JdbcStoreEventSubscriber eventStore, JdbcStoreQuery<Aggregate> q) {
+    AbstractJdbcCommandService(Bus<Event, EventSubscriber> b, JdbcStoreEventSubscriber eventStore, JdbcStoreQuery<Aggregate> q) {
         eventBus = b
         this.eventStore = eventStore
         query = q
