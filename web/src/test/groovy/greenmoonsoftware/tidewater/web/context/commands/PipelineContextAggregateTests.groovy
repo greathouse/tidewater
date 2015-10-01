@@ -5,7 +5,7 @@ import greenmoonsoftware.es.command.Command
 import greenmoonsoftware.es.command.CommandNotAllowedException
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventList
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
 import greenmoonsoftware.tidewater.web.context.events.*
 import org.testng.Assert

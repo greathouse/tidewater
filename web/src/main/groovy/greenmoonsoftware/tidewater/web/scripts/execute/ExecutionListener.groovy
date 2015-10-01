@@ -2,7 +2,7 @@ package greenmoonsoftware.tidewater.web.scripts.execute
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
-import greenmoonsoftware.tidewater.config.events.ContextExecutionStartedEvent
+import greenmoonsoftware.tidewater.context.events.ContextExecutionStartedEvent
 import org.springframework.stereotype.Component
 
 @Component

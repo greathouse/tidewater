@@ -1,7 +1,7 @@
 package greenmoonsoftware.tidewater.web.context.commands
 
 import greenmoonsoftware.es.command.Command
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 
 class ErrorPipelineContextCommand implements Command {
     ContextId contextId

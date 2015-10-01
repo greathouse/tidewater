@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.plugins.git
 
-import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.context.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output

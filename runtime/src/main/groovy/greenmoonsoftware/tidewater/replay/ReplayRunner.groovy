@@ -4,10 +4,10 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcEventQuery
-import greenmoonsoftware.tidewater.config.ContextAttributes
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextAttributes
+import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.json.JsonEventSerializer
-import greenmoonsoftware.tidewater.config.TidewaterEventStoreConfiguration
+import greenmoonsoftware.tidewater.context.TidewaterEventStoreConfiguration
 
 public class ReplayRunner {
     private final ContextAttributes attributes

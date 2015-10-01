@@ -3,7 +3,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 
 class ContextIdSerializer extends JsonSerializer<ContextId> {
     @Override

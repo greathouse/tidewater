@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.web.pipeline.events
 import greenmoonsoftware.es.event.AbstractEvent
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 
 import java.time.Instant
 

@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.step
 
-import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.context.Context
 
 class StepDouble implements Step {
     private static final String unsupportedExceptionMessage = 'This is a step double. This step is created due to serialization.'

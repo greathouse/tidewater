@@ -1,7 +1,7 @@
 package greenmoonsoftware.tidewater.web
 
 import greenmoonsoftware.tidewater.run.RunContext
-import greenmoonsoftware.tidewater.config.Tidewater
+import greenmoonsoftware.tidewater.context.Tidewater
 import greenmoonsoftware.tidewater.runtime.StdoutLoggingSubscriber
 import org.h2.jdbcx.JdbcDataSource
 import org.slf4j.Logger

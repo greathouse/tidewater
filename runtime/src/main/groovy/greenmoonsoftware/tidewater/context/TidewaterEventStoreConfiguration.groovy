@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config
+package greenmoonsoftware.tidewater.context
 
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreConfiguration
 import groovy.sql.Sql

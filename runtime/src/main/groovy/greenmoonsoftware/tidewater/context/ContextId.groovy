@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config
+package greenmoonsoftware.tidewater.context
 import groovy.transform.Canonical
 
 @Canonical

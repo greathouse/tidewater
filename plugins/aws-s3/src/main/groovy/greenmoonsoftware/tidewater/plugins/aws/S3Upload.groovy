@@ -3,7 +3,7 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.transfer.TransferManager
 import com.amazonaws.services.s3.transfer.Upload
-import greenmoonsoftware.tidewater.config.Context
+import greenmoonsoftware.tidewater.context.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 

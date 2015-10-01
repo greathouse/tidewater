@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config
+package greenmoonsoftware.tidewater.context
 
 class ParameterResolver {
     private List<String> parameterNames

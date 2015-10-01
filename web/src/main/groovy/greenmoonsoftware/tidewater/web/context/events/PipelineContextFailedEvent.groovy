@@ -1,7 +1,7 @@
 package greenmoonsoftware.tidewater.web.context.events
 
 import greenmoonsoftware.es.event.AbstractEvent
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 
 class PipelineContextFailedEvent extends AbstractEvent {
     protected PipelineContextFailedEvent(){}

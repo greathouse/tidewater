@@ -3,7 +3,7 @@ import greenmoonsoftware.es.event.Aggregate
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventList
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.node.TextNode
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 
 class ContextIdDeserializer extends JsonDeserializer<ContextId> {
     @Override

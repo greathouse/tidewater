@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.runtime
 
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.restart.RestartContext
 
 class Retry {

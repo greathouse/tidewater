@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.restart.events
 import greenmoonsoftware.es.event.AbstractEvent
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 
 class ContextExecutionRestartedEvent extends AbstractEvent {
     final ContextId id

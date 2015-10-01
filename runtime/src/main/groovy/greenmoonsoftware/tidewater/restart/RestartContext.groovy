@@ -5,8 +5,8 @@ import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcEventQuery
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
-import greenmoonsoftware.tidewater.config.*
-import greenmoonsoftware.tidewater.config.events.ContextExecutionEndedEvent
+import greenmoonsoftware.tidewater.context.*
+import greenmoonsoftware.tidewater.context.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.restart.events.ContextExecutionRestartedEvent
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition

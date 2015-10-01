@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config
+package greenmoonsoftware.tidewater.context
 
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition

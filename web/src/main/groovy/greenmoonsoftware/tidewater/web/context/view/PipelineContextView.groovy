@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.web.context.view
 
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
 
 import java.time.Instant

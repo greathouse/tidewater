@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.config
+package greenmoonsoftware.tidewater.context
 
 final class ContextAttributes implements Serializable {
     private final ContextId id

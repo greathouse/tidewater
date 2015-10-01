@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.jdbcstore.EventSerializer
-import greenmoonsoftware.tidewater.config.ContextId
+import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.json.contextId.ContextIdDeserializer
 import greenmoonsoftware.tidewater.json.contextId.ContextIdSerializer
 import greenmoonsoftware.tidewater.json.duration.DurationDeserializer
