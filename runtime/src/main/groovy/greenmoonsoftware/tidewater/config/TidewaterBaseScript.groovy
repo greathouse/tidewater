@@ -66,7 +66,7 @@ abstract class TidewaterBaseScript extends Script implements Serializable {
     private static void addImports(CompilerConfiguration cc) {
         def imports = new ImportCustomizer()
         imports.addStarImports(
-                'greenmoonsoftware.tidewater.scm.git',
+                'greenmoonsoftware.tidewater.plugins.git',
                 'greenmoonsoftware.tidewater.plugins.gradle',
                 'greenmoonsoftware.tidewater.plugins.shell'
         )

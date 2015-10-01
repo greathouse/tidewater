@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.scm.git
+package greenmoonsoftware.tidewater.plugins.git
 
 import org.testng.annotations.Test
 
