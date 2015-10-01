@@ -3,6 +3,7 @@ include (
         'eventsourcing:jdbc-event-store',
 		'plugins:aws-s3',
 		'plugins:gradle',
+		'plugins:shell',
 		'runtime',
 		'web'
 )

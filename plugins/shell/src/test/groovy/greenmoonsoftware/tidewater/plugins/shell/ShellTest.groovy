@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.shell
+package greenmoonsoftware.tidewater.plugins.shell
 
 import greenmoonsoftware.tidewater.config.NewContext
 import org.testng.annotations.Test

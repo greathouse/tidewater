@@ -1,0 +1,8 @@
+apply plugin: 'groovy'
+
+dependencies {
+    compile project(':runtime')
+    compile 'org.codehaus.groovy:groovy:2.4.4'
+
+    testCompile 'org.testng:testng:6.9.6'
+}

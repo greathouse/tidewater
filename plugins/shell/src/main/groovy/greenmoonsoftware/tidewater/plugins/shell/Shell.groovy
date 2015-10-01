@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.shell
+package greenmoonsoftware.tidewater.plugins.shell
 import greenmoonsoftware.tidewater.config.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
