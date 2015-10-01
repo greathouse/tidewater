@@ -4,7 +4,7 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
 import greenmoonsoftware.tidewater.json.JsonEventSerializer
-import greenmoonsoftware.tidewater.web.AbstractJdbcCommandService
+import greenmoonsoftware.es.event.jdbcstore.AbstractJdbcCommandService
 import greenmoonsoftware.tidewater.web.pipeline.PipelineEventStoreConfiguration
 
 class PipelineCommandService extends AbstractJdbcCommandService {
