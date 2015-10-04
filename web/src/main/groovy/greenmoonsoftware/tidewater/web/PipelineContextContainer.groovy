@@ -14,4 +14,12 @@ final class PipelineContextContainer {
     boolean abort(ContextId c) {
         throw new UnsupportedOperationException('Not yet supported')
     }
+
+    void remove(ContextId c) {
+        runningThreads.remove(c)
+    }
+
+    Collection<ContextId> getRunningContextIds() {
+        runningThreads.keySet().asImmutable()
+    }
 }
