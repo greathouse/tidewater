@@ -27,7 +27,9 @@ class Application {
         else {
             logger.info('Tidewater Home set to {}', Tidewater.WORKSPACE_ROOT)
             TidewaterServerProperties.SCRIPT_REPO_DIRECTORY.mkdirs()
-            SpringApplication.run(Application.class, args)
+            def app = new SpringApplication(Application)
+            app.setAdditionalProfiles('production')
+            app.run(args)
         }
     }
 
