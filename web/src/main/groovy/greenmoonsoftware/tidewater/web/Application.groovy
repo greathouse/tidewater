@@ -73,4 +73,9 @@ class Application {
         }
         return datasource
     }
+
+    @Bean
+    PipelineContextContainer pipelineContextContainer() {
+        new PipelineContextContainer()
+    }
 }

@@ -2,6 +2,7 @@ package greenmoonsoftware.tidewater.web.pipeline
 import greenmoonsoftware.es.Bus
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
+import greenmoonsoftware.tidewater.web.PipelineContextContainer
 import greenmoonsoftware.tidewater.web.context.commands.PipelineContextCommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -15,12 +16,13 @@ class PipelineModuleConfiguration {
     @Autowired Bus<Event, EventSubscriber> eventBus
     @Autowired DataSource ds
     @Autowired PipelineContextCommandService pipelineRunCommandService
+    @Autowired PipelineContextContainer pipelineContextContainer
 
     @Bean
     PipelineEventStoreConfiguration eventStoreConfiguration() { new PipelineEventStoreConfiguration(ds) }
 
     @PostConstruct
     void postConstruct() {
-        eventBus.register(new PipelineLifecycleManagementEventSubscriber(eventBus, pipelineRunCommandService))
+        eventBus.register(new PipelineLifecycleManagementEventSubscriber(eventBus, pipelineRunCommandService, pipelineContextContainer))
     }
 }
