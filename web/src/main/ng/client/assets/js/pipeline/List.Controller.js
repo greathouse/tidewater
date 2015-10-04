@@ -6,6 +6,16 @@ function ($scope, $http, foundationApi) {
       $scope.pipelines = response.data;
     }, function(response) {
       foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
-    });
+    })
+  ;
+
+  $scope.startPipeline = function(pipelineName) {
+    $http.get('/pipelines/' + pipelineName + '/start').
+        then (function (response) {
+            foundationApi.publish('main-notifications', { color: 'success', autoclose: 3000, content: 'Pipeline Started' });
+        }, function(response) {
+            foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
+        });
+  }
 }
 ]);
