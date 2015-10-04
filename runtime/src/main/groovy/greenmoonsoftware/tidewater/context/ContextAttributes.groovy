@@ -8,7 +8,7 @@ final class ContextAttributes implements Serializable {
 
     ContextAttributes(ContextId id) {
         this.id = id
-        workspace = new File("${Tidewater.WORKSPACE_ROOT}/$id")
+        workspace = new File("${Tidewater.WORKSPACE_ROOT}/contexts/$id")
         metaDirectory = new File(workspace, '.meta')
     }
 

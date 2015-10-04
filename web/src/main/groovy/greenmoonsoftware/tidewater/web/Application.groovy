@@ -1,7 +1,6 @@
 package greenmoonsoftware.tidewater.web
-
-import greenmoonsoftware.tidewater.run.RunContext
 import greenmoonsoftware.tidewater.context.Tidewater
+import greenmoonsoftware.tidewater.run.RunContext
 import greenmoonsoftware.tidewater.runtime.StdoutLoggingSubscriber
 import org.h2.jdbcx.JdbcDataSource
 import org.slf4j.Logger
@@ -58,7 +57,7 @@ class Application {
         def d = new JdbcDataSource()
         d.with {
             user = 'testuser'
-            url = "jdbc:h2:${Tidewater.WORKSPACE_ROOT}/web".toString()
+            url = "jdbc:h2:${Tidewater.WORKSPACE_ROOT}/web/db".toString()
         }
         return d
     }
