@@ -70,7 +70,7 @@ gulp.task('copy', function() {
 });
 
 gulp.task("copy:bower-files", function(){
-  return gulp.src(mainBowerFiles())
+  return gulp.src(mainBowerFiles({"debug": true}))
     .pipe($.concat('vendor.js'))
     .pipe(gulp.dest(paths.outputDir + "/assets/lib"));
 });

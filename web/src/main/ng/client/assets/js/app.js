@@ -10,7 +10,8 @@
     'foundation.dynamicRouting',
     'foundation.dynamicRouting.animations',
     
-    'pipelineModule'
+    'pipelineModule',
+    'notificationModule'
   ])
     .config(config)
     .run(run)

@@ -24,11 +24,15 @@
   ],
   "dependencies": {
     "foundation-apps": "~1.1.0",
+    "stomp-websocket": "~2.0",
     "sockjs-client": "~1.0.3"
   },
   "overrides": {
     "foundation-apps": {
       "ignore": true
+    },
+    "stomp-websocket": {
+      "main": "dist/stomp.js"
     }
   }
 }
