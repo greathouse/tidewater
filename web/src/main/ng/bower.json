@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "foundation-apps": "~1.1.0",
-    "stomp-websocket": "~2.0",
+    "stomp-websocket": "~2.3.4",
     "sockjs-client": "~1.0.3"
   },
   "overrides": {
@@ -32,7 +32,7 @@
       "ignore": true
     },
     "stomp-websocket": {
-      "main": "dist/stomp.js"
+      "main": "lib/stomp.js"
     }
   }
 }
