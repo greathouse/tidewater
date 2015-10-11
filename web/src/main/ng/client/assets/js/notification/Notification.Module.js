@@ -11,7 +11,21 @@ function run(foundationApi) {
     stompClient.connect({}, function(frame) {
         stompClient.subscribe('/topic/events', function(event){
             console.log(event);
-            foundationApi.publish('main-notifications', { color: 'success', autoclose: 3000, content: 'Some Event' });
+            processEvent(JSON.parse(event.body));
         });
     });
+
+    function processEvent(event) {
+        var response = document.getElementById('response');
+        if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {
+            notifySuccess(event.aggregateId, event.pipelineName + ' Started');
+        }
+        if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent') {
+            notifySuccess(event.aggregateId, 'Ended');
+        }
+    };
+
+    function notifySuccess(title, text) {
+        foundationApi.publish('main-notifications', { color: 'success', autoclose: 3000, title: title, content: text });
+    };
 };

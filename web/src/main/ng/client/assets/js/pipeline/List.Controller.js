@@ -1,6 +1,6 @@
-angular.module('pipelineModule').controller('ListController', ['$scope', '$http', 'FoundationApi',
+angular.module('pipelineModule').controller('ListController', ['$scope', '$http',
 
-function ($scope, $http, foundationApi) {
+function ($scope, $http) {
   $http.get('/pipelines').
     then (function (response) {
       $scope.pipelines = response.data;
@@ -12,9 +12,7 @@ function ($scope, $http, foundationApi) {
   $scope.startPipeline = function(pipelineName) {
     $http.get('/pipelines/' + pipelineName + '/start').
         then (function (response) {
-            foundationApi.publish('main-notifications', { color: 'success', autoclose: 3000, content: 'Pipeline Started' });
         }, function(response) {
-            foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
         });
   }
 }
