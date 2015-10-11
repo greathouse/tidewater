@@ -31,4 +31,15 @@ function config($urlProvider, $locationProvider) {
 
 function run() {
   FastClick.attach(document.body);
+  var channel = postal.channel('TidewaterEvents');
+
+  var stompClient = null;
+  var socket = new SockJS('/hello');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({}, function(frame) {
+      stompClient.subscribe('/topic/events', function(event){
+          console.log(event);
+          channel.publish( "event.received", JSON.parse(event.body) );
+      });
+  });
 }

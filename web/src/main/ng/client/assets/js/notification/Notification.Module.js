@@ -1,22 +1,15 @@
 var notificationModule = angular.module('notificationModule', [])
-.run(run)
-;
+.run(run);
 
 run.$inject = ['FoundationApi'];
 
 function run(foundationApi) {
-    var stompClient = null;
-    var socket = new SockJS('/hello');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function(frame) {
-        stompClient.subscribe('/topic/events', function(event){
-            console.log(event);
-            processEvent(JSON.parse(event.body));
-        });
-    });
+    var channel = postal.channel('TidewaterEvents');
+    var subscription = channel.subscribe( "event.received", function ( data ) {
+        processEvent(data);
+    } );
 
     function processEvent(event) {
-        var response = document.getElementById('response');
         if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {
             notifySuccess(event.aggregateId, event.pipelineName + ' Started');
         }
