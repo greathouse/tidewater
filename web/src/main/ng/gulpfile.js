@@ -12,6 +12,7 @@ var rimraf   = require('rimraf');
 var router   = require('front-router');
 var sequence = require('run-sequence');
 var mainBowerFiles = require('main-bower-files');
+var headerfooter = require('gulp-headerfooter');
 
 // Check for --production flag
 var isProduction = !!(argv.production);
@@ -65,8 +66,7 @@ gulp.task('copy', function() {
   return gulp.src(paths.assets, {
     base: './client/'
   })
-    .pipe(gulp.dest(paths.outputDir))
-  ;
+  .pipe(gulp.dest(paths.outputDir))
 });
 
 gulp.task("copy:bower-files", function(){
@@ -145,6 +145,7 @@ gulp.task('uglify:app', function() {
     }));
 
   return gulp.src(paths.appJS)
+    .pipe(headerfooter('(function() {\n', '\n})();\n\n'))
     .pipe(uglify)
     .pipe($.concat('app.js'))
     .pipe(gulp.dest(paths.outputDir + '/assets/js/'))
