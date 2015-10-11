@@ -31,7 +31,6 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-json:2.4.4'
     compile 'org.flywaydb:flyway-core'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
-    compile 'org.springframework.boot:spring-boot-starter-mustache'
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-websocket'
     compile 'org.springframework:spring-messaging'

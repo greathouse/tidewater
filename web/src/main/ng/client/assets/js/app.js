@@ -9,8 +9,9 @@ angular.module('application', [
   'foundation.dynamicRouting',
   'foundation.dynamicRouting.animations',
 
-  'pipelineModule',
-  'notificationModule'
+  'executorModule',
+  'notificationModule',
+  'pipelineModule'
 ])
   .config(config)
   .run(run)
