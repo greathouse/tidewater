@@ -11,9 +11,12 @@ function ($scope, $http) {
 
   $scope.startPipeline = function(pipelineName) {
     $http.get('/pipelines/' + pipelineName + '/start').
-        then (function (response) {
-        }, function(response) {
-        });
+        then (
+            function (response) {
+            },
+            function(response) {
+            }
+        );
   }
 }
 ]);
