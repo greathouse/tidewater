@@ -8,7 +8,12 @@ function ($scope, $http, foundationApi) {
         if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {
             $scope.pipelineContexts.push({"pipelineContextName": event.aggregateId});
         }
+        else if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent') {
+            $scope.pipelineContexts = $scope.pipelineContexts.filter(function(e) {
+                return e.pipelineContextName != event.aggregateId;
+            });
+            $scope.$apply();
+        }
     } );
 }
-
 ]);
