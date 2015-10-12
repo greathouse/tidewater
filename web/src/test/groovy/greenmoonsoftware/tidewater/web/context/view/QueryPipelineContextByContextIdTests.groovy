@@ -1,27 +1,17 @@
 package greenmoonsoftware.tidewater.web.context.view
-
 import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
-import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
-import greenmoonsoftware.tidewater.web.pipeline.DatabaseInitializer
-import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 
-import javax.sql.DataSource
 import java.time.Instant
 
-class QueryPipelineContextByContextIdTests {
-    private PipelineContextViewEventSubscriber subscriber
-    private DataSource dataSource
+class QueryPipelineContextByContextIdTests extends QueryPipelineContextTestBase {
     private QueryPipelineContextByContextId view
 
-    @BeforeMethod
-    void onSetup() {
-        dataSource = DatabaseInitializer.initalize()
-        subscriber = new PipelineContextViewEventSubscriber(dataSource)
+    protected void onSetup() {
         view = new QueryPipelineContextByContextId(dataSource)
-        postStartEvent('negative', new ContextId(UUID.randomUUID().toString()), '{negative}', Instant.now())
+        startContext('negative', new ContextId(UUID.randomUUID().toString()), '{negative}', Instant.now())
     }
 
     @Test
@@ -30,7 +20,7 @@ class QueryPipelineContextByContextIdTests {
         def contextId = new ContextId(UUID.randomUUID().toString())
         def script = '{}'
         def start = Instant.now()
-        postStartEvent(pipelineName, contextId, script, start)
+        startContext(pipelineName, contextId, script, start)
 
         def actual = this.view.getByContextId(contextId)
         assert actual
@@ -44,7 +34,7 @@ class QueryPipelineContextByContextIdTests {
     @Test
     void givenPipelineContextEndedEvent_shouldUpdateEndTimeOnAggregate() {
         def contextId = new ContextId(UUID.randomUUID().toString())
-        postStartEvent(data(), contextId, data(), Instant.now())
+        startContext(data(), contextId, data(), Instant.now())
 
         def end = Instant.now().plusSeconds(100)
         def status = PipelineContextStatus.COMPLETE
@@ -53,10 +43,6 @@ class QueryPipelineContextByContextIdTests {
         def actual = view.getByContextId(contextId)
         assert actual.endTime == end
         assert actual.status == status
-    }
-
-    private postStartEvent(String pipelineName, ContextId contextId, String script, Instant start) {
-        this.subscriber.onEvent(new PipelineContextStartedEvent(pipelineName, contextId, script, start))
     }
 
     private String data() {
