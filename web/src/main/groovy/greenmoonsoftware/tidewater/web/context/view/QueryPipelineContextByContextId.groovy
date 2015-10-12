@@ -5,11 +5,11 @@ import groovy.sql.Sql
 
 import javax.sql.DataSource
 
-class PipelineRunViewQuery {
+class QueryPipelineContextByContextId {
     private final DataSource ds
     private final Sql sql
 
-    PipelineRunViewQuery(DataSource d) {
+    QueryPipelineContextByContextId(DataSource d) {
         ds = d
         sql = new Sql(ds)
     }

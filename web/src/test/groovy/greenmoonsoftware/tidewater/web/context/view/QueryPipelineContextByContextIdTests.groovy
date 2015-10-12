@@ -11,16 +11,16 @@ import org.testng.annotations.Test
 import javax.sql.DataSource
 import java.time.Instant
 
-class ViewTests {
+class QueryPipelineContextByContextIdTests {
     private PipelineContextViewEventSubscriber subscriber
     private DataSource dataSource
-    private PipelineRunViewQuery view
+    private QueryPipelineContextByContextId view
 
     @BeforeMethod
     void onSetup() {
         dataSource = DatabaseInitializer.initalize()
         subscriber = new PipelineContextViewEventSubscriber(dataSource)
-        view = new PipelineRunViewQuery(dataSource)
+        view = new QueryPipelineContextByContextId(dataSource)
         postStartEvent('negative', new ContextId(UUID.randomUUID().toString()), '{negative}', Instant.now())
     }
 
