@@ -8,7 +8,8 @@ controller: ListController
         <div class="large-9">
             <div class="grid-block" ng-repeat="p in pipelines">
                 <div class="large-3">
-                    <h4>{{p.name}}</h4>
+                    <img ng-src="{{p.img}}" />
+                    <span>{{p.name}}</span>
                 </div>
                 <div class="large-6">&nbsp;</div>
                 <div class="large-3 float-right">
