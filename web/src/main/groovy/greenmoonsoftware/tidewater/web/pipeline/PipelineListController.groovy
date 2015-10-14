@@ -1,7 +1,6 @@
 package greenmoonsoftware.tidewater.web.pipeline
-
 import greenmoonsoftware.tidewater.web.pipeline.view.PipelineView
-import greenmoonsoftware.tidewater.web.pipeline.view.PipelineViewQueryService
+import greenmoonsoftware.tidewater.web.pipeline.view.PipelineViewRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -9,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class PipelineListController {
-    @Autowired PipelineViewQueryService query
+    @Autowired PipelineViewRepository repository
 
     @RequestMapping(value = '/pipelines', method = RequestMethod.GET)
     List<PipelineView> index() {
-        query.pipelines
+        repository.findAll().asList()
     }
 }
