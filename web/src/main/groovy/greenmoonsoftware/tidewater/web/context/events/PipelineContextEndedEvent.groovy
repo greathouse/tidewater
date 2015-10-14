@@ -8,11 +8,13 @@ import java.time.Instant
 class PipelineContextEndedEvent extends AbstractEvent {
     private Instant endTime
     private PipelineContextStatus status
+    private String pipelineName
 
     protected PipelineContextEndedEvent(){}
 
-    PipelineContextEndedEvent(ContextId c, Instant endTime, PipelineContextStatus s) {
+    PipelineContextEndedEvent(ContextId c, String pipelineName, Instant endTime, PipelineContextStatus s) {
         super(c.id, PipelineContextEndedEvent.canonicalName)
+        this.pipelineName = pipelineName
         this.endTime = endTime
         status = s
     }
@@ -23,5 +25,9 @@ class PipelineContextEndedEvent extends AbstractEvent {
 
     PipelineContextStatus getStatus() {
         status
+    }
+
+    String getPipelineName() {
+        pipelineName
     }
 }

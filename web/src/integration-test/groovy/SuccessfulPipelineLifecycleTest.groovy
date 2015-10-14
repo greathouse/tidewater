@@ -46,6 +46,7 @@ class SuccessfulPipelineLifecycleTest extends AbstractTidewaterIntegrationTests 
         RetryableAssert.run {
             def contextEndEvent = findEventOfType(PipelineContextEndedEvent)
             assert contextEndEvent.aggregateId == runAggregateId
+            assert contextEndEvent.pipelineName == pipelineName
         }
     }
 

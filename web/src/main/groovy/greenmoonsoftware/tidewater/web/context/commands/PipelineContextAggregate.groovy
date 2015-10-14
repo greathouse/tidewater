@@ -11,6 +11,7 @@ import greenmoonsoftware.tidewater.web.context.events.*
 
 class PipelineContextAggregate implements Aggregate {
     private ContextId id
+    private String pipelineName
     private PipelineContextStatus status
 
     @Override
@@ -23,7 +24,7 @@ class PipelineContextAggregate implements Aggregate {
     }
 
     private Collection<Event> handle(EndPipelineContextCommand command) {
-        [new PipelineContextEndedEvent(new ContextId(command.aggregateId), command.endTime, status ?: PipelineContextStatus.COMPLETE)]
+        [new PipelineContextEndedEvent(new ContextId(command.aggregateId), pipelineName, command.endTime, status ?: PipelineContextStatus.COMPLETE)]
     }
 
     private Collection<Event> handle(ErrorPipelineContextCommand command) {
@@ -55,6 +56,11 @@ class PipelineContextAggregate implements Aggregate {
     @Override
     void apply(EventList events) {
         events.forEach { event -> EventApplier.apply(this, event) }
+    }
+
+    private void handle(PipelineContextStartedEvent e) {
+        id = e.contextId
+        pipelineName = e.pipelineName
     }
 
     private void handle(PipelineContextErrorredEvent e) {
