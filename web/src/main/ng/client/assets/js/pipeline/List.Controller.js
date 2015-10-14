@@ -10,11 +10,12 @@ function ($scope, $http, $filter) {
       if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {
           var pipeline = $filter('getByName')($scope.pipelines, event.pipelineName);
           pipeline.img = './assets/img/gears.svg';
-          $scope.apply();
+          $scope.$apply();
       }
       if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent') {
         var pipeline = $filter('getByName')($scope.pipelines, event.pipelineName);
         pipeline.img = './assets/img/green-check.svg';
+        $scope.$apply();
       }
   };
 
