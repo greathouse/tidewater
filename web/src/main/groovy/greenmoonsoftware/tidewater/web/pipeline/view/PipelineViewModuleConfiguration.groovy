@@ -1,5 +1,4 @@
 package greenmoonsoftware.tidewater.web.pipeline.view
-
 import greenmoonsoftware.es.Bus
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
@@ -14,6 +13,7 @@ import javax.sql.DataSource
 class PipelineViewModuleConfiguration {
     @Autowired Bus<Event, EventSubscriber> eventBus
     @Autowired DataSource ds
+    @Autowired PipelineViewRepository repository
 
     @Bean
     PipelineViewQueryService queryService() {
@@ -22,6 +22,6 @@ class PipelineViewModuleConfiguration {
 
     @PostConstruct
     void postConstruct() {
-        eventBus.register(new PipelineViewEventSubscriber(ds))
+        eventBus.register(new PipelineViewEventSubscriber(repository))
     }
 }

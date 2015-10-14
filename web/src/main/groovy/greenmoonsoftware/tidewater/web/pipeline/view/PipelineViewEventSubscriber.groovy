@@ -3,17 +3,12 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
-import groovy.sql.Sql
-
-import javax.sql.DataSource
 
 class PipelineViewEventSubscriber implements EventSubscriber<Event> {
-    private final DataSource ds
-    private final Sql sql
+    private final PipelineViewRepository repository
 
-    PipelineViewEventSubscriber(DataSource d) {
-        ds = d
-        sql = new Sql(d)
+    PipelineViewEventSubscriber(PipelineViewRepository r) {
+        repository = r
     }
 
     @Override
@@ -22,6 +17,9 @@ class PipelineViewEventSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(PipelineCreatedEvent event) {
-        sql.executeInsert("insert into pipeline (name, script) values (${event.aggregateId}, ${event.scriptText})")
+        repository.save(new PipelineView([
+                name: event.aggregateId,
+                script: event.scriptText
+        ]))
     }
 }

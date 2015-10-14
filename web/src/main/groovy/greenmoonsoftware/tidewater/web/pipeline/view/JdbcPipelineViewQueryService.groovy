@@ -17,9 +17,6 @@ class JdbcPipelineViewQueryService implements PipelineViewQueryService {
         sql.eachRow("select script from Pipeline where name = ${name}") { row ->
             script = row.script.asciiStream.text
         }
-        if (!script) {
-            throw new PipelineNotFoundException()
-        }
         return script
     }
 

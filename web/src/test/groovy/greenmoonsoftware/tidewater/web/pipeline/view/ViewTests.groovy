@@ -30,7 +30,7 @@ class ViewTests {
             query.getScript('Should not exist')
             Assert.fail('Should have raised an exception')
         }
-        catch (PipelineNotFoundException e) {
+        catch ( e) {
             assert true
         }
     }

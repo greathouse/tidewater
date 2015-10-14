@@ -1,9 +1,10 @@
 package greenmoonsoftware.tidewater.web.pipeline.view
 
-import groovy.transform.Immutable
+import javax.persistence.Entity
+import javax.persistence.Id
 
-@Immutable
+@Entity
 class PipelineView {
-    String name
+    @Id String name
     String script
 }

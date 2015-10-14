@@ -7,7 +7,7 @@ create table PipelineEvents (
     data BLOB
 );
 
-create table Pipeline (
+create table Pipeline_View (
     name VARCHAR,
     script CLOB
 );
