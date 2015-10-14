@@ -8,7 +8,7 @@ controller: ListController
         <div class="large-9">
             <div class="grid-block" ng-repeat="p in pipelines">
                 <div class="large-3">
-                    <img ng-src="{{p.img}}" />
+                    <img ng-src="{{statusImage(p)}}" ng-class="{'blink': p.status === 'IN_PROGRESS' }" />
                     <span>{{p.name}}</span>
                 </div>
                 <div class="large-6">&nbsp;</div>

@@ -9,12 +9,12 @@ function ($scope, $http, $filter) {
   function processEvent(event) {
       if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {
           var pipeline = $filter('getByName')($scope.pipelines, event.pipelineName);
-          pipeline.img = './assets/img/gears.svg';
+          pipeline.status = 'IN_PROGRESS';
           $scope.$apply();
       }
       if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent') {
         var pipeline = $filter('getByName')($scope.pipelines, event.pipelineName);
-        pipeline.img = './assets/img/green-check.svg';
+        pipeline.status = 'COMPLETED';
         $scope.$apply();
       }
   };
@@ -39,6 +39,15 @@ function ($scope, $http, $filter) {
             function(response) {
             }
         );
+  }
+
+  $scope.statusImage = function(pipeline) {
+    if (pipeline.status === 'IN_PROGRESS') {
+        return './assets/img/gears.svg';
+    }
+    else {
+        return './assets/img/green-check.svg';
+    }
   }
 }
 ]);
