@@ -21,10 +21,10 @@ create table PipelineRunEvents (
     data BLOB
 );
 
-create table PipelineContext (
-    contextId VARCHAR not null,
-    pipelineName VARCHAR not null,
+create table Pipeline_Context_View (
+    context_Id VARCHAR not null,
+    pipeline_Name VARCHAR not null,
     status int not null,
-    startTime TIMESTAMP not null,
-    endTime TIMESTAMP not null
+    start_Time TIMESTAMP not null,
+    end_Time TIMESTAMP not null
 );

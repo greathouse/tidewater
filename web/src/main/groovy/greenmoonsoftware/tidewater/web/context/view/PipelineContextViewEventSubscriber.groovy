@@ -1,5 +1,4 @@
 package greenmoonsoftware.tidewater.web.context.view
-
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
@@ -10,15 +9,16 @@ import groovy.sql.Sql
 
 import javax.sql.DataSource
 import java.sql.Timestamp
-import java.time.Instant
 
 class PipelineContextViewEventSubscriber implements EventSubscriber<Event> {
     private final DataSource dataSource
     private final Sql sql
+    private final PipelineContextViewRepository repository
 
-    PipelineContextViewEventSubscriber(DataSource ds) {
+    PipelineContextViewEventSubscriber(DataSource ds, PipelineContextViewRepository r) {
         dataSource = ds
         sql = new Sql(ds)
+        repository = r
     }
 
     @Override
@@ -27,28 +27,20 @@ class PipelineContextViewEventSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(PipelineContextStartedEvent event) {
-        sql.execute("""
-                insert into PipelineContext (
-                    pipelineName,
-                    contextId,
-                    status,
-                    startTime,
-                    endTime
-                ) values (
-                    ${event.pipelineName},
-                    ${event.contextId.id},
-                    ${PipelineContextStatus.IN_PROGRESS.value},
-                    ${Timestamp.from(event.start)},
-                    ${Timestamp.from(Instant.EPOCH)}
-                )"""
-        )
+        repository.save(new PipelineContextView(
+                contextId: event.contextId,
+                pipelineName: event.pipelineName,
+                status: PipelineContextStatus.IN_PROGRESS,
+                startTime: Date.from(event.start),
+                endTime: new Date(0)
+        ))
     }
 
     private void handle(PipelineContextEndedEvent event) {
         sql.execute("""
-                update PipelineContext set
-                    endTime = ${Timestamp.from(event.endTime)},
+                update Pipeline_Context_View set
+                    end_Time = ${Timestamp.from(event.endTime)},
                     status = ${PipelineContextStatus.COMPLETE.value}
-                where contextId = ${event.aggregateId}""")
+                where context_Id = ${event.aggregateId}""")
     }
 }

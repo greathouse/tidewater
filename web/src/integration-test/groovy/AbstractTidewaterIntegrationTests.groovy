@@ -3,6 +3,7 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.web.Application
 import greenmoonsoftware.tidewater.web.context.commands.PipelineContextQuery
+import greenmoonsoftware.tidewater.web.context.view.PipelineContextViewRepository
 import greenmoonsoftware.tidewater.web.pipeline.commands.PipelineCommandService
 import greenmoonsoftware.tidewater.web.pipeline.commands.PipelineQuery
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,4 +19,5 @@ class AbstractTidewaterIntegrationTests extends AbstractTestNGSpringContextTests
     @Autowired PipelineCommandService pipelineCommandService
     @Autowired PipelineQuery pipelineQuery
     @Autowired PipelineContextQuery pipelineContextQuery
+    @Autowired PipelineContextViewRepository pipelineContextViewRepository
 }

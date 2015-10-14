@@ -30,6 +30,7 @@ dependencies {
     compile 'org.codehaus.groovy:groovy:2.4.4'
     compile 'org.codehaus.groovy:groovy-json:2.4.4'
     compile 'org.flywaydb:flyway-core'
+    compile 'org.springframework:spring-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-websocket'
