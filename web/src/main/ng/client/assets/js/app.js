@@ -1,13 +1,11 @@
 'use strict';
 
 var application = angular.module('application', [
-  'ui.router',
   'ngAnimate',
+  'ngRoute',
 
   //foundation
   'foundation',
-  'foundation.dynamicRouting',
-  'foundation.dynamicRouting.animations',
 
   'executorModule',
   'notificationModule',
@@ -29,17 +27,16 @@ application.filter('getByName', function() {
    }
  });
 
-config.$inject = ['$urlRouterProvider', '$locationProvider'];
+config.$inject = ['$routeProvider', '$locationProvider'];
 
-function config($urlProvider, $locationProvider) {
-  $urlProvider.otherwise('/');
-
-  $locationProvider.html5Mode({
-    enabled:false,
-    requireBase: false
-  });
-
-  $locationProvider.hashPrefix('!');
+function config($routeProvider, $locationProvider) {
+  $routeProvider
+    .when('/', {
+      templateUrl: 'templates/home.html'
+    }).
+    otherwise({
+      redirectTo: '/'
+    });
 }
 
 function run() {

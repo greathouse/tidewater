@@ -22,14 +22,14 @@
       </div>
       <div class="menu-group-right">
         <ul class="icon-left primary menu-bar">
-          <li><a ui-sref="pipeline-new"><img zf-iconic="" icon="chevron" size="small" class="iconic-color-primary" />Create New</a></li>
-          <li><a ui-sref="pipeline-list">List</a></li>
+          <li><a href="/#/pipelines/new"><img zf-iconic="" icon="chevron" size="small" class="iconic-color-primary" />Create New</a></li>
+          <li><a href="/#/pipelines">List</a></li>
         </ul>
       </div>
     </div>
   </div>
   <div class="grid-block">
-    <div ui-view class="grid-content"></div>
+    <div ng-view class="grid-content"></div>
     <div class="grid-block medium-2" ng-controller="ExecutorListController">
       <div class="grid-block" ng-repeat="p in pipelineContexts">
         <div class="large-3">
