@@ -5,11 +5,11 @@ pipelineModule.config(['$routeProvider',
         $routeProvider.
             when('/pipelines', {
                 templateUrl: 'templates/pipeline/list.html',
-                controller: 'ListController'
+                controller: 'Pipeline.ListController'
             }).
             when('/pipelines/new', {
                 templateUrl: 'templates/pipeline/new.html',
-                controller: 'NewController'
+                controller: 'Pipeline.NewController'
             });
     }
 ]);

@@ -1,4 +1,4 @@
-angular.module('pipelineModule').controller('NewController', ['$scope', '$http', 'FoundationApi',
+angular.module('pipelineModule').controller('Pipeline.NewController', ['$scope', '$http', 'FoundationApi',
 
 function ($scope, $http, foundationApi) {
   $scope.postScript = function(formData) {

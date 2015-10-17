@@ -1,6 +1,6 @@
-angular.module('pipelineModule').controller('ListController', ['$scope', '$http', '$filter',
+angular.module('pipelineModule').controller('Pipeline.ListController', ['$scope', '$http', '$filter', 'FoundationApi',
 
-function ($scope, $http, $filter) {
+function ($scope, $http, $filter, foundationApi) {
   var channel = postal.channel('TidewaterEvents');
   var subscription = channel.subscribe( "event.received", function ( data ) {
       processEvent(data);

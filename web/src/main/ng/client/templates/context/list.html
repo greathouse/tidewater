@@ -1,20 +1,14 @@
----
-name: context-list
-url: /pipelines/:pipelineName/contexts
-controller: ListController
----
 <div class="grid-content">
     <div class="align-center grid-block">
         <div class="large-9">
-            <div class="grid-block" ng-repeat="p in pipelines">
+            <h1>{{pipelineName}}</h1>
+            <div class="grid-block" ng-repeat="c in contexts">
                 <div class="large-3">
-                    <img ng-src="{{statusImage(p)}}" ng-class="{'blink': p.status === 'IN_PROGRESS' }" />
-                    <span>{{p.name}}</span>
+                    {{c.status}}
                 </div>
-                <div class="large-6">&nbsp;</div>
-                <div class="large-3 float-right">
-                    <a class="button dark" ng-click="startPipeline(p.name)">Start</a>
-                </div>
+                <div class="large-3">{{c.contextId.id}}</div>
+                <div class="large-3">{{c.startTime}}</div>
+                <div class="large-3">{{c.endTime}}</div>
             </div>
         </div>
     </div>
