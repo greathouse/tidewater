@@ -22,10 +22,7 @@ function ($scope, $http, $filter, foundationApi) {
 
   $http.get('/pipelines').
     then (function (response) {
-      $scope.pipelines = [];
-      angular.forEach(response.data, function(pipeline) {
-        $scope.pipelines.push({name: pipeline.name, img: './assets/img/green-check.svg'})
-      });
+      $scope.pipelines = response.data;
     }, function(response) {
       foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
     })
