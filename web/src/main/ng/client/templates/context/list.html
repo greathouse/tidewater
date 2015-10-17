@@ -3,11 +3,10 @@
         <div class="large-9">
             <h1>{{pipelineName}}</h1>
             <div class="grid-block" ng-repeat="c in contexts">
-                <div class="large-3">
-                    {{c.status}}
+                <div class="shrink">
+                    <img tw-status-image="{{c.status}}" height="32" width="32" />
                 </div>
-                <div class="large-3">{{c.contextId.id}}</div>
-                <div class="large-3">{{c.startTime}}</div>
+                <div class="large-3">{{c.startTime | date:'medium'}}</div>
                 <div class="large-3">{{c.endTime}}</div>
             </div>
         </div>

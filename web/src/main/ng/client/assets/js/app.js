@@ -7,6 +7,7 @@ var application = angular.module('application', [
   //foundation
   'foundation',
 
+  'statusImage',
   'contextModule',
   'executorModule',
   'notificationModule',
