@@ -4,7 +4,7 @@ m.directive('twStatusImage', function() {
     var twStatusImage = {
         link: function(scope, element, attrs) {
             var status = attrs.twStatusImage;
-            var image = './assets/img/gears.svg';
+            var image = './assets/img/green-check.svg';
             var clazz = '';
             if (status === 'IN_PROGRESS') {
                 image = './assets/img/gears.svg';
