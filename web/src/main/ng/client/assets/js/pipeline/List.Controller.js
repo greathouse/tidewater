@@ -1,6 +1,9 @@
 angular.module('pipelineModule').controller('Pipeline.ListController', ['$scope', '$http', '$filter', 'FoundationApi',
 
 function ($scope, $http, $filter, foundationApi) {
+  var self = this;
+  var pipelines;
+
   var channel = postal.channel('TidewaterEvents');
   var subscription = channel.subscribe( "event.received", function ( data ) {
       processEvent(data);
@@ -8,21 +11,21 @@ function ($scope, $http, $filter, foundationApi) {
 
   function processEvent(event) {
       if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {
-          var pipeline = $filter('getByName')($scope.pipelines, event.pipelineName);
+          var pipeline = $filter('getBy')(self.pipelines, 'name', event.pipelineName);
           pipeline.status = 'IN_PROGRESS';
           $scope.$apply();
       }
       if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent') {
-        var pipeline = $filter('getByName')($scope.pipelines, event.pipelineName);
+        var pipeline = $filter('getBy')(self.pipelines, 'name', event.pipelineName);
         pipeline.status = 'COMPLETED';
         $scope.$apply();
       }
   };
 
-
   $http.get('/pipelines').
     then (function (response) {
-      $scope.pipelines = response.data;
+      self.pipelines = response.data;
+      $scope.pipelines = self.pipelines;
     }, function(response) {
       foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
     })
@@ -36,15 +39,6 @@ function ($scope, $http, $filter, foundationApi) {
             function(response) {
             }
         );
-  }
-
-  $scope.statusImage = function(pipeline) {
-    if (pipeline.status === 'IN_PROGRESS') {
-        return './assets/img/gears.svg';
-    }
-    else {
-        return './assets/img/green-check.svg';
-    }
   }
 }
 ]);

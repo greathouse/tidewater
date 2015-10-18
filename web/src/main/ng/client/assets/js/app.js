@@ -17,18 +17,6 @@ var application = angular.module('application', [
   .run(run)
 ;
 
-application.filter('getByName', function() {
-   return function(input, name) {
-     var i=0, len=input.length;
-     for (; i<len; i++) {
-       if (input[i].name === name) {
-         return input[i];
-       }
-     }
-     return null;
-   }
- });
-
 application.filter('getBy', function() {
   return function(input, attribute, value) {
      var i=0, len=input.length;
