@@ -1,5 +1,5 @@
 import greenmoonsoftware.test.RetryableAssert
-import greenmoonsoftware.tidewater.context.ContextId
+import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 import greenmoonsoftware.tidewater.web.pipeline.commands.CreatePipelineCommand
@@ -36,7 +36,7 @@ class SuccessfulPipelineLifecycleTest extends AbstractTidewaterIntegrationTests 
     }
 
     @Test(dependsOnMethods = 'createPipeline')
-    void startPipeline() {
+    void startAndEndPipeline() {
         pipelineCommandService.execute(new StartPipelineCommand(pipelineName))
         assert findEventOfType(PipelineStartedEvent)
         def runEvent = findEventOfType(PipelineContextStartedEvent)
@@ -57,10 +57,14 @@ class SuccessfulPipelineLifecycleTest extends AbstractTidewaterIntegrationTests 
         assert pipeline.lastStartTime == null
     }
 
-    @Test(dependsOnMethods = 'startPipeline')
+    @Test(dependsOnMethods = 'startAndEndPipeline')
     void canQueryForPipelineContext() {
         assert pipelineContextQuery.retrieve(runAggregateId)
-        assert pipelineContextViewRepository.findOne(new ContextId(runAggregateId))
+
+        def view = pipelineContextViewRepository.findOne(runAggregateId)
+        assert view
+        assert view.endTime != new Date(0)
+        assert view.status == PipelineContextStatus.COMPLETE
     }
 
     private <T> T findEventOfType(Class<T> type) {

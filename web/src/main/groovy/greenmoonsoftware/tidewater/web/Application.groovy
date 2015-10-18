@@ -68,9 +68,11 @@ class Application {
     @Profile('test')
     DataSource initalize() {
         def datasource = new JdbcDataSource()
+        def jdbcUrl = "jdbc:h2:${Files.createTempDirectory('tidewater-test').toString()}/web".toString()
+        logger.info("Database Url: ${jdbcUrl}")
         datasource.with {
             user = 'testuser'
-            url = "jdbc:h2:${Files.createTempDirectory('tidewater-test').toString()}/web".toString()
+            url = jdbcUrl
         }
         return datasource
     }

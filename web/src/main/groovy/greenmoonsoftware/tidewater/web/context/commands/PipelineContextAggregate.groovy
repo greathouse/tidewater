@@ -78,4 +78,8 @@ class PipelineContextAggregate implements Aggregate {
     private void handle(PipelinePausedEvent e) {
         status = PipelineContextStatus.PAUSE
     }
+
+    private void handle(PipelineContextEndedEvent e) {
+        status = e.status
+    }
 }
