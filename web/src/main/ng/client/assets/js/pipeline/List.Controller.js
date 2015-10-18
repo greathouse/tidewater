@@ -28,17 +28,6 @@ function ($scope, $http, $filter, foundationApi) {
       $scope.pipelines = self.pipelines;
     }, function(response) {
       foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
-    })
-  ;
-
-  $scope.startPipeline = function(pipelineName) {
-    $http.get('/pipelines/' + pipelineName + '/start').
-        then (
-            function (response) {
-            },
-            function(response) {
-            }
-        );
-  }
+    });
 }
 ]);
