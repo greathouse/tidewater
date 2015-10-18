@@ -3,7 +3,7 @@
         <div class="large-9">
             <div class="grid-block" ng-repeat="p in pipelines">
                 <div class="large-3">
-                    <img ng-src="{{statusImage(p)}}" ng-class="{'blink': p.status === 'IN_PROGRESS' }" />
+                    <img tw-status-image="{{p.status}}" height="32" width="32" />
                     <a ng-href="/#/pipelines/{{p.name}}/contexts"><span>{{p.name}}</span></a>
                 </div>
                 <div class="large-6">&nbsp;</div>
