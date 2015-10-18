@@ -29,6 +29,18 @@ application.filter('getByName', function() {
    }
  });
 
+application.filter('getBy', function() {
+  return function(input, attribute, value) {
+     var i=0, len=input.length;
+     for (; i<len; i++) {
+       if (input[i][attribute] === value) {
+         return input[i];
+       }
+     }
+     return null;
+   }
+});
+
 config.$inject = ['$routeProvider', '$locationProvider'];
 
 function config($routeProvider, $locationProvider) {

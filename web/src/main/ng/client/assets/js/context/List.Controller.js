@@ -1,11 +1,29 @@
 angular.module('contextModule').controller('Context.ListController', ['$scope', '$http', '$filter', '$routeParams', 'FoundationApi',
 
 function ($scope, $http, $filter, $routeParams, foundationApi) {
+  self = this;
+  var contexts;
+
+  var channel = postal.channel('TidewaterEvents');
+  var subscription = channel.subscribe( "event.received", function ( data ) {
+      processEvent(data);
+  } );
+
+  function processEvent(event) {
+      if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent') {
+        var c = $filter('getBy')(self.contexts, 'contextId', event.aggregateId);
+        c.status = event.status;
+        c.endTime = event.endTime.epochSecond * 1000;
+        $scope.$apply();
+      }
+  };
+
   $scope.pipelineName = $routeParams.pipelineName;
 
   $http.get('/pipelines/' + $scope.pipelineName + '/contexts').
     then (function (response) {
-      $scope.contexts = response.data;
+      self.contexts = response.data;
+      $scope.contexts = self.contexts;
     }, function(response) {
       foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
     });
