@@ -22,7 +22,7 @@ function ($scope, $http, $filter, $routeParams, foundationApi) {
 
   $http.get('/pipelines/' + $scope.pipelineName + '/contexts').
     then (function (response) {
-      self.contexts = response.data;
+      self.contexts = response.data.reverse();
       $scope.contexts = self.contexts;
     }, function(response) {
       foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
