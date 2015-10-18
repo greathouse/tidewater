@@ -2,13 +2,22 @@
     <div class="align-center grid-block">
         <div class="large-9">
             <h1>{{pipelineName}}</h1>
-            <div class="grid-block" ng-repeat="c in contexts">
-                <div class="shrink">
-                    <img tw-status-image="{{c.status}}" height="32" width="32" />
-                </div>
-                <div class="large-3">{{c.startTime | date:'medium'}}</div>
-                <div class="large-3">{{c.endTime | date:'medium'}}</div>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="c in contexts">
+                        <td><img tw-status-image="{{c.status}}" height="32" width="32" /></td>
+                        <td>{{c.startTime | date:'medium'}}</td>
+                        <td>{{c.endTime | date:'medium'}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
