@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="large-12 columns">
+        <h1>{{contextId}}</h1>
+    </div>
+
+    <div class="row">
+        <div class="large-12 medium-12 columns">
+            <div class="row">
+                <div class="large-6 columns">
+                    <zf-accordion auto-open="false" >
+                        <zf-accordion-item title="Script">
+                            <pre>
+{{context.scriptText}}
+                            </pre>
+                        </zf-accordion-item>
+                    </zf-accordion>
+                </div>
+                <div class="large-6 columns">
+                    <div class="row callout panel">
+                        <div class="large-3 columns">
+                            <small><span class="right">key:</span></small>
+                        </div>
+                        <div class="large-9 columns">
+                            <small><span class="small left">value</span></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns" ng-repeat="step in context.steps track by $index">
+                    <zf-accordion auto-open="false" >
+                        <zf-accordion-item title="{{step.outcome}} {{step.stepName}}">
+                            <pre ng-repeat="log in step.logs">
+{{log.message}}
+                            </pre>
+                        </zf-accordion-item>
+                        </zf-accordion>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/vendor/jquery.js"></script>
+    <script src="/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+
+
+
+    </script>
+</div>

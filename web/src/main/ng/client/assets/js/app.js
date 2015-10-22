@@ -36,10 +36,11 @@ function config($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
       templateUrl: 'templates/home.html'
-    }).
-    otherwise({
-      redirectTo: '/'
-    });
+    })
+//    .otherwise({
+//      redirectTo: '/'
+//    })
+    ;
 }
 
 function run() {
