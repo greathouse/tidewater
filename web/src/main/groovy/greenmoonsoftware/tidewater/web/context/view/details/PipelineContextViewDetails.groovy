@@ -8,7 +8,7 @@ class PipelineContextViewDetails {
     String metadataDirectory
     Date startTime
 
-    private Map<String, DetailsStep> definedSteps = [:]
+    private definedSteps = [:] as LinkedHashMap<String, DetailsStep>
 
     void defineStep(String stepName, String stepType) {
         if (!definedSteps.containsKey(stepName)) {
@@ -36,8 +36,13 @@ class PipelineContextViewDetails {
         stepEnded(step, Outcome.ERROR).attempts[-1].logs << new StepLogMessage(date, stacktrace)
     }
 
+    List<DetailsStep> getSteps() {
+        definedSteps.values() as List
+    }
+
     private DetailsStep stepEnded(Step step, Outcome outcome) {
         def d = definedSteps[step.name]
+        d.attempts[-1].outcome = outcome
         def c = {
             d.attributes[it.key] = it.value.toString() ?: ''
         }
