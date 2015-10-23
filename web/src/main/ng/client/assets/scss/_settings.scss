@@ -77,7 +77,7 @@
 // Since the typical default browser font-size is 16px, that makes the calculation for grid size.
 // If you want your base font-size to be different and not have it affect the grid breakpoints,
 // set $rem-base to $base-font-size and make sure $base-font-size is a px value.
-// $base-font-size: 100%;
+$base-font-size: 90%;
 
 // $base-line-height is 24px while $base-font-size is 16px
 // $base-line-height: 1.5;
@@ -98,8 +98,8 @@
 // $body-antialiased: true;
 
 // Application Colors
-// $primary-color: #00558b;
-// $secondary-color: #f1f1f1;
+$primary-color: #00558b;
+$secondary-color: #f1f1f1;
 // $alert-color: #F04124;
 // $info-color: #A0D3E8;
 // $success-color: #43AC6A;

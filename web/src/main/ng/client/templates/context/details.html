@@ -7,13 +7,14 @@
         <div class="large-12 medium-12 columns">
             <div class="row">
                 <div class="large-6 columns">
-                    <zf-accordion auto-open="false" >
-                        <zf-accordion-item title="Script">
-                            <pre>
+                    <div class="box-header" ng-click="toggleScript()">
+                        <h4>Script</h4>
+                    </div>
+                    <div class="box-body" ng-show="showScript">
+                        <pre>
 {{context.scriptText}}
-                            </pre>
-                        </zf-accordion-item>
-                    </zf-accordion>
+                        </pre>
+                    </div>
                 </div>
                 <div class="large-6 columns">
                     <div class="row callout panel">
@@ -28,13 +29,14 @@
             </div>
             <div class="row">
                 <div class="large-12 columns" ng-repeat="step in context.steps track by $index">
-                    <zf-accordion auto-open="false" >
-                        <zf-accordion-item title="{{step.outcome}} {{step.stepName}}">
+                    <div class="box-header">
+                        <img tw-status-image="{{step.outcome}}" height="32" width="32" /> {{step.stepName}}
+                    </div>
+                    <div class="box-body">
                             <pre ng-repeat="log in step.logs">
 {{log.message}}
                             </pre>
-                        </zf-accordion-item>
-                        </zf-accordion>
+                    </div>
                 </div>
             </div>
         </div>

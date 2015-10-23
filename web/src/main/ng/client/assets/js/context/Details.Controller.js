@@ -4,6 +4,7 @@ function ($scope, $http, $routeParams, foundationApi) {
   self = this;
 
   $scope.contextId = $routeParams.contextId;
+  $scope.showScript = false;
 
   $http.get('/contexts/' + $scope.contextId).
     then (function (response) {
@@ -30,5 +31,9 @@ function ($scope, $http, $routeParams, foundationApi) {
     }, function(response) {
       foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
     });
+
+    $scope.toggleScript = function() {
+      $scope.showScript = !$scope.showScript;
+    }
 }
 ]);
