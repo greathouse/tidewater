@@ -1,6 +1,6 @@
-angular.module('contextModule').controller('Context.DetailsController', ['$scope', '$http', '$routeParams', 'FoundationApi',
+angular.module('contextModule').controller('Context.DetailsController', ['$scope', '$http', '$sce', '$filter', '$routeParams', 'FoundationApi',
 
-function ($scope, $http, $routeParams, foundationApi) {
+function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
   self = this;
 
   $scope.contextId = $routeParams.contextId;
@@ -22,7 +22,9 @@ function ($scope, $http, $routeParams, foundationApi) {
             stepType: step.stepType,
             attributes: step.attributes,
             outcome: attempt.outcome,
-            logs: attempt.logs
+            logs: $sce.trustAsHtml(attempt.logs.map(function(message) {
+              return '<span style="font-weight: bold">' + $filter('date')(message.dateTime, 'MM/dd/yyyy hh:mm:ss') + '</span> ' + message.message;
+            }).join('\n'))
           });
         });
       });

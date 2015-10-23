@@ -3,6 +3,7 @@
 var application = angular.module('application', [
   'ngAnimate',
   'ngRoute',
+  'ngSanitize',
 
   //foundation
   'foundation',

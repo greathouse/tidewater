@@ -33,8 +33,7 @@
                         <img tw-status-image="{{step.outcome}}" height="32" width="32" /> {{step.stepName}}
                     </div>
                     <div class="box-body">
-                            <pre ng-repeat="log in step.logs">
-{{log.message}}
+                            <pre ng-bind-html="step.logs">
                             </pre>
                     </div>
                 </div>
