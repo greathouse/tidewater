@@ -7,7 +7,7 @@
         <div class="large-12 medium-12 columns">
             <div class="row">
                 <div class="large-6 columns">
-                    <div class="box-header" ng-click="toggleScript()">
+                    <div class="box-header" ng-click="showScript = !showScript">
                         <h4>Script</h4>
                     </div>
                     <div class="box-body" ng-show="showScript">
@@ -28,13 +28,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="large-12 columns" ng-repeat="step in context.steps track by $index">
-                    <div class="box-header">
+                <div class="large-12 columns" ng-repeat="step in context.steps">
+                    <div class="box-header" ng-click="step.show = !step.show">
                         <img tw-status-image="{{step.outcome}}" height="32" width="32" /> {{step.stepName}}
                     </div>
-                    <div class="box-body">
-                            <pre ng-bind-html="step.logs">
-                            </pre>
+                    <div class="box-body" ng-show="step.show">
+                            <pre ng-bind-html="step.logs"></pre>
                     </div>
                 </div>
             </div>

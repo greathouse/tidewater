@@ -22,9 +22,14 @@ function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
             stepType: step.stepType,
             attributes: step.attributes,
             outcome: attempt.outcome,
-            logs: $sce.trustAsHtml(attempt.logs.map(function(message) {
-              return '<span style="font-weight: bold">' + $filter('date')(message.dateTime, 'MM/dd/yyyy hh:mm:ss') + '</span> ' + message.message;
-            }).join('\n'))
+            logs: $sce.trustAsHtml(attempt.logs.reduce(function(previousValue, currentValue, index, array) {
+              var previousDay = index > 0 ? $filter('date')(array[index - 1].dateTime, 'MM/dd/yyyy') : '';
+              var currentDay = $filter('date')(currentValue.dateTime, 'MM/dd/yyyy');
+              var printDay = '          ';
+              if (previousDay != currentDay) { printDay = currentDay; }
+              return previousValue + '<span style="font-weight: bold">' + printDay + ' ' + $filter('date')(currentValue.dateTime, 'hh:mm:ss') + '</span> ' + currentValue.message + '\n';
+            }, '')),
+            show: false
           });
         });
       });
@@ -33,9 +38,5 @@ function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
     }, function(response) {
       foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
     });
-
-    $scope.toggleScript = function() {
-      $scope.showScript = !$scope.showScript;
-    }
 }
 ]);
