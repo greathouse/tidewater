@@ -5,29 +5,42 @@
 
     <div class="row">
         <div class="large-12 medium-12 columns">
-            <div class="row">
-                <div class="large-6 columns">
-                    <div class="box-header" ng-click="showScript = !showScript">
+            <div class="grid-block">
+                <div class="grid-block">
+                    <div class="grid-content" style="text-align: center">
+                        <img tw-status-image="{{context.status}}" height="128" width="128" />
+                    </div>
+                    <div class="grid-content">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: right">Start Time:</td>
+                                    <td>{{context.startTime | date:'medium'}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">End Time:</td>
+                                    <td>{{context.endTime | date:'medium'}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Duration:</td>
+                                    <td>{{context.duration | millSecondsToTimeString}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="large-6">
+                    <div class="box-header grid-content" ng-click="showScript = !showScript">
                         <h4>Script</h4>
                     </div>
-                    <div class="box-body" ng-show="showScript">
+                    <div class="box-body grid-content" ng-show="showScript">
                         <pre>
 {{context.scriptText}}
                         </pre>
                     </div>
                 </div>
-                <div class="large-6 columns">
-                    <div class="row callout panel">
-                        <div class="large-3 columns">
-                            <small><span class="right">key:</span></small>
-                        </div>
-                        <div class="large-9 columns">
-                            <small><span class="small left">value</span></small>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="row">
+            <div class="grid-block">
                 <div class="large-12 columns" ng-repeat="step in context.steps">
                     <div class="box-header" ng-click="step.show = !step.show">
                         <img tw-status-image="{{step.outcome}}" height="32" width="32" /> {{step.stepName}} <span class="right">{{step.duration | millSecondsToTimeString}}</span>

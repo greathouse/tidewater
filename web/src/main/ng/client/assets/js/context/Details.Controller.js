@@ -13,6 +13,8 @@ function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
       data['workspace'] = response.data.workspace;
       data['metadataDirectory'] = response.data.metadataDirectory;
       data['startTime'] = response.data.startTime;
+      data['endTime'] = response.data.endTime;
+      data.duration = response.data.duration;
       data['steps'] = [];
 
       angular.forEach(response.data.steps, function(step, index) {

@@ -14,6 +14,9 @@ m.directive('twStatusImage', function() {
                      image = './assets/img/gears.svg';
                      clazz = 'blink';
                  }
+                 else if (status === 'ERROR') {
+                    image = './assets/img/error.svg';
+                 }
                  element.attr("src", image);
                  element.attr('class', clazz);
             });

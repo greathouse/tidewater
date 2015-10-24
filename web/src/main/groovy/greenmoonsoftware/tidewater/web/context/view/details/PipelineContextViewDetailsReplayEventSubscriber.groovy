@@ -1,5 +1,4 @@
 package greenmoonsoftware.tidewater.web.context.view.details
-
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
@@ -28,7 +27,6 @@ class PipelineContextViewDetailsReplayEventSubscriber implements EventSubscriber
             scriptText = event.script
             workspace = event.workspace
             metadataDirectory = event.metaDirectory.absolutePath
-            startTime = Date.from(event.eventDateTime)
         }
     }
 

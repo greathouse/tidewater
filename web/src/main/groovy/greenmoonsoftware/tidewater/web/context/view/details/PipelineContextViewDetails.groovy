@@ -1,12 +1,19 @@
 package greenmoonsoftware.tidewater.web.context.view.details
 
 import greenmoonsoftware.tidewater.step.Step
+import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
 
 class PipelineContextViewDetails {
     String scriptText
     String workspace
     String metadataDirectory
     Date startTime
+    Date endTime
+    PipelineContextStatus status
+
+    long getDuration() {
+        endTime.time - startTime.time
+    }
 
     private definedSteps = [:] as LinkedHashMap<String, DetailsStep>
 
