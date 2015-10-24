@@ -37,7 +37,7 @@ class PipelineContextViewDetailsReplayEventSubscriber implements EventSubscriber
     }
 
     private void handle(StepStartedEvent event) {
-        details.stepStarted(event.step.name)
+        details.stepStarted(event.step.name, event.startTime)
     }
 
     private void handle(StepLogEvent event) {
@@ -45,11 +45,11 @@ class PipelineContextViewDetailsReplayEventSubscriber implements EventSubscriber
     }
 
     private void handle(StepSuccessfullyCompletedEvent event) {
-        details.stepSuccess(event.step)
+        details.stepSuccess(event.step, event.endDate)
     }
 
     private void handle(StepFailedEvent event) {
-        details.stepFailed(event.step)
+        details.stepFailed(event.step, event.endDate)
     }
 
     private void handle(StepErroredEvent event) {

@@ -16,33 +16,34 @@ class PipelineContextViewDetails {
         }
     }
 
-    void stepStarted(String stepName) {
-        definedSteps[stepName].attempts << new StepAttempt();
+    void stepStarted(String stepName, Date start) {
+        definedSteps[stepName].attempts << new StepAttempt(start);
     }
 
     void log(String stepName, Date date, String message) {
         definedSteps[stepName].attempts[-1].logs << new StepLogMessage(date, message)
     }
 
-    void stepSuccess(Step step) {
-        stepEnded(step, Outcome.SUCCESS)
+    void stepSuccess(Step step, Date end) {
+        stepEnded(step, end, Outcome.SUCCESS)
     }
 
-    void stepFailed(Step step) {
-        stepEnded(step, Outcome.FAIL)
+    void stepFailed(Step step, Date end) {
+        stepEnded(step, end, Outcome.FAIL)
     }
 
     void stepErrored(Step step, Date date, String stacktrace) {
-        stepEnded(step, Outcome.ERROR).attempts[-1].logs << new StepLogMessage(date, stacktrace)
+        stepEnded(step, date, Outcome.ERROR).attempts[-1].logs << new StepLogMessage(date, stacktrace)
     }
 
     List<DetailsStep> getSteps() {
         definedSteps.values() as List
     }
 
-    private DetailsStep stepEnded(Step step, Outcome outcome) {
+    private DetailsStep stepEnded(Step step, Date end, Outcome outcome) {
         def d = definedSteps[step.name]
         d.attempts[-1].outcome = outcome
+        d.attempts[-1].end = end
         def c = {
             d.attributes[it.key] = it.value.toString() ?: ''
         }
@@ -65,8 +66,18 @@ class PipelineContextViewDetails {
     }
 
     private class StepAttempt {
+        Date start
+        Date end
         Outcome outcome = Outcome.NA
         List<StepLogMessage> logs = []
+
+        StepAttempt(Date start) {
+            this.start = start
+        }
+
+        long getDuration() {
+            end.time - start.time
+        }
     }
 
     private enum Outcome {

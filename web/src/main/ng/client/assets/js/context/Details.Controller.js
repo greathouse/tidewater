@@ -22,6 +22,7 @@ function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
             stepType: step.stepType,
             attributes: step.attributes,
             outcome: attempt.outcome,
+            duration: attempt.duration,
             logs: $sce.trustAsHtml(attempt.logs.reduce(function(previousValue, currentValue, index, array) {
               var previousDay = index > 0 ? $filter('date')(array[index - 1].dateTime, 'MM/dd/yyyy') : '';
               var currentDay = $filter('date')(currentValue.dateTime, 'MM/dd/yyyy');

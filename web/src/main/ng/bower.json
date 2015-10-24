@@ -26,6 +26,7 @@
     "angular-route": "~1.4.7",
     "angular-sanitize": "~1.4.7",
     "foundation-apps": "~1.1.0",
+    "moment": "~2.10.6",
     "postal.js": "~1.0.7",
     "sockjs-client": "~1.0.3",
     "stomp-websocket": "~2.3.4"
