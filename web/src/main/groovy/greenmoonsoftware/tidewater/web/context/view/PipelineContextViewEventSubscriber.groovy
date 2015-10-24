@@ -40,7 +40,7 @@ class PipelineContextViewEventSubscriber implements EventSubscriber<Event> {
         sql.execute("""
                 update Pipeline_Context_View set
                     end_Time = ${Timestamp.from(event.endTime)},
-                    status = ${PipelineContextStatus.COMPLETE.value}
+                    status = ${event.status.value}
                 where context_Id = ${event.aggregateId}""")
     }
 }

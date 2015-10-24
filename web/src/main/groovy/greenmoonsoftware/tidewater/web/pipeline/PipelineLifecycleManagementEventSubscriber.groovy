@@ -7,9 +7,11 @@ import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.context.events.ContextExecutionEndedEvent
 import greenmoonsoftware.tidewater.run.RunContext
+import greenmoonsoftware.tidewater.step.events.StepErroredEvent
 import greenmoonsoftware.tidewater.step.events.StepFailedEvent
 import greenmoonsoftware.tidewater.web.PipelineContextContainer
 import greenmoonsoftware.tidewater.web.context.commands.EndPipelineContextCommand
+import greenmoonsoftware.tidewater.web.context.commands.ErrorPipelineContextCommand
 import greenmoonsoftware.tidewater.web.context.commands.FailPipelineContextCommand
 import greenmoonsoftware.tidewater.web.context.commands.PipelineContextCommandService
 import greenmoonsoftware.tidewater.web.context.commands.StartPipelineContextCommand
@@ -49,6 +51,10 @@ class PipelineLifecycleManagementEventSubscriber implements EventSubscriber<Even
 
     private void handle(StepFailedEvent e) {
         pipelineContextService.execute(new FailPipelineContextCommand(e.contextId))
+    }
+
+    private void handle(StepErroredEvent e) {
+        pipelineContextService.execute(new ErrorPipelineContextCommand(e.contextId))
     }
 
     private void handle(ContextExecutionEndedEvent event) {

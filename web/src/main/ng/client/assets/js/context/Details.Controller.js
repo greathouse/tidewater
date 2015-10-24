@@ -15,6 +15,7 @@ function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
       data['startTime'] = response.data.startTime;
       data['endTime'] = response.data.endTime;
       data.duration = response.data.duration;
+      data.status = response.data.status;
       data['steps'] = [];
 
       angular.forEach(response.data.steps, function(step, index) {
