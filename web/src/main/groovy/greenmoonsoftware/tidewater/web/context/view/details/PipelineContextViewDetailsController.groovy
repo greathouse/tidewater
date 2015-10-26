@@ -20,6 +20,7 @@ class PipelineContextViewDetailsController {
         replay.replay()
 
         def view = repository.findOne(contextId)
+        details.pipelineName = view.pipelineName
         details.startTime = view.startTime
         details.endTime = view.endTime
         details.status = view.status

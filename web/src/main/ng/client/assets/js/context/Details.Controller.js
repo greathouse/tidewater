@@ -4,11 +4,12 @@ function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
   self = this;
 
   $scope.contextId = $routeParams.contextId;
-  $scope.showScript = false;
+  $scope.showScript = true;
 
   $http.get('/contexts/' + $scope.contextId).
     then (function (response) {
       data = {};
+      data.pipelineName = response.data.pipelineName;
       data['scriptText'] = response.data.scriptText;
       data['workspace'] = response.data.workspace;
       data['metadataDirectory'] = response.data.metadataDirectory;
@@ -26,7 +27,7 @@ function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
             attributes: step.attributes,
             outcome: 'NA',
             duration: 0,
-            logs: '¯\\_(ツ)_/¯',
+            logs: $sce.trustAsHtml('<h1 style="text-align: center; font-weight: bold">¯\\_(ツ)_/¯</h1>'),
             show: false
           })
         }

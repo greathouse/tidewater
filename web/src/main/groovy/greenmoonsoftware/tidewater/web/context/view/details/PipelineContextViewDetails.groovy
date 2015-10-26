@@ -4,6 +4,7 @@ import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.web.context.PipelineContextStatus
 
 class PipelineContextViewDetails {
+    String pipelineName
     String scriptText
     String workspace
     String metadataDirectory

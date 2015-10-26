@@ -31,7 +31,7 @@ application.filter('getBy', function() {
    }
 });
 
-application.filter('millSecondsToTimeString', function() {
+application.filter('millisecondsToTimeString', function() {
  return function(millseconds) {
    var seconds = Math.floor(millseconds / 1000);
    var days = Math.floor(seconds / 86400);
