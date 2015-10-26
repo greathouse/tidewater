@@ -43,7 +43,7 @@
             <div class="grid-block">
                 <div class="large-12 columns" ng-repeat="step in context.steps">
                     <div class="box-header" ng-click="step.show = !step.show">
-                        <img tw-status-image="{{step.outcome}}" height="32" width="32" /> {{step.stepName}} <span class="right">{{step.duration | millSecondsToTimeString}}</span>
+                        <img tw-status-image="{{step.outcome}}" height="32" width="32" /> <strong>{{step.stepName}}</strong> <em>{{step.stepType}}</em> <span class="right">{{step.duration | millSecondsToTimeString}}</span>
                     </div>
                     <div class="box-body" ng-show="step.show">
                             <pre ng-bind-html="step.logs"></pre>

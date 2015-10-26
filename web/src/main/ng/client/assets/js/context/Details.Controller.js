@@ -19,23 +19,36 @@ function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
       data['steps'] = [];
 
       angular.forEach(response.data.steps, function(step, index) {
-        angular.forEach(step.attempts, function(attempt, attemptIndex) {
+        if (step.attempts.length === 0) {
           data.steps.push({
             stepName: step.stepName,
             stepType: step.stepType,
             attributes: step.attributes,
-            outcome: attempt.outcome,
-            duration: attempt.duration,
-            logs: $sce.trustAsHtml(attempt.logs.reduce(function(previousValue, currentValue, index, array) {
-              var previousDay = index > 0 ? $filter('date')(array[index - 1].dateTime, 'MM/dd/yyyy') : '';
-              var currentDay = $filter('date')(currentValue.dateTime, 'MM/dd/yyyy');
-              var printDay = '          ';
-              if (previousDay != currentDay) { printDay = currentDay; }
-              return previousValue + '<span style="font-weight: bold">' + printDay + ' ' + $filter('date')(currentValue.dateTime, 'hh:mm:ss') + '</span> ' + currentValue.message + '\n';
-            }, '')),
+            outcome: 'NA',
+            duration: 0,
+            logs: '¯\\_(ツ)_/¯',
             show: false
+          })
+        }
+        else {
+          angular.forEach(step.attempts, function(attempt, attemptIndex) {
+            data.steps.push({
+              stepName: step.stepName,
+              stepType: step.stepType,
+              attributes: step.attributes,
+              outcome: attempt.outcome,
+              duration: attempt.duration,
+              logs: $sce.trustAsHtml(attempt.logs.reduce(function(previousValue, currentValue, index, array) {
+                var previousDay = index > 0 ? $filter('date')(array[index - 1].dateTime, 'MM/dd/yyyy') : '';
+                var currentDay = $filter('date')(currentValue.dateTime, 'MM/dd/yyyy');
+                var printDay = '          ';
+                if (previousDay != currentDay) { printDay = currentDay; }
+                return previousValue + '<span style="font-weight: bold">' + printDay + ' ' + $filter('date')(currentValue.dateTime, 'hh:mm:ss') + '</span> ' + currentValue.message + '\n';
+              }, '')),
+              show: false
+            });
           });
-        });
+        }
       });
 
       $scope.context = data;
