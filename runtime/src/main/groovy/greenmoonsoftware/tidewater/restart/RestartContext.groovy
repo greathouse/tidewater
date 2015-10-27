@@ -7,6 +7,7 @@ import greenmoonsoftware.es.event.jdbcstore.JdbcEventQuery
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
 import greenmoonsoftware.tidewater.context.*
 import greenmoonsoftware.tidewater.context.events.ContextExecutionEndedEvent
+import greenmoonsoftware.tidewater.json.JsonEventSerializer
 import greenmoonsoftware.tidewater.restart.events.ContextExecutionRestartedEvent
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
@@ -23,12 +24,12 @@ class RestartContext extends AbstractContext implements EventSubscriber<Event>, 
     RestartContext(ContextId id) {
         attributes = new ContextAttributes(id)
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
-        addEventSubscribers(new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource))
-        eventQuery = new JdbcEventQuery(storage.toConfiguration(), storage.datasource)
+        addEventSubscribers(new JdbcStoreEventSubscriber(storage.toConfiguration(), storage.datasource, new JsonEventSerializer()))
+        eventQuery = new JdbcEventQuery(storage.toConfiguration(), storage.datasource, new JsonEventSerializer())
     }
 
     void restart() {
-        eventBus.register(new ContextAttributeEventSubscriber(attributes))
+        eventBus.register(new ContextAttributeEventSubscriber(this, attributes))
         eventBus.register(this)
         replayToPreviousState()
         registerExternalEventSubscribers()

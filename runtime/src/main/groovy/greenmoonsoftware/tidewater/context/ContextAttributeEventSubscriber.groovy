@@ -21,7 +21,7 @@ class ContextAttributeEventSubscriber implements EventSubscriber<Event> {
 
     private void handle(ContextExecutionStartedEvent event) {
         if (!attributes.script) {
-            attributes.script = event.attributes.script
+            attributes.script = event.script
         }
     }
 
