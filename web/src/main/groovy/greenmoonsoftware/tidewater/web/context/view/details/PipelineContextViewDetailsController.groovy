@@ -1,5 +1,6 @@
 package greenmoonsoftware.tidewater.web.context.view.details
-
+import greenmoonsoftware.es.event.Event
+import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.replay.ReplayRunner
 import greenmoonsoftware.tidewater.web.context.view.PipelineContextViewRepository
@@ -26,5 +27,15 @@ class PipelineContextViewDetailsController {
         details.status = view.status
 
         return details
+    }
+
+    @RequestMapping(value = '/contexts/{contextId}/events')
+    List<Event> events(@PathVariable('contextId') String contextId) {
+        def replay = new ReplayRunner(new ContextId(contextId))
+        def events = []
+        def subscriber = { event -> events << event } as EventSubscriber
+        replay.addEventSubscribers subscriber
+        replay.replay()
+        return events
     }
 }
