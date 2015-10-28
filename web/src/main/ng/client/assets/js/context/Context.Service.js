@@ -25,7 +25,6 @@ function($http) {
     function createContext(contextId) {
         return {
             id: contextId,
-            attributes: {},
             steps: {}
         }
     };
@@ -42,8 +41,9 @@ function($http) {
         else if (event.type === 'greenmoonsoftware.tidewater.context.events.ContextExecutionStartedEvent') {
             var context = contexts[event.aggregateId];
             context.script = event.script;
-            context.attributes.workspace = event.workspace;
-            context.attributes.workspace = event.metaDirectory;
+            context.startTime = event.eventDateTime.epochSecond;
+            context.workspace = event.workspace;
+            context.metaDirectory = event.metaDirectory;
         }
         else if (event.type === 'greenmoonsoftware.tidewater.step.events.StepConfiguredEvent') {
             var context = contexts[event.contextId.id];
@@ -75,6 +75,10 @@ function($http) {
             attempt.status = 'SUCCESS';
             attempt.endTime = event.endDate;
             attempt.duration = attempt.endTime - attempt.startTime;
+        }
+        else if (event.type === 'greenmoonsoftware.tidewater.context.events.ContextExecutionEndedEvent') {
+            var context = contexts[event.aggregateId];
+            context.endTime = event.eventDateTime.epochSecond;
         }
     };
 
