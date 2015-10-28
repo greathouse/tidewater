@@ -16,11 +16,12 @@ function($http) {
         if (!contexts.hasOwnProperty(contextId)) {
             contexts[contextId] = createContext(contextId);
         }
-        $http.get('/contexts/' + contextId + '/events')
-            .then(function(response) {
-                angular.forEach(response.data, processEvent);
-            });
+        $http.get('/contexts/' + contextId + '/events').then(processEventResponse1);
     };
+
+    function processEventResponse(response) {
+        angular.forEach(response.data, processEvent);
+    }
 
     function createContext(contextId) {
         return {
