@@ -31,7 +31,7 @@ class StepRunner implements Serializable {
 
     private boolean start(Step step) {
         def startDate = new Date()
-        context.raiseEvent(new StepStartedEvent(step, startDate))
+        context.raiseEvent(new StepStartedEvent(step, context.attributes.id, startDate))
         try {
             return executeStep(step, startDate)
         } catch (all) {
@@ -50,7 +50,7 @@ class StepRunner implements Serializable {
         def success = step.execute(context, setupStepMetaDirectory(step))
         def endDate = new Date()
         if (success) {
-            context.raiseEvent(new StepSuccessfullyCompletedEvent(step, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
+            context.raiseEvent(new StepSuccessfullyCompletedEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
         } else {
             context.raiseEvent(new StepFailedEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
         }

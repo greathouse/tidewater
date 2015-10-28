@@ -47,8 +47,9 @@ var paths = {
   // These files are for your app's JavaScript
   appJS: [
     'client/assets/js/app.js',
-    'client/assets/js/**/*.Directive.js',
     'client/assets/js/**/*.Module.js',
+    'client/assets/js/**/*.Directive.js',
+    'client/assets/js/**/*.Service.js',
     'client/assets/js/**/*.Controller.js'
   ]
 }

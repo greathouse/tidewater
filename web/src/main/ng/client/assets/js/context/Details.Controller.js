@@ -1,6 +1,6 @@
-angular.module('contextModule').controller('Context.DetailsController', ['$scope', '$http', '$sce', '$filter', '$routeParams', 'FoundationApi',
+angular.module('contextModule').controller('Context.DetailsController', ['$scope', '$http', '$sce', '$filter', '$routeParams', 'FoundationApi', 'Context.Service',
 
-function ($scope, $http, $sce, $filter, $routeParams, foundationApi) {
+function ($scope, $http, $sce, $filter, $routeParams, foundationApi, contextService) {
   self = this;
 
   $scope.contextId = $routeParams.contextId;

@@ -1,6 +1,7 @@
 package greenmoonsoftware.tidewater.step
 import greenmoonsoftware.es.event.jdbcstore.ObjectEventSerializer
 import greenmoonsoftware.tidewater.DummyStep
+import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 import org.testng.annotations.Test
 
@@ -16,7 +17,7 @@ class StepSuccessfullyCompletedEventTest {
         def endDate = new Date()
         def duration = Duration.between(startTime, endTime)
         def step = new DummyStep()
-        def event = new StepSuccessfullyCompletedEvent(step, endDate, duration)
+        def event = new StepSuccessfullyCompletedEvent(step, new ContextId('cId'), endDate, duration)
 
         def serializer = new ObjectEventSerializer()
 
@@ -27,5 +28,6 @@ class StepSuccessfullyCompletedEventTest {
         assert actual.eventDateTime == event.eventDateTime
         assert actual.endDate == event.endDate
         assert actual.duration == event.duration
+        assert actual.contextId == event.contextId
     }
 }
