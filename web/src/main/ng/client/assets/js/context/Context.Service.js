@@ -16,7 +16,7 @@ function($http) {
         if (!contexts.hasOwnProperty(contextId)) {
             contexts[contextId] = createContext(contextId);
         }
-        $http.get('/contexts/' + contextId + '/events').then(processEventResponse1);
+        $http.get('/contexts/' + contextId + '/events').then(processEventResponse);
     };
 
     function processEventResponse(response) {
@@ -45,6 +45,7 @@ function($http) {
             context.startTime = event.eventDateTime.epochSecond;
             context.workspace = event.workspace;
             context.metaDirectory = event.metaDirectory;
+            context.status = 'IN_PROGRESS';
         }
         else if (event.type === 'greenmoonsoftware.tidewater.step.events.StepConfiguredEvent') {
             var context = contexts[event.contextId.id];
@@ -71,6 +72,7 @@ function($http) {
         else if (event.type === 'greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent') {
             var context = contexts[event.contextId.id];
             var step = context.steps[event.aggregateId];
+            context.lastCompletedStep = step;
             step.outputs = event.step.outputs;
             var attempt = step.attempts.slice(-1)[0];
             attempt.status = 'SUCCESS';
@@ -80,6 +82,8 @@ function($http) {
         else if (event.type === 'greenmoonsoftware.tidewater.context.events.ContextExecutionEndedEvent') {
             var context = contexts[event.aggregateId];
             context.endTime = event.eventDateTime.epochSecond;
+            var lastAttempt = context.lastCompletedStep.attempts.slice(-1)[0];
+            context.status = lastAttempt.status;
         }
     };
 
