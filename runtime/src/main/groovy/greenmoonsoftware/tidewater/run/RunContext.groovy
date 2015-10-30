@@ -69,8 +69,8 @@ final class RunContext extends AbstractContext implements Context, EventSubscrib
     Thread execute(String scriptText) {
         attributes.script = scriptText
         def t =new Thread({
-            processScript(scriptText)
             raiseEvent(new ContextExecutionStartedEvent(attributes))
+            processScript(scriptText)
             executeSteps()
             raiseEvent(new ContextExecutionEndedEvent(attributes))
         }, "ContextRunThread-${attributes.id}")
