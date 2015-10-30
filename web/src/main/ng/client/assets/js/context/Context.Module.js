@@ -11,10 +11,6 @@ contextModule.config(['$routeProvider',
                 templateUrl: 'templates/context/details.html',
                 controller: 'Context.DetailsController'
             })
-            .when('/contexts/:contextId/v2', {
-                templateUrl: 'templates/context/detailsV2.html',
-                controller: 'Context.DetailsV2Controller'
-            })
         ;
     }
 ]);

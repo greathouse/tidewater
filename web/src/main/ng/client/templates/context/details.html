@@ -15,7 +15,7 @@
                             <tbody>
                                 <tr>
                                     <td style="text-align: right">Context:</td>
-                                    <td>{{contextId}}</td>
+                                    <td>{{context.id}}</td>
                                 </tr>
                                 <tr>
                                     <td style="text-align: right">Start Time:</td>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="box-body grid-content" ng-show="showScript" style="max-height: 600px; overflow: scroll;">
                         <pre>
-{{context.scriptText}}
+{{context.script}}
                         </pre>
                     </div>
                 </div>
@@ -50,7 +50,16 @@
                         <img tw-status-image="{{step.outcome}}" height="32" width="32" /> <strong>{{step.stepName}}</strong> <em>{{step.stepType}}</em> <span class="right">{{step.duration | millisecondsToTimeString}}</span>
                     </div>
                     <div class="box-body" ng-show="step.show">
-                            <pre ng-bind-html="step.logs"></pre>
+                        <div class="large-12 columns" ng-repeat="attempt in step.attempts">
+                            <div class="box-header" ng-click="attempt.show = !attempt.show">
+                                <img tw-status-image="{{attempt.status}}" height="16" width="16" /> {{step.stepName}} &#8594; Attempt {{$index + 1}}
+                            </div>
+                            <div class="box-body" ng-show="attempt.show">
+                                <pre>
+<span ng-repeat="log in attempt.logs"><span style="font-weight: bold">{{log.time | date: 'HH:mm:ss'}}</span> {{log.message}}<br /></span>
+                                </pre>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
