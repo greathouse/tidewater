@@ -47,7 +47,7 @@
             <div class="grid-block">
                 <div class="large-12 columns" ng-repeat="step in context.steps">
                     <div class="box-header" ng-click="step.show = !step.show">
-                        <img tw-status-image="{{step.outcome}}" height="32" width="32" /> <strong>{{step.stepName}}</strong> <em>{{step.stepType}}</em> <span class="right">{{step.duration | millisecondsToTimeString}}</span>
+                        <img tw-status-image="{{step.status}}" height="32" width="32" /> <strong>{{step.stepName}}</strong> <em>{{step.stepType}}</em> <span class="right">{{step.duration | millisecondsToTimeString}}</span>
                     </div>
                     <div class="box-body" ng-show="step.show">
                         <div class="large-12 columns" ng-repeat="attempt in step.attempts">

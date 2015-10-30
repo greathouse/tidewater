@@ -10,11 +10,12 @@ function($rootScope, $http) {
     var eventHandlers = {
         'greenmoonsoftware.tidewater.step.events.StepDefinedEvent': function(event) {
             var context = contexts[event.contextId.id];
-            context.steps[event.name] = {
+            context.stepIndex[event.name] = context.steps.length;
+            context.steps.push({
                 stepName: event.name,
                 stepType: event.stepType,
                 attempts: []
-            };
+            });
         },
         'greenmoonsoftware.tidewater.context.events.ContextExecutionStartedEvent': function(event) {
             var context = contexts[event.aggregateId];
@@ -26,11 +27,12 @@ function($rootScope, $http) {
         },
         'greenmoonsoftware.tidewater.step.events.StepConfiguredEvent': function(event) {
             var context = contexts[event.contextId.id];
-            context.steps[event.aggregateId].inputs = event.step.inputs;
+            context.steps[context.stepIndex[event.aggregateId]].inputs = event.step.inputs;
         },
         'greenmoonsoftware.tidewater.step.events.StepStartedEvent': function(event) {
             var context = contexts[event.contextId.id];
-            var step = context.steps[event.aggregateId];
+            var step = context.steps[context.stepIndex[event.aggregateId]];
+            step.status = 'IN_PROGRESS';
             step.attempts.push({
                 status: 'IN_PROGRESS',
                 startTime: event.eventDateTime.epochSecond * 1000,
@@ -40,7 +42,7 @@ function($rootScope, $http) {
         },
         'greenmoonsoftware.tidewater.step.events.StepLogEvent': function(event) {
             var context = contexts[event.contextId.id];
-            var attempt = context.steps[event.aggregateId].attempts.slice(-1)[0];
+            var attempt = context.steps[context.stepIndex[event.aggregateId]].attempts.slice(-1)[0];
             attempt.logs.push({
                 time: event.eventDateTime.epochSecond * 1000,
                 message: event.message
@@ -48,13 +50,29 @@ function($rootScope, $http) {
         },
         'greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent': function(event) {
             var context = contexts[event.contextId.id];
-            var step = context.steps[event.aggregateId];
+            var step = context.steps[context.stepIndex[event.aggregateId]];
             context.lastCompletedStep = step;
             step.outputs = event.step.outputs;
+            step.status = 'SUCCESS';
             var attempt = step.attempts.slice(-1)[0];
             attempt.status = 'SUCCESS';
             attempt.endTime = event.endDate;
             attempt.duration = attempt.endTime - attempt.startTime;
+        },
+        'greenmoonsoftware.tidewater.step.events.StepErroredEvent': function(event) {
+            var context = contexts[event.contextId.id];
+            var step = context.steps[context.stepIndex[event.aggregateId]];
+            context.lastCompletedStep = step;
+            step.outputs = event.step.outputs;
+            step.status = 'ERROR';
+            var attempt = step.attempts.slice(-1)[0];
+            attempt.status = 'ERROR';
+            attempt.endTime = event.endDate;
+            attempt.duration = attempt.endTime - attempt.startTime;
+            attempt.logs.push({
+                time: event.endDate,
+                message: event.stackTrace
+            });
         },
         'greenmoonsoftware.tidewater.context.events.ContextExecutionEndedEvent': function(event) {
             var context = contexts[event.aggregateId];
@@ -87,7 +105,8 @@ function($rootScope, $http) {
     function createContext(contextId) {
         return {
             id: contextId,
-            steps: {}
+            steps: [],
+            stepIndex: {}
         }
     };
 
