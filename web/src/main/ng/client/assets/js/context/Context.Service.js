@@ -1,6 +1,11 @@
-angular.module('contextModule').factory('Context.Service', ['$http',
+angular.module('contextModule').factory('Context.Service', ['$rootScope', '$http',
 
-function($http) {
+function($rootScope, $http) {
+    var channel = postal.channel('TidewaterEvents');
+    var subscription = channel.subscribe( "event.received", function ( data ) {
+        processEvent(data);
+    } );
+
     var contexts = {};
     var eventHandlers = {
         'greenmoonsoftware.tidewater.step.events.StepDefinedEvent': function(event) {
@@ -89,6 +94,7 @@ function($http) {
     function processEvent(event, index) {
         if (eventHandlers.hasOwnProperty(event.type)) {
             eventHandlers[event.type](event);
+            $rootScope.$apply();
         }
     };
 

@@ -2,6 +2,13 @@ angular.module('contextModule').controller('Context.DetailsV2Controller', ['$sco
 
 function ($scope, $sce, $filter, $routeParams, contextService) {
   $scope.showScript = true;
-  $scope.context = contextService.getContext($routeParams.contextId);
+  $scope.$watch(
+    function() {
+      return contextService.getContext($routeParams.contextId);
+    },
+    function(newVal) {
+      $scope.context = newVal;
+    },
+    true);
 }
 ]);

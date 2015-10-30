@@ -22,15 +22,18 @@ class PipelineLifecycleManagementEventSubscriber implements EventSubscriber<Even
     private final Bus<Event, EventSubscriber> eventBus
     private final PipelineContextCommandService pipelineContextService
     private final PipelineContextContainer pipelineContextContainer
+    private final EventSubscriber<Event> contextEventSubscriber
 
     PipelineLifecycleManagementEventSubscriber(
             Bus<Event, EventSubscriber> b,
             PipelineContextCommandService s,
-            PipelineContextContainer c
+            PipelineContextContainer c,
+            EventSubscriber<Event> contextEventSubscriber
     ) {
         eventBus = b
         pipelineContextService = s
         pipelineContextContainer = c
+        this.contextEventSubscriber = contextEventSubscriber
     }
 
     @Override
@@ -44,7 +47,7 @@ class PipelineLifecycleManagementEventSubscriber implements EventSubscriber<Even
 
     private void handle(PipelineContextStartedEvent event) {
         def context = new RunContext(event.contextId)
-        context.addEventSubscribers(this)
+        context.addEventSubscribers(this, contextEventSubscriber)
         def thread = context.execute(event.script)
         pipelineContextContainer.add(event.contextId, thread)
     }
