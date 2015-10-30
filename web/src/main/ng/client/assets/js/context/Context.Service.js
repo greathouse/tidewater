@@ -14,7 +14,7 @@ function($http) {
         'greenmoonsoftware.tidewater.context.events.ContextExecutionStartedEvent': function(event) {
             var context = contexts[event.aggregateId];
             context.script = event.script;
-            context.startTime = event.eventDateTime.epochSecond;
+            context.startTime = event.eventDateTime.epochSecond * 1000;
             context.workspace = event.workspace;
             context.metaDirectory = event.metaDirectory;
             context.status = 'IN_PROGRESS';
@@ -28,7 +28,7 @@ function($http) {
             var step = context.steps[event.aggregateId];
             step.attempts.push({
                 status: 'IN_PROGRESS',
-                startTime: event.eventDateTime.epochSecond,
+                startTime: event.eventDateTime.epochSecond * 1000,
                 endTime: 0,
                 logs: []
             });
@@ -37,7 +37,7 @@ function($http) {
             var context = contexts[event.contextId.id];
             var attempt = context.steps[event.aggregateId].attempts.slice(-1)[0];
             attempt.logs.push({
-                time: event.eventDateTime.epochSecond,
+                time: event.eventDateTime.epochSecond * 1000,
                 message: event.message
             })
         },
@@ -53,9 +53,10 @@ function($http) {
         },
         'greenmoonsoftware.tidewater.context.events.ContextExecutionEndedEvent': function(event) {
             var context = contexts[event.aggregateId];
-            context.endTime = event.eventDateTime.epochSecond;
+            context.endTime = event.eventDateTime.epochSecond * 1000;
             var lastAttempt = context.lastCompletedStep.attempts.slice(-1)[0];
             context.status = lastAttempt.status;
+            context.duration = context.endTime - context.startTime;
         }
     }
 
@@ -64,15 +65,14 @@ function($http) {
         if (context != undefined) {
             return context;
         }
-        loadContext(contextId);
-        return contexts[contextId];
+        return loadContext(contextId);
     };
 
     function loadContext(contextId) {
-        if (!contexts.hasOwnProperty(contextId)) {
-            contexts[contextId] = createContext(contextId);
-        }
+        var context = createContext(contextId);
         $http.get('/contexts/' + contextId + '/events').then(processEventResponse);
+        contexts[contextId] = context;
+        return context;
     };
 
     function processEventResponse(response) {
