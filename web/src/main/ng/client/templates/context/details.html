@@ -47,10 +47,14 @@
             <div class="grid-block">
                 <div class="large-12 columns" ng-repeat="step in context.steps">
                     <div class="box-header" ng-click="step.show = !step.show">
-                        <img tw-status-image="{{step.status}}" height="32" width="32" /> <strong>{{step.stepName}}</strong> <em>{{step.stepType}}</em> <span class="right">{{step.duration | millisecondsToTimeString}}</span>
+                        <img tw-status-image="{{step.status}}" height="32" width="32" />
+                        <strong>{{step.stepName}}</strong>
+                        <em>{{step.stepType}}</em>
+                        <span ng-show="step.attempts.length > 1">({{step.attempts.length}} attempts)</span>
+                        <span class="right">{{step.duration | millisecondsToTimeString}}</span>
                     </div>
                     <div class="box-body" ng-show="step.show">
-                        <step-attempt-details attempt="step.attempts[0]" ng-show="step.attempts.length === 1" />
+                        <step-attempt-details attempt="step.attempts[0]" ng-show="step.attempts.length === 1"></step-attempt-details>
                         <div class="large-12 columns" ng-repeat="attempt in step.attempts" ng-show="step.attempts.length > 1">
                             <div class="box-header" ng-click="attempt.show = !attempt.show">
                                 <img tw-status-image="{{attempt.status}}" height="16" width="16" /> {{step.stepName}} &#8594; Attempt {{$index + 1}}
