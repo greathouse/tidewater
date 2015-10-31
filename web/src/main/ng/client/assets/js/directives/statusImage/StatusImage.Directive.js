@@ -12,7 +12,6 @@ m.directive('twStatusImage', function() {
                  var clazz = '';
                  if (status === 'IN_PROGRESS') {
                      image = './assets/img/gears.svg';
-                     clazz = 'blink';
                  }
                  else if (status === 'COMPLETE' || status === 'SUCCESS') {
                     image = './assets/img/green-check.svg';
@@ -21,7 +20,6 @@ m.directive('twStatusImage', function() {
                     image = './assets/img/error.svg';
                  }
                  element.attr("src", image);
-                 element.attr('class', clazz);
             });
         }
     }
