@@ -21,6 +21,7 @@ class Gradle extends AbstractStep {
     private boolean executeProcess(ProcessBuilder builder, Closure eachLine) {
         def process = builder.start()
         new BufferedReader(new InputStreamReader(process.inputStream)).eachLine eachLine
+        process.waitFor()
         return process.exitValue() == 0
     }
 

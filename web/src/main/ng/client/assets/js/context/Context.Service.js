@@ -13,8 +13,10 @@ function($rootScope, $http) {
             context.stepIndex[event.name] = context.steps.length;
             context.steps.push({
                 stepName: event.name,
-                stepType: event.stepType,
-                attempts: []
+                stepType: event.stepType.substring(event.stepType.lastIndexOf('\.') + 1),
+                attempts: [],
+                errorCount: 0,
+                failedCount: 0
             });
         },
         'greenmoonsoftware.tidewater.context.events.ContextExecutionStartedEvent': function(event) {
@@ -65,6 +67,7 @@ function($rootScope, $http) {
             context.lastCompletedStep = step;
             step.outputs = event.step.outputs;
             step.status = 'ERROR';
+            step.errorCount = step.errorCount + 1;
             var attempt = step.attempts.slice(-1)[0];
             attempt.status = 'ERROR';
             attempt.endTime = event.endDate;
@@ -73,6 +76,18 @@ function($rootScope, $http) {
                 time: event.endDate,
                 message: event.stackTrace
             });
+        },
+        'greenmoonsoftware.tidewater.step.events.StepFailedEvent': function(event) {
+            var context = contexts[event.contextId.id];
+            var step = context.steps[context.stepIndex[event.aggregateId]];
+            context.lastCompletedStep = step;
+            step.outputs = event.step.outputs;
+            step.status = 'FAILURE';
+            step.failedCount = step.failedCount + 1;
+            var attempt = step.attempts.slice(-1)[0];
+            attempt.status = 'FAILURE';
+            attempt.endTime = event.endDate;
+            attempt.duration = attempt.endTime = attempt.startTime;
         },
         'greenmoonsoftware.tidewater.context.events.ContextExecutionEndedEvent': function(event) {
             var context = contexts[event.aggregateId];

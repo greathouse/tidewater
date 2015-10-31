@@ -1,6 +1,14 @@
 var m = angular.module('statusImage', []);
 
 m.directive('twStatusImage', function() {
+    var imageMap = {
+        'BLANK': './assets/img/blank.png',
+        'IN_PROGRESS': './assets/img/gears.svg',
+        'COMPLETE': './assets/img/green-check.svg',
+        'SUCCESS': './assets/img/green-check.svg',
+        'ERROR': './assets/img/error.svg',
+        'FAILURE': './assets/img/failure.svg'
+    }
     var twStatusImage = {
         scope: {
             twStatusImage: '@'
@@ -8,17 +16,7 @@ m.directive('twStatusImage', function() {
         link: function(scope, element, attrs) {
             scope.$watch('twStatusImage', function() {
                 var status = scope.twStatusImage;
-                 var image = './assets/img/blank.png';
-                 var clazz = '';
-                 if (status === 'IN_PROGRESS') {
-                     image = './assets/img/gears.svg';
-                 }
-                 else if (status === 'COMPLETE' || status === 'SUCCESS') {
-                    image = './assets/img/green-check.svg';
-                 }
-                 else if (status === 'ERROR') {
-                    image = './assets/img/error.svg';
-                 }
+                 var image = imageMap.hasOwnProperty(status) ? imageMap[status] : imageMap.BLANK;
                  element.attr("src", image);
             });
         }

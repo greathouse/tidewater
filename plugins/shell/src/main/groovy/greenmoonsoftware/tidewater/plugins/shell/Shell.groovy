@@ -10,14 +10,16 @@ class Shell extends AbstractStep {
 
     @Override
     boolean execute(Context context, File stepDirectory) {
-        executeProcess(buildProcess(context, writeScript(stepDirectory))).eachLine {
+        return executeProcess(buildProcess(context, writeScript(stepDirectory))) {
             context.log(this, it)
         }
-        return true
     }
 
-    private BufferedReader executeProcess(ProcessBuilder builder) {
-        new BufferedReader(new InputStreamReader(builder.start().inputStream))
+    private boolean executeProcess(ProcessBuilder builder, Closure eachLine) {
+        def process = builder.start()
+        new BufferedReader(new InputStreamReader(process.inputStream)).eachLine eachLine
+        process.waitFor()
+        return process.exitValue() == 0
     }
 
     private ProcessBuilder buildProcess(Context context, File scriptFile) {
