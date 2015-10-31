@@ -50,14 +50,13 @@
                         <img tw-status-image="{{step.status}}" height="32" width="32" /> <strong>{{step.stepName}}</strong> <em>{{step.stepType}}</em> <span class="right">{{step.duration | millisecondsToTimeString}}</span>
                     </div>
                     <div class="box-body" ng-show="step.show">
-                        <div class="large-12 columns" ng-repeat="attempt in step.attempts">
+                        <step-attempt-details attempt="step.attempts[0]" ng-show="step.attempts.length === 1" />
+                        <div class="large-12 columns" ng-repeat="attempt in step.attempts" ng-show="step.attempts.length > 1">
                             <div class="box-header" ng-click="attempt.show = !attempt.show">
                                 <img tw-status-image="{{attempt.status}}" height="16" width="16" /> {{step.stepName}} &#8594; Attempt {{$index + 1}}
                             </div>
                             <div class="box-body" ng-show="attempt.show">
-                                <pre>
-<span ng-repeat="log in attempt.logs"><span style="font-weight: bold">{{log.time | date: 'HH:mm:ss'}}</span> {{log.message}}<br /></span>
-                                </pre>
+                                <step-attempt-details attempt="attempt" />
                             </div>
                         </div>
                     </div>
