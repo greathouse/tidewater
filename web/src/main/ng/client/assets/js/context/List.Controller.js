@@ -20,7 +20,7 @@ function ($scope, $http, $filter, $routeParams, foundationApi, eventService) {
           status: 'IN_PROGRESS',
           startTime: event.eventDateTime.epochSecond * 1000,
         });
-        $scope.apply();
+        $scope.$apply();
       }
       else if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent') {
         var c = $filter('getBy')(self.contexts, 'contextId', event.aggregateId);
