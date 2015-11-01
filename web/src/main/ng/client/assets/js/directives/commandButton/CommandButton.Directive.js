@@ -1,24 +1,26 @@
-var m = angular.module('startPipelineButton', []);
+var m = angular.module('commandButton', []);
 
-m.directive('startPipelineButton', function() {
+m.directive('twCommand', function() {
     var d = {
         scope: {
-            pipelineName: '='
+            command: '@',
+            text: '@'
         },
         restrict: 'E',
-        templateUrl: '/templates/directives/startPipelineButton/template.html',
+        templateUrl: '/templates/directives/commandButton/template.html',
         controller: ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+
             $scope.idle = function() {
                 return !$scope.loading && !$scope.success && !$scope.error;
             };
             $scope.start = function() {
                 $scope.loading = true;
-                $http.get('/pipelines/' + $scope.pipelineName + '/start')
+                $http.get($scope.command)
                 .then (
                     function (response) {
                         $scope.loading = false;
                         $scope.success = true;
-                        $timeout(function() {$scope.success = false;}, 3000)
+                        $timeout(function() {$scope.success = false;}, 6000)
                     },
                     function(response) {
                         $scope.loading = false;
