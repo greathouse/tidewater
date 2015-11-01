@@ -6,7 +6,7 @@ angular.module('pipelineModule').controller('Pipeline.ListController', [
     'Event.Service',
 
 function ($scope, $http, $filter, foundationApi, eventService) {
-  eventService.register(processEvent);
+  eventService.register('Pipeline.ListController', processEvent);
 
   var self = this;
   var pipelines;

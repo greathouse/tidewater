@@ -4,7 +4,7 @@ var notificationModule = angular.module('notificationModule', [])
 run.$inject = ['FoundationApi', 'Event.Service'];
 
 function run(foundationApi, eventService) {
-    eventService.register(processEvent);
+    eventService.register('Notification.Module', processEvent);
 
     function processEvent(event) {
         if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {
