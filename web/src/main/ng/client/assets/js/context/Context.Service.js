@@ -1,10 +1,7 @@
-angular.module('contextModule').factory('Context.Service', ['$rootScope', '$http',
+angular.module('contextModule').factory('Context.Service', ['$rootScope', '$http', 'Event.Service',
 
-function($rootScope, $http) {
-    var channel = postal.channel('TidewaterEvents');
-    var subscription = channel.subscribe( "event.received", function ( data ) {
-        processEvent(data);
-    } );
+function($rootScope, $http, eventService) {
+    eventService.register('Context.Service', processEvent);
 
     var contexts = {};
     var eventHandlers = {

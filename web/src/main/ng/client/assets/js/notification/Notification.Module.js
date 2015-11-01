@@ -1,13 +1,10 @@
 var notificationModule = angular.module('notificationModule', [])
 .run(run);
 
-run.$inject = ['FoundationApi'];
+run.$inject = ['FoundationApi', 'Event.Service'];
 
-function run(foundationApi) {
-    var channel = postal.channel('TidewaterEvents');
-    var subscription = channel.subscribe( "event.received", function ( data ) {
-        processEvent(data);
-    } );
+function run(foundationApi, eventService) {
+    eventService.register(processEvent);
 
     function processEvent(event) {
         if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {

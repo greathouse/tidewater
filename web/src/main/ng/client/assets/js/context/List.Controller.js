@@ -1,13 +1,16 @@
-angular.module('contextModule').controller('Context.ListController', ['$scope', '$http', '$filter', '$routeParams', 'FoundationApi',
+angular.module('contextModule').controller('Context.ListController', [
+  '$scope',
+  '$http',
+  '$filter',
+  '$routeParams',
+  'FoundationApi',
+  'Event.Service',
 
-function ($scope, $http, $filter, $routeParams, foundationApi) {
+function ($scope, $http, $filter, $routeParams, foundationApi, eventService) {
   self = this;
   var contexts;
 
-  var channel = postal.channel('TidewaterEvents');
-  var subscription = channel.subscribe( "event.received", function ( data ) {
-      processEvent(data);
-  } );
+  eventService.register('Context.ListController', processEvent);
 
   function processEvent(event) {
       if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent') {

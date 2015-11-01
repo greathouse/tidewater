@@ -32,8 +32,8 @@ application.filter('getBy', function() {
 });
 
 application.filter('millisecondsToTimeString', function() {
- return function(millseconds) {
-   var seconds = Math.floor(millseconds / 1000);
+ return function(milliseconds) {
+   var seconds = Math.floor(milliseconds / 1000);
    var days = Math.floor(seconds / 86400);
    var hours = Math.floor((seconds % 86400) / 3600);
    var minutes = Math.floor(((seconds % 86400) % 3600) / 60);
