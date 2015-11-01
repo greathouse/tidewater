@@ -12,7 +12,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="c in contexts">
-                        <td><a ng-href="/#/contexts/{{c.contextId}}"><img tw-status-image="{{c.status}}" height="32" width="32" /></a></td>
+                        <td><a ng-href="/#/pipelines/{{pipelineName}}/contexts/{{c.contextId}}"><img tw-status-image="{{c.status}}" height="32" width="32" /></a></td>
                         <td>{{c.startTime | date:'medium'}}</td>
                         <td>{{c.endTime | date:'medium'}}</td>
                     </tr>

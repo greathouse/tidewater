@@ -2,6 +2,8 @@ angular.module('contextModule').controller('Context.DetailsController', ['$scope
 
 function ($scope, $sce, $filter, $routeParams, contextService) {
   $scope.showScript = true;
+  $scope.pipelineName = $routeParams.pipelineName;
+
   $scope.$watch(
     function() {
       return contextService.getContext($routeParams.contextId);

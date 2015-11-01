@@ -11,7 +11,6 @@ var application = angular.module('application', [
   'statusImage',
   'startPipelineButton',
   'contextModule',
-  'executorModule',
   'notificationModule',
   'pipelineModule'
 ])

@@ -7,7 +7,7 @@ contextModule.config(['$routeProvider',
                 templateUrl: 'templates/context/list.html',
                 controller: 'Context.ListController'
             })
-            .when('/contexts/:contextId', {
+            .when('/pipelines/:pipelineName/contexts/:contextId', {
                 templateUrl: 'templates/context/details.html',
                 controller: 'Context.DetailsController'
             })
