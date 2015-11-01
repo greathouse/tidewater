@@ -11,7 +11,6 @@ function ($scope, $http, $filter, foundationApi, eventService) {
   var self = this;
   var pipelines;
 
-
   function processEvent(event) {
       if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {
           var pipeline = $filter('getBy')(self.pipelines, 'name', event.pipelineName);
