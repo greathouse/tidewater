@@ -3,7 +3,7 @@ angular.module('contextModule').controller('Context.DetailsController', [
   '$routeParams',
   'Context.Service',
 
-function ($scope, $routeParams, $http, contextService) {
+function ($scope, $routeParams, contextService) {
   $scope.showScript = true;
   $scope.pipelineName = $routeParams.pipelineName;
 
