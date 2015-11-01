@@ -2,11 +2,13 @@ package greenmoonsoftware.tidewater.plugins.shell
 import greenmoonsoftware.tidewater.context.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
+import greenmoonsoftware.tidewater.step.Output
 
 class Shell extends AbstractStep {
     @Input String contents
     @Input String workingDir = ''
     @Input Map<String, String> env = [:]
+    @Output int exitValue = -1
 
     @Override
     boolean execute(Context context, File stepDirectory) {
@@ -19,7 +21,8 @@ class Shell extends AbstractStep {
         def process = builder.start()
         new BufferedReader(new InputStreamReader(process.inputStream)).eachLine eachLine
         process.waitFor()
-        return process.exitValue() == 0
+        exitValue = process.exitValue()
+        return exitValue == 0
     }
 
     private ProcessBuilder buildProcess(Context context, File scriptFile) {
