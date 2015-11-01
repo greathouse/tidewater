@@ -9,6 +9,11 @@
                 <div class="grid-block">
                     <div class="grid-content" style="text-align: center">
                         <img tw-status-image="{{context.status}}" height="150" width="150" />
+                        <div>
+                        <ul class="button-group">
+                            <li ng-show="context.status != 'SUCCESS'"><tw-command text="Retry" command="/contexts/{{context.id}}/retry"></tw-command></li>
+                        </ul>
+                        </div>
                     </div>
                     <div class="grid-content">
                         <table>

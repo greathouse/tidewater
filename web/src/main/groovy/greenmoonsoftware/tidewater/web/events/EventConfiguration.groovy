@@ -16,8 +16,13 @@ class EventConfiguration {
         new SimpleEventBus()
     }
 
+    @Bean
+    WebsocketSendEventSubscriber websocketSendEventSubscriber() {
+        new WebsocketSendEventSubscriber(messagingTemplate)
+    }
+
     @PostConstruct
-    void websocketSendEventSubscriber() {
-        simpleEventBus().register(new WebsocketSendEventSubscriber(messagingTemplate))
+    void registerWebsocketSendEventSubscriber() {
+        simpleEventBus().register(websocketSendEventSubscriber())
     }
 }

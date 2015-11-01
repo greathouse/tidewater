@@ -34,8 +34,8 @@ class RestartContext extends AbstractContext implements EventSubscriber<Event>, 
         replayToPreviousState()
         registerExternalEventSubscribers()
         new Thread({
-            processScript()
             raiseEvent(new ContextExecutionRestartedEvent(attributes.id))
+            processScript()
             executeSteps()
             raiseEvent(new ContextExecutionEndedEvent(attributes))
         }).start()
@@ -68,8 +68,9 @@ class RestartContext extends AbstractContext implements EventSubscriber<Event>, 
         }
     }
 
-    void addEventSubscribers(EventSubscriber<Event>... subscriber) {
+    RestartContext addEventSubscribers(EventSubscriber<Event>... subscriber) {
         subscribers.addAll(subscriber)
+        return this
     }
 
     @Override
