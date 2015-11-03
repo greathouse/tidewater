@@ -58,7 +58,24 @@
                         <span class="right"><span ng-show="step.attempts.length > 1" ng-repeat="attempt in step.attempts"><img tw-status-image="{{attempt.status}}" height="16" width="16" /></span></span>
                     </div>
                     <div class="box-body" ng-show="step.show">
-                        <step-attempt-details attempt="step.attempts[0]" ng-show="step.attempts.length === 1"></step-attempt-details>
+                        <div class="grid-block large-up-2 align-center">
+                            <div class="grid-content">
+                                <h4>Inputs</h4>
+                                <span ng-repeat="(k,v) in step.inputs"><strong>{{k}}</strong>: {{v}}<br /></span>
+                                <span ng-show="isEmpty(step.inputs)"><strong>¯\_(ツ)_/¯</strong></span>
+                            </div>
+                            <div class="grid-content shrink">
+                                <h4>Outputs</h4>
+                                <span ng-repeat="(k,v) in step.outputs"><strong>{{k}}</strong>: {{v}}<br /></span>
+                                <span ng-show="isEmpty(step.outputs)"><strong>¯\_(ツ)_/¯</strong></span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="grid-block">
+                            <div class="grid-content">
+                                <step-attempt-details attempt="step.attempts[0]" ng-show="step.attempts.length === 1"></step-attempt-details>
+                            </div>
+                        </div>
                         <div class="large-12 columns" ng-repeat="attempt in step.attempts" ng-show="step.attempts.length > 1">
                             <div class="box-header" ng-click="attempt.show = !attempt.show">
                                 <img tw-status-image="{{attempt.status}}" height="16" width="16" /> {{step.stepName}} &#8594; Attempt {{$index + 1}}
