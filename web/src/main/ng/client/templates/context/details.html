@@ -61,12 +61,12 @@
                         <div class="grid-block large-up-2 align-center">
                             <div class="grid-content">
                                 <h4>Inputs</h4>
-                                <span ng-repeat="(k,v) in step.inputs"><strong>{{k}}</strong>: {{v}}<br /></span>
+                                <span ng-repeat="(k,v) in step.inputs">{{k}}: <strong>{{v}}</strong><br /></span>
                                 <span ng-show="isEmpty(step.inputs)"><strong>¯\_(ツ)_/¯</strong></span>
                             </div>
                             <div class="grid-content shrink">
                                 <h4>Outputs</h4>
-                                <span ng-repeat="(k,v) in step.outputs"><strong>{{k}}</strong>: {{v}}<br /></span>
+                                <span ng-repeat="(k,v) in step.outputs">{{k}}: <strong>{{v}}</strong><br /></span>
                                 <span ng-show="isEmpty(step.outputs)"><strong>¯\_(ツ)_/¯</strong></span>
                             </div>
                         </div>
