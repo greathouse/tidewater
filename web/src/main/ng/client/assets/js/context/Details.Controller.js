@@ -8,6 +8,9 @@ function ($scope, $routeParams, contextService) {
   $scope.pipelineName = $routeParams.pipelineName;
 
   $scope.isEmpty = function(object) {
+    if (object === undefined) {
+      return true;
+    }
     var v = Object.keys(object).length;
     return v == 0;
   }
