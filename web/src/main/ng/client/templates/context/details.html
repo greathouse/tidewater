@@ -15,12 +15,20 @@
                         </ul>
                         </div>
                     </div>
-                    <div class="grid-content">
+                    <div class="grid-content align-center">
                         <table>
                             <tbody>
                                 <tr>
                                     <td style="text-align: right">Context:</td>
                                     <td>{{context.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Workspace:</td>
+                                    <td>{{context.workspace}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">Metadata Dir:</td>
+                                    <td>{{context.metaDirectory}}</td>
                                 </tr>
                                 <tr>
                                     <td style="text-align: right">Start Time:</td>
@@ -38,19 +46,21 @@
                         </table>
                     </div>
                 </div>
-                <div class="large-6">
+            </div>
+            <div class="grid-block">
+                <div class="grid-content">
                     <div class="box-header grid-content" ng-click="showScript = !showScript">
                         <h4>Script</h4>
                     </div>
                     <div class="box-body grid-content" ng-show="showScript" style="max-height: 600px; overflow: scroll;">
-                        <pre>
+                            <pre>
 {{context.script}}
-                        </pre>
+                            </pre>
                     </div>
                 </div>
             </div>
-            <div class="grid-block">
-                <div class="large-12 columns" ng-repeat="step in context.steps">
+            <div class="grid-block" ng-repeat="step in context.steps">
+                <div class="grid-content" style="overflow: hidden">
                     <div class="box-header" ng-click="step.show = !step.show">
                         <img tw-status-image="{{step.status}}" height="32" width="32" />
                         <strong>{{step.stepName}}</strong>
