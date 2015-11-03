@@ -24,6 +24,10 @@ function($rootScope, $http, eventService) {
             context.metaDirectory = event.metaDirectory;
             context.status = 'IN_PROGRESS';
         },
+        'greenmoonsoftware.tidewater.restart.events.ContextExecutionRestartedEvent': function(event) {
+            var context = contexts[event.aggregateId];
+            context.status = 'IN_PROGRESS';
+        },
         'greenmoonsoftware.tidewater.step.events.StepConfiguredEvent': function(event) {
             var context = contexts[event.contextId.id];
             context.steps[context.stepIndex[event.aggregateId]].inputs = event.step.inputs;

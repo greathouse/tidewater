@@ -5,8 +5,9 @@ angular.module('contextModule').controller('Context.ListController', [
   '$routeParams',
   'FoundationApi',
   'Event.Service',
+  'Context.Service',
 
-function ($scope, $http, $filter, $routeParams, foundationApi, eventService) {
+function ($scope, $http, $filter, $routeParams, foundationApi, eventService, contextService) {
   self = this;
   var contexts;
 
@@ -36,8 +37,20 @@ function ($scope, $http, $filter, $routeParams, foundationApi, eventService) {
     then (function (response) {
       self.contexts = response.data.reverse();
       $scope.contexts = self.contexts;
+      loadFirstContextWithStatus(self.contexts, 'COMPLETE');
+      loadFirstContextWithStatus(self.contexts, 'ERROR');
+      loadFirstContextWithStatus(self.contexts, 'FAILURE');
     }, function(response) {
       foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed' });
     });
+
+  function loadFirstContextWithStatus(contexts, status) {
+    var context = contexts.find(function(c) {
+      return c.status === status;
+    });
+    if (context !== undefined) {
+      contextService.getContext(context.contextId);
+    }
+  }
 }
 ]);
