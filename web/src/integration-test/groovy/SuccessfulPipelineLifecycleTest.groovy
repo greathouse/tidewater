@@ -75,6 +75,9 @@ class SuccessfulPipelineLifecycleTest extends AbstractTidewaterIntegrationTests 
 
         def pipeline = pipelineQuery.retrieve(pipelineName)
         assert pipeline.script == updatedScript
+
+        def view = pipelineViewRepository.findOne(pipelineName)
+        assert view.script == updatedScript
     }
 
     private <T> T findEventOfType(Class<T> type) {

@@ -4,11 +4,9 @@ import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineScriptUpdatedEvent
-import groovy.sql.Sql
 
 class PipelineViewEventSubscriber implements EventSubscriber<Event> {
     private final PipelineViewRepository repository
-    private final Sql sql
 
     PipelineViewEventSubscriber(PipelineViewRepository r) {
         repository = r
@@ -27,6 +25,6 @@ class PipelineViewEventSubscriber implements EventSubscriber<Event> {
     }
 
     private void handle(PipelineScriptUpdatedEvent event) {
-
+        repository.updateScript(event.aggregateId, event.script)
     }
 }
