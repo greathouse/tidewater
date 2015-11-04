@@ -4,6 +4,7 @@ import greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent
 import greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent
 import greenmoonsoftware.tidewater.web.pipeline.commands.CreatePipelineCommand
 import greenmoonsoftware.tidewater.web.pipeline.commands.StartPipelineCommand
+import greenmoonsoftware.tidewater.web.pipeline.commands.UpdatePipelineScriptCommand
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
 import org.testng.annotations.AfterMethod
@@ -65,6 +66,15 @@ class SuccessfulPipelineLifecycleTest extends AbstractTidewaterIntegrationTests 
         assert view
         assert view.endTime != new Date(0)
         assert view.status == PipelineContextStatus.COMPLETE
+    }
+
+    @Test(dependsOnMethods = 'createPipeline')
+    void canUpdateScript() {
+        def updatedScript = 'step newScript { println "this is new" }'
+        pipelineCommandService.execute(new UpdatePipelineScriptCommand(pipelineName, updatedScript))
+
+        def pipeline = pipelineQuery.retrieve(pipelineName)
+        assert pipeline.script == updatedScript
     }
 
     private <T> T findEventOfType(Class<T> type) {

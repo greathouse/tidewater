@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.pipeline
+package greenmoonsoftware.tidewater.web.pipeline.view.start
 
 import greenmoonsoftware.tidewater.web.pipeline.commands.PipelineCommandService
 import greenmoonsoftware.tidewater.web.pipeline.commands.StartPipelineCommand

@@ -5,6 +5,7 @@ import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventList
 import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent
+import greenmoonsoftware.tidewater.web.pipeline.events.PipelineScriptUpdatedEvent
 import greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent
 
 import java.time.Instant
@@ -33,6 +34,10 @@ class PipelineAggregate implements Aggregate {
         [new PipelineStartedEvent(name, new ContextId("${name}-${new Date().format('yyyy-MM-dd_HH-mm-ss')}"), script, Instant.now())]
     }
 
+    private Collection<Event> handle(UpdatePipelineScriptCommand command) {
+        [new PipelineScriptUpdatedEvent(name, command.script)]
+    }
+
     @Override
     void apply(EventList events) {
         events.forEach { event -> EventApplier.apply(this, event) }
@@ -45,5 +50,9 @@ class PipelineAggregate implements Aggregate {
 
     private void handle(PipelineStartedEvent event) {
         lastStartTime = event.start
+    }
+
+    private void handle(PipelineScriptUpdatedEvent event) {
+        script = event.script
     }
 }

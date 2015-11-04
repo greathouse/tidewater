@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.web.pipeline
+package greenmoonsoftware.tidewater.web.pipeline.view.list
 import greenmoonsoftware.tidewater.web.pipeline.view.PipelineView
 import greenmoonsoftware.tidewater.web.pipeline.view.PipelineViewRepository
 import org.springframework.beans.factory.annotation.Autowired
