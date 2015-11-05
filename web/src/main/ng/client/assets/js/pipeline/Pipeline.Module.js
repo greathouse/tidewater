@@ -7,13 +7,13 @@ pipelineModule.config(['$routeProvider',
                 templateUrl: 'templates/pipeline/list.html',
                 controller: 'Pipeline.ListController'
             })
-            .when('/pipelines/:pipelineName', {
-                templateUrl: 'templates/pipeline/details.html',
-                controller: 'Pipeline.DetailsController'
-            })
             .when('/pipelines/new', {
                 templateUrl: 'templates/pipeline/new.html',
                 controller: 'Pipeline.NewController'
+            })
+            .when('/pipelines/:pipelineName', {
+                templateUrl: 'templates/pipeline/details.html',
+                controller: 'Pipeline.DetailsController'
             });
     }
 ]);
