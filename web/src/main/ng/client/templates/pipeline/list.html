@@ -4,7 +4,7 @@
             <div class="grid-block" ng-repeat="p in pipelines | orderBy: 'name'">
                 <div class="large-3">
                     <img tw-status-image="{{p.status}}" height="32" width="32" />
-                    <a ng-href="/#/pipelines/{{p.name}}/contexts"><span>{{p.name}}</span></a>
+                    <a ng-href="/#/pipelines/{{p.name}}"><span>{{p.name}}</span></a>
                 </div>
                 <div class="large-6">&nbsp;</div>
                 <div class="large-3 float-right">

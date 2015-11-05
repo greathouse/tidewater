@@ -49,6 +49,13 @@ function($rootScope, $http, foundationApi, eventService) {
         return pipelines;
     };
 
+    function getPipeline(name) {
+        if (Object.keys(pipelines).length === 0) {
+            loadPipelines();
+        }
+        return pipelines[name];
+    }
+
     function registerChangeListener(name, listener) {
         pipelineChangeListeners[name] = listener;
     };
@@ -60,7 +67,8 @@ function($rootScope, $http, foundationApi, eventService) {
     return {
         registerChangeListener: registerChangeListener,
         unregisterChangeListener: unregisterChangeListener,
-        getList: getList
+        getList: getList,
+        getPipeline: getPipeline
     }
 }
 

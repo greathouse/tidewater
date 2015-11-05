@@ -6,8 +6,18 @@ angular.module('pipelineModule').controller('Pipeline.DetailsController', [
   'FoundationApi',
   'Event.Service',
   'Context.Service',
+  'Pipeline.Service',
 
-function ($scope, $http, $filter, $routeParams, foundationApi, eventService, contextService) {
+function (
+    $scope,
+    $http,
+    $filter,
+    $routeParams,
+    foundationApi,
+    eventService,
+    contextService,
+    pipelineService
+  ) {
   self = this;
   var contexts;
 
@@ -31,7 +41,7 @@ function ($scope, $http, $filter, $routeParams, foundationApi, eventService, con
       }
   };
 
-  $scope.pipelineName = $routeParams.pipelineName;
+  $scope.pipeline = pipelineService.getPipeline($routeParams.pipelineName);
 
   $http.get('/pipelines/' + $scope.pipelineName + '/contexts').
     then (function (response) {
