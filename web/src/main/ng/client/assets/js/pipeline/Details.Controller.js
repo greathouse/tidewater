@@ -1,4 +1,4 @@
-angular.module('contextModule').controller('Context.ListController', [
+angular.module('pipelineModule').controller('Pipeline.DetailsController', [
   '$scope',
   '$http',
   '$filter',
@@ -11,7 +11,7 @@ function ($scope, $http, $filter, $routeParams, foundationApi, eventService, con
   self = this;
   var contexts;
 
-  eventService.register('Context.ListController', processEvent);
+  eventService.register('Pipeline.DetailsController', processEvent);
 
   function processEvent(event) {
       if (event.type === 'greenmoonsoftware.tidewater.web.context.events.PipelineContextStartedEvent') {
