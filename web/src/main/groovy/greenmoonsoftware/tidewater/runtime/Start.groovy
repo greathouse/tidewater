@@ -38,42 +38,48 @@ class Start {
 //                \'\'\'.stripIndent()
 //            }
 //
-            step copy(type: Shell) {
-                contents \'\'\'
-                    cp -R /Users/robert/projects/sterling/web .
-                    ls -l
-                \'\'\'.stripIndent()
-            }
-
-            step s3uploadFile(type: greenmoonsoftware.tidewater.plugins.aws.S3Upload) {
-                bucketName 'tidewater-test-bucket\'
-                keyName 'dir/something-totally-different\'
-                upload 'web/build.gradle\'
-            }
-
-            step s3uploadDirectory(type: greenmoonsoftware.tidewater.plugins.aws.S3Upload) {
-                bucketName 'tidewater-test-bucket\'
-                keyName 'myDir\'
-                upload 'web'
-            }
-
-            step s3DownloadFile(type: greenmoonsoftware.tidewater.plugins.aws.S3Download) {
-                bucketName 'tidewater-test-bucket'
-                keyName 'dir/something-totally-different'
-                destination 'something/dir/something-totally-different'
-            }
-
-            step s3DownloadDir(type: greenmoonsoftware.tidewater.plugins.aws.S3Download) {
-                bucketName 'tidewater-test-bucket\'
-                keyName 'myDir'
-                destination 'downloadDir'
-                isDirectory true
-            }
-
-            step ls(type: Shell) {
-                contents \'\'\'
-                    tree
-                \'\'\'.stripIndent()
+//            step copy(type: Shell) {
+//                contents \'\'\'
+//                    cp -R /Users/robert/projects/sterling/web .
+//                    ls -l
+//                \'\'\'.stripIndent()
+//            }
+//
+//            step s3uploadFile(type: greenmoonsoftware.tidewater.plugins.aws.S3Upload) {
+//                bucketName 'tidewater-test-bucket\'
+//                keyName 'dir/something-totally-different\'
+//                upload 'web/build.gradle\'
+//            }
+//
+//            step s3uploadDirectory(type: greenmoonsoftware.tidewater.plugins.aws.S3Upload) {
+//                bucketName 'tidewater-test-bucket\'
+//                keyName 'myDir\'
+//                upload 'web'
+//            }
+//
+//            step s3DownloadFile(type: greenmoonsoftware.tidewater.plugins.aws.S3Download) {
+//                bucketName 'tidewater-test-bucket'
+//                keyName 'dir/something-totally-different'
+//                destination 'something/dir/something-totally-different'
+//            }
+//
+//            step s3DownloadDir(type: greenmoonsoftware.tidewater.plugins.aws.S3Download) {
+//                bucketName 'tidewater-test-bucket\'
+//                keyName 'myDir'
+//                destination 'downloadDir'
+//                isDirectory true
+//            }
+//
+//            step ls(type: Shell) {
+//                contents \'\'\'
+//                    tree
+//                \'\'\'.stripIndent()
+//            }
+            step s3Copy(type: greenmoonsoftware.tidewater.plugins.aws.S3Copy) {
+                sourceBucketName 'tidewater-test-bucket\'
+                sourceKeyName 'dir/something-totally-different'
+                destinationBucketName 'tidewater-test-bucket-copy\'
+                destinationKeyName 'dir/something-totally-different'
             }
         '''.stripIndent())
     }

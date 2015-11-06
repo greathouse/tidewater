@@ -18,7 +18,7 @@ class S3Download extends AbstractStep {
         return isDirectory ? downloadDirectory(log, localTarget) : downloadFile(log, localTarget)
     }
 
-    boolean downloadDirectory(Closure<Void> log, File localTarget) {
+    private boolean downloadDirectory(Closure<Void> log, File localTarget) {
         localTarget.mkdirs()
         new TidewaterS3TransferManager(log).transfer {TransferManager t ->
             t.downloadDirectory(bucketName, keyName, localTarget)
@@ -26,7 +26,7 @@ class S3Download extends AbstractStep {
         return true
     }
 
-    boolean downloadFile(Closure<Void> log, File localTarget) {
+    private boolean downloadFile(Closure<Void> log, File localTarget) {
         new TidewaterS3TransferManager(log).transfer {TransferManager t ->
             t.download(bucketName, keyName, localTarget)
         }
