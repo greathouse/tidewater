@@ -43,7 +43,7 @@ function (
 
   $scope.pipeline = pipelineService.getPipeline($routeParams.pipelineName);
 
-  $http.get('/pipelines/' + $scope.pipelineName + '/contexts').
+  $http.get('/pipelines/' + $routeParams.pipelineName + '/contexts').
     then (function (response) {
       self.contexts = response.data.reverse();
       $scope.contexts = self.contexts;
