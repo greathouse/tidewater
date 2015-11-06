@@ -19,10 +19,9 @@ function($rootScope, $q, $http, foundationApi, eventService) {
             };
         },
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent': function(event) {
-            getPipeline(event.aggregateId).then(function(p) {
-                p.contexts[event.contextId.id] = {};
-                contextsToPipeline[event.contextId.id] = p.name;
-            });
+            var pipeline = pipelines[event.aggregateId];
+            pipeline.contexts.push({});
+            contextsToPipeline[event.contextId.id] = pipeline.name;
         }
     };
 
@@ -70,15 +69,6 @@ function($rootScope, $q, $http, foundationApi, eventService) {
                 return pipelines[name];
             });
     }
-
-//    function loadFirstContextWithStatus(contexts, status) {
-//        var context = contexts.find(function(c) {
-//            return c.status === status;
-//        });
-//        if (context !== undefined) {
-//            contextService.getContext(context.contextId);
-//        }
-//    };
 
     function registerChangeListener(name, listener) {
         pipelineChangeListeners[name] = listener;

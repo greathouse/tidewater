@@ -14,5 +14,13 @@ function (
         $scope.pipeline = pipeline;
     }
   );
+
+  pipelineService.registerChangeListener('Pipeline.DetailsController', function (newList) {
+          $scope.pipeline = newList[$routeParams.pipelineName];
+      });
+
+  $scope.$on("$destroy", function() {
+      pipelineService.unregisterChangeListener('Pipeline.DetailsController');
+  });
 }
 ]);
