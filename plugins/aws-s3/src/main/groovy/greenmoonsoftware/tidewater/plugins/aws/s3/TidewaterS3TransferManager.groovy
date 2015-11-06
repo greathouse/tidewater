@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.plugins.aws
+package greenmoonsoftware.tidewater.plugins.aws.s3
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.transfer.Transfer
@@ -8,24 +8,31 @@ import java.text.DecimalFormat
 
 final class TidewaterS3TransferManager {
     private final Closure log
+    private final Closure<Boolean> withS3ClientPreCheck
+    private AmazonS3Client s3Client = new AmazonS3Client(new ProfileCredentialsProvider())
 
     TidewaterS3TransferManager(Closure log) {
-        this.log = log
+        this(log, {return true})
     }
 
-    void transfer(Closure<Transfer> withTransferUtility) {
+    TidewaterS3TransferManager(Closure log, Closure<Boolean> withS3ClientPreCheck) {
+        this.log = log
+        this.withS3ClientPreCheck = withS3ClientPreCheck
+    }
+
+    Transfer.TransferState transfer(Closure<Transfer> withTransferUtility) {
         withTransferManager { TransferManager transferManager ->
             def transfer = withTransferUtility(transferManager)
             monitor(transfer)
             transfer.waitForCompletion()
-            log 'Transfer successful'
+            return transfer.state
         }
     }
 
-    private withTransferManager(Closure c) {
+    private withTransferManager(Closure<Transfer.TransferState> c) {
         TransferManager transferManager = null
         try {
-            transferManager = new TransferManager(new AmazonS3Client(new ProfileCredentialsProvider()))
+            transferManager = new TransferManager(s3Client)
             return c(transferManager)
         }
         finally {

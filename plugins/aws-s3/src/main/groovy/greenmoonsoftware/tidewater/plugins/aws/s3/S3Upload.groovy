@@ -1,4 +1,4 @@
-package greenmoonsoftware.tidewater.plugins.aws
+package greenmoonsoftware.tidewater.plugins.aws.s3
 
 import greenmoonsoftware.tidewater.context.Context
 import greenmoonsoftware.tidewater.step.AbstractStep

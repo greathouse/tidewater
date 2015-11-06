@@ -1,9 +1,11 @@
-package greenmoonsoftware.tidewater.plugins.aws
+package greenmoonsoftware.tidewater.plugins.aws.s3
 
+import com.amazonaws.services.s3.transfer.Transfer
 import com.amazonaws.services.s3.transfer.TransferManager
 import greenmoonsoftware.tidewater.context.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
+import greenmoonsoftware.tidewater.step.Output
 
 class S3Download extends AbstractStep {
     @Input String bucketName
@@ -11,25 +13,26 @@ class S3Download extends AbstractStep {
     @Input String destination
     @Input boolean isDirectory = false
 
+    @Output Transfer.TransferState transferState
+
     @Override
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
         File localTarget = new File(context.attributes.workspace, destination)
-        return isDirectory ? downloadDirectory(log, localTarget) : downloadFile(log, localTarget)
+        transferState = isDirectory ? downloadDirectory(log, localTarget) : downloadFile(log, localTarget)
+        return transferState == Transfer.TransferState.Completed
     }
 
     private boolean downloadDirectory(Closure<Void> log, File localTarget) {
         localTarget.mkdirs()
-        new TidewaterS3TransferManager(log).transfer {TransferManager t ->
+        return new TidewaterS3TransferManager(log).transfer {TransferManager t ->
             t.downloadDirectory(bucketName, keyName, localTarget)
         }
-        return true
     }
 
     private boolean downloadFile(Closure<Void> log, File localTarget) {
-        new TidewaterS3TransferManager(log).transfer {TransferManager t ->
+        return new TidewaterS3TransferManager(log).transfer {TransferManager t ->
             t.download(bucketName, keyName, localTarget)
         }
-        return true
     }
 }
