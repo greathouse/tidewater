@@ -12,7 +12,7 @@ class S3Upload extends AbstractStep {
     @Override
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
-        File file = new File(context.workspace, upload)
+        File file = new File(context.attributes.workspace, upload)
         return (file.isDirectory()) ? uploadDirectory(log, file) : uploadSingleFile(log, file)
     }
 
@@ -21,6 +21,7 @@ class S3Upload extends AbstractStep {
         new TidewaterS3TransferManager(log).transfer { directoryTransferUtility ->
             directoryTransferUtility.uploadDirectory(bucketName, keyName ?: '', directory, true)
         }
+        return true
     }
 
     private boolean uploadSingleFile(Closure log, File file) {
@@ -28,5 +29,6 @@ class S3Upload extends AbstractStep {
         new TidewaterS3TransferManager(log).transfer { directoryTransferUtility ->
             directoryTransferUtility.upload(bucketName, keyName ?: '', file)
         }
+        return true
     }
 }

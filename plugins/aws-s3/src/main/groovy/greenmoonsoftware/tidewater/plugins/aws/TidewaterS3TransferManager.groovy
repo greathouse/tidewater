@@ -13,14 +13,13 @@ final class TidewaterS3TransferManager {
         this.log = log
     }
 
-    boolean transfer(Closure<Transfer> withTransferUtility) {
+    void transfer(Closure<Transfer> withTransferUtility) {
         withTransferManager { TransferManager transferManager ->
             def transfer = withTransferUtility(transferManager)
             monitor(transfer)
             transfer.waitForCompletion()
             log 'Transfer successful'
         }
-        return true
     }
 
     private withTransferManager(Closure c) {
@@ -35,6 +34,7 @@ final class TidewaterS3TransferManager {
     }
 
     private monitor(Transfer transfer) {
+        log transfer.description
         new Thread({
             while (!transfer.done) {
                 def progress = transfer.progress

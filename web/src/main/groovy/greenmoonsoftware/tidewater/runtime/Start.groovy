@@ -37,7 +37,7 @@ class Start {
 //                    whoami
 //                \'\'\'.stripIndent()
 //            }
-
+//
             step copy(type: Shell) {
                 contents \'\'\'
                     cp -R /Users/robert/projects/sterling/web .
@@ -55,6 +55,25 @@ class Start {
                 bucketName 'tidewater-test-bucket\'
                 keyName 'myDir\'
                 upload 'web'
+            }
+
+            step s3DownloadFile(type: greenmoonsoftware.tidewater.plugins.aws.S3Download) {
+                bucketName 'tidewater-test-bucket'
+                keyName 'dir/something-totally-different'
+                destination 'something/dir/something-totally-different'
+            }
+
+            step s3DownloadDir(type: greenmoonsoftware.tidewater.plugins.aws.S3Download) {
+                bucketName 'tidewater-test-bucket\'
+                keyName 'myDir'
+                destination 'downloadDir'
+                isDirectory true
+            }
+
+            step ls(type: Shell) {
+                contents \'\'\'
+                    tree
+                \'\'\'.stripIndent()
             }
         '''.stripIndent())
     }
