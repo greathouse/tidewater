@@ -9,6 +9,7 @@ function($rootScope, $q, $http, foundationApi, eventService) {
     eventService.register('Pipeline.Service', processEvent);
 
     var pipelines = {};
+    var contextsToPipeline = {};
     var pipelineChangeListeners = {};
     var eventHandlers = {
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent': function(event) {
@@ -16,6 +17,12 @@ function($rootScope, $q, $http, foundationApi, eventService) {
                 name: event.aggregateId,
                 script: event.script
             };
+        },
+        'greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent': function(event) {
+            getPipeline(event.aggregateId).then(function(p) {
+                p.contexts[event.contextId.id] = {};
+                contextsToPipeline[event.contextId.id] = p.name;
+            });
         }
     };
 
@@ -30,37 +37,48 @@ function($rootScope, $q, $http, foundationApi, eventService) {
     };
 
     function loadPipelines() {
-        return $http.get('/pipelines').
-        then (
-            function (response) {
-                angular.forEach(response.data, function(pipeline) {
-                    pipelines[pipeline.name] = pipeline;
-                });
-                return pipelines;
-            },
-            function(response) {
-                foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed to load pipelines' });
-            }
-        );
+        return $http.get('/pipelines')
+            .then (
+                function (response) {
+                    angular.forEach(response.data, function(pipeline) {
+                        pipelines[pipeline.name] = pipeline;
+                    });
+                },
+                function(response) {
+                    foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed to load pipelines' });
+                }
+            );
     };
 
     function getList() {
         if (Object.keys(pipelines).length === 0) {
-            loadPipelines();
+            return loadPipelines()
+            .then(() => { return pipelines });
         }
-        return pipelines;
+        return $q((resolve, reject) => { resolve(pipelines) });
     };
 
     function getPipeline(name) {
-        if (Object.keys(pipelines).length === 0) {
-            return loadPipelines().then(function(p) {
-                return p[name];
+        return getList()
+            .then(() => {
+                $http.get('/pipelines/' + name + '/contexts')
+                .then((response) => {
+                    pipelines[name].contexts = response.data
+                });
+            })
+            .then(() => {
+                return pipelines[name];
             });
-        }
-        return $q(function(resolve, reject) {
-            resolve(pipelines[name]);
-        });
     }
+
+//    function loadFirstContextWithStatus(contexts, status) {
+//        var context = contexts.find(function(c) {
+//            return c.status === status;
+//        });
+//        if (context !== undefined) {
+//            contextService.getContext(context.contextId);
+//        }
+//    };
 
     function registerChangeListener(name, listener) {
         pipelineChangeListeners[name] = listener;

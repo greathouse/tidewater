@@ -4,7 +4,7 @@ angular.module('pipelineModule').controller('Pipeline.ListController', [
     'Pipeline.Service',
 
 function ($scope, $filter, pipelineService) {
-    $scope.pipelines = pipelineService.getList();
+    pipelineService.getList().then((pipelines) => { $scope.pipelines = pipelines });
 
     pipelineService.registerChangeListener('Pipeline.ListController', function (newList) {
         $scope.pipelines = newList;
