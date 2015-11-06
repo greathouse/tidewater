@@ -1,10 +1,11 @@
 angular.module('pipelineModule').factory('Pipeline.Service', [
     '$rootScope',
+    '$q',
     '$http',
     'FoundationApi',
     'Event.Service',
 
-function($rootScope, $http, foundationApi, eventService) {
+function($rootScope, $q, $http, foundationApi, eventService) {
     eventService.register('Pipeline.Service', processEvent);
 
     var pipelines = {};
@@ -29,12 +30,13 @@ function($rootScope, $http, foundationApi, eventService) {
     };
 
     function loadPipelines() {
-        $http.get('/pipelines').
+        return $http.get('/pipelines').
         then (
             function (response) {
                 angular.forEach(response.data, function(pipeline) {
                     pipelines[pipeline.name] = pipeline;
                 });
+                return pipelines;
             },
             function(response) {
                 foundationApi.publish('main-notifications', { color: 'alert', autoclose: 3000, content: 'Failed to load pipelines' });
@@ -51,9 +53,13 @@ function($rootScope, $http, foundationApi, eventService) {
 
     function getPipeline(name) {
         if (Object.keys(pipelines).length === 0) {
-            loadPipelines();
+            return loadPipelines().then(function(p) {
+                return p[name];
+            });
         }
-        return pipelines[name];
+        return $q(function(resolve, reject) {
+            resolve(pipelines[name]);
+        });
     }
 
     function registerChangeListener(name, listener) {

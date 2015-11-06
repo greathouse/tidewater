@@ -41,7 +41,9 @@ function (
       }
   };
 
-  $scope.pipeline = pipelineService.getPipeline($routeParams.pipelineName);
+  pipelineService.getPipeline($routeParams.pipelineName).then(function(pipeline) {
+    $scope.pipeline = pipeline;
+  });
 
   $http.get('/pipelines/' + $routeParams.pipelineName + '/contexts').
     then (function (response) {
