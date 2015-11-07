@@ -1,6 +1,6 @@
-angular.module('contextModule').factory('Context.Service', ['$rootScope', '$http', 'Event.Service',
+angular.module('contextModule').factory('Context.Service', ['$rootScope', '$http', 'Event.Service', 'Pipeline.Service',
 
-function($rootScope, $http, eventService) {
+function($rootScope, $http, eventService, pipelineService) {
     eventService.register('Context.Service', processEvent);
 
     var contexts = {};

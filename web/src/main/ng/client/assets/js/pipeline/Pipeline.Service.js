@@ -20,7 +20,7 @@ function($rootScope, $q, $http, foundationApi, eventService) {
         },
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent': function(event) {
             var pipeline = pipelines[event.aggregateId];
-            pipeline.contexts.push({});
+            pipeline.contexts[event.contextId.id] = {};
             contextsToPipeline[event.contextId.id] = pipeline.name;
         }
     };
@@ -40,7 +40,10 @@ function($rootScope, $q, $http, foundationApi, eventService) {
             .then (
                 function (response) {
                     angular.forEach(response.data, function(pipeline) {
-                        pipelines[pipeline.name] = pipeline;
+                        var p = createPipeline()
+                        p.name = pipeline.name;
+                        p.script = pipeline.script;
+                        pipelines[pipeline.name] = p;
                     });
                 },
                 function(response) {
@@ -48,6 +51,13 @@ function($rootScope, $q, $http, foundationApi, eventService) {
                 }
             );
     };
+
+    function createPipeline() {
+        return {
+            contexts: {},
+            get contextsAsList() { return Object.keys(this.contexts).map(key => this.contexts[key]); }
+        };
+    }
 
     function getList() {
         if (Object.keys(pipelines).length === 0) {
@@ -65,7 +75,10 @@ function($rootScope, $q, $http, foundationApi, eventService) {
     function loadContexts(pipeline) {
         return $http.get('/pipelines/' + pipeline.name + '/contexts')
             .then((response) => {
-                pipeline.contexts = response.data;
+                pipeline.contexts = response.data.reduce((c, context) => {
+                    c[context.contextId] = context;
+                    return c;
+                }, {});
                 return pipeline;
             });
     }
