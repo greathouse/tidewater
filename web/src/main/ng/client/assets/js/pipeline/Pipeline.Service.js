@@ -59,14 +59,14 @@ function($rootScope, $q, $http, foundationApi, eventService) {
 
     function getPipeline(name) {
         return getList()
-            .then(() => {
-                $http.get('/pipelines/' + name + '/contexts')
-                .then((response) => {
-                    pipelines[name].contexts = response.data
-                });
-            })
-            .then(() => {
-                return pipelines[name];
+            .then(() => pipelines[name]);
+    };
+
+    function loadContexts(pipeline) {
+        return $http.get('/pipelines/' + pipeline.name + '/contexts')
+            .then((response) => {
+                pipeline.contexts = response.data;
+                return pipeline;
             });
     }
 
@@ -82,7 +82,8 @@ function($rootScope, $q, $http, foundationApi, eventService) {
         registerChangeListener: registerChangeListener,
         unregisterChangeListener: unregisterChangeListener,
         getList: getList,
-        getPipeline: getPipeline
+        getPipeline: getPipeline,
+        loadContexts: loadContexts
     }
 }
 

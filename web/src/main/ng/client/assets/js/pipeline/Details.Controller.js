@@ -10,17 +10,15 @@ function (
   ) {
 
   pipelineService.getPipeline($routeParams.pipelineName)
-    .then(function(pipeline) {
-        $scope.pipeline = pipeline;
-    }
+    .then((pipeline) => pipelineService.loadContexts(pipeline))
+    .then((pipeline) => $scope.pipeline = pipeline);
+
+  pipelineService.registerChangeListener(
+    'Pipeline.DetailsController',
+    (newList) => $scope.pipeline = newList[$routeParams.pipelineName]
   );
 
-  pipelineService.registerChangeListener('Pipeline.DetailsController', function (newList) {
-          $scope.pipeline = newList[$routeParams.pipelineName];
-      });
+  $scope.$on("$destroy", () => pipelineService.unregisterChangeListener('Pipeline.DetailsController'));
 
-  $scope.$on("$destroy", function() {
-      pipelineService.unregisterChangeListener('Pipeline.DetailsController');
-  });
 }
 ]);
