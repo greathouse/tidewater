@@ -40,7 +40,7 @@
                                 </tr>
                                 <tr>
                                     <td style="text-align: right">Duration:</td>
-                                    <td>{{context.duration | millisecondsToTimeString}}</td>
+                                    <td>{{context.duration() | millisecondsToTimeString}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -63,8 +63,8 @@
                 <div class="grid-content" style="overflow: hidden">
                     <div class="box-header" ng-click="step.show = !step.show">
                         <img tw-status-image="{{step.status}}" height="32" width="32" />
-                        <strong>{{step.stepName}}</strong>
-                        <em>{{step.stepType}}</em>
+                        <strong>{{step.name}}</strong>
+                        <em>{{step.typeSimpleName()}}</em>
                         <span class="right"><span ng-show="step.attempts.length > 1" ng-repeat="attempt in step.attempts"><img tw-status-image="{{attempt.status}}" height="16" width="16" /></span></span>
                     </div>
                     <div class="box-body" ng-show="step.show">

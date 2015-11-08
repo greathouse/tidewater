@@ -15,10 +15,14 @@ function ($scope, $routeParams, contextService) {
     return v == 0;
   }
 
-  $scope.$watch(
-    function() { return contextService.getContext($routeParams.contextId); },
-    function(newVal) { $scope.context = newVal; },
-    true
-  );
+  contextService.getContext($routeParams.contextId).then(function(context) {
+    $scope.context = context
+  });
+
+//  $scope.$watch(
+//    function() { return contextService.getContext($routeParams.contextId); },
+//    function(newVal) { $scope.context = newVal; },
+//    true
+//  );
 }
 ]);
