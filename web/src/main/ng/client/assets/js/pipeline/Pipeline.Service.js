@@ -3,15 +3,14 @@ angular.module('pipelineModule').factory('Pipeline.Service', [
     '$q',
     '$http',
     'Pipeline.Class',
-    'Context.Class',
+    'PipelineContext.Class',
     'FoundationApi',
     'Event.Service',
 
-function($rootScope, $q, $http, Pipeline, Context, foundationApi, eventService) {
+function($rootScope, $q, $http, Pipeline, PipelineContext, foundationApi, eventService) {
     eventService.register('Pipeline.Service', processEvent);
 
     var pipelines = {};
-    var contextsToPipeline = {};
     var pipelineChangeListeners = {};
     var eventHandlers = {
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent': function(event) {
@@ -19,8 +18,15 @@ function($rootScope, $q, $http, Pipeline, Context, foundationApi, eventService) 
         },
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent': function(event) {
             var pipeline = pipelines[event.aggregateId];
-            pipeline.addContext(event.contextId.id);
-            contextsToPipeline[event.contextId.id] = pipeline.name;
+            pipeline.startContext(event.contextId.id, event.eventDateTime.epochSecond * 1000);
+            console.log('Robert');
+            console.log(pipeline);
+        },
+        'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent': function(event) {
+            var pipeline = pipelines[event.pipelineName];
+            pipeline.endContext(event.aggregateId, event.status, event.eventDateTime.epochSecond * 1000);
+            console.log('Robert');
+            console.log(pipeline);
         }
     };
 
@@ -64,7 +70,7 @@ function($rootScope, $q, $http, Pipeline, Context, foundationApi, eventService) 
     function loadContexts(pipeline) {
         return $http.get('/pipelines/' + pipeline.name + '/contexts')
             .then((response) => {
-                angular.forEach(response.data, context => pipeline.addContext(Context.apiResponseTransformer(context)));
+                angular.forEach(response.data, context => pipeline.addContext(PipelineContext.apiResponseTransformer(context)));
                 return pipeline;
             });
     }
