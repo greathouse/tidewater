@@ -48,6 +48,7 @@ var paths = {
   appJS: [
     'client/assets/js/app.js',
     'client/assets/js/**/*.Module.js',
+    'client/assets/js/**/*.Class.js',
     'client/assets/js/**/*.Directive.js',
     'client/assets/js/**/*.Service.js',
     'client/assets/js/**/*.Controller.js'

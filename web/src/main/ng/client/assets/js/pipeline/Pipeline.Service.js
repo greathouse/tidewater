@@ -2,10 +2,11 @@ angular.module('pipelineModule').factory('Pipeline.Service', [
     '$rootScope',
     '$q',
     '$http',
+    'Pipeline.Class',
     'FoundationApi',
     'Event.Service',
 
-function($rootScope, $q, $http, foundationApi, eventService) {
+function($rootScope, $q, $http, Pipeline, foundationApi, eventService) {
     eventService.register('Pipeline.Service', processEvent);
 
     var pipelines = {};
@@ -40,9 +41,7 @@ function($rootScope, $q, $http, foundationApi, eventService) {
             .then (
                 function (response) {
                     angular.forEach(response.data, function(pipeline) {
-                        var p = createPipeline()
-                        p.name = pipeline.name;
-                        p.script = pipeline.script;
+                        var p = Pipeline.apiResponseTransformer(pipeline);
                         pipelines[pipeline.name] = p;
                     });
                 },
