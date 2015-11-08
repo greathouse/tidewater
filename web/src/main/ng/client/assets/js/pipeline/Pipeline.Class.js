@@ -1,14 +1,20 @@
-angular.module('pipelineModule').factory('Pipeline.Class', [
+angular.module('pipelineModule').factory('Pipeline.Class', ['Context.Class',
 
-function() {
+function(Context) {
     function Pipeline(name, script) {
         this.name = name;
         this.script = script;
     };
 
-    Pipeline.apiResponseTransformer = function(responseData) {
-        return new Pipeline(responseData.name, responseData.script);
-    };
+    var contexts = {};
+
+    Pipeline.prototype.newContext = contextId => contexts[contextId] = new Context(contextId);
+
+    Pipeline.prototype.addContext = context => contexts[context.id] = context;
+
+    Pipeline.prototype.getContexts = () => Object.keys(contexts).map(key => contexts[key]);
+
+    Pipeline.apiResponseTransformer = responseData => new Pipeline(responseData.name, responseData.script);
 
     return Pipeline;
 }
