@@ -14,10 +14,7 @@ function($rootScope, $q, $http, Pipeline, foundationApi, eventService) {
     var pipelineChangeListeners = {};
     var eventHandlers = {
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent': function(event) {
-            pipelines[event.aggregateId] = {
-                name: event.aggregateId,
-                script: event.script
-            };
+            pipelines[event.aggregateId] = new Pipeline(event.aggregateId, event.script);
         },
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent': function(event) {
             var pipeline = pipelines[event.aggregateId];
@@ -41,8 +38,7 @@ function($rootScope, $q, $http, Pipeline, foundationApi, eventService) {
             .then (
                 function (response) {
                     angular.forEach(response.data, function(pipeline) {
-                        var p = Pipeline.apiResponseTransformer(pipeline);
-                        pipelines[pipeline.name] = p;
+                        pipelines[pipeline.name] = Pipeline.apiResponseTransformer(pipeline);
                     });
                 },
                 function(response) {
