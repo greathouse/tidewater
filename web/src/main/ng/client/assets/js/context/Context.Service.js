@@ -1,11 +1,12 @@
 angular.module('contextModule').factory('Context.Service', [
     '$rootScope',
     '$http',
+    '$q',
     'Context.Class',
     'Step.Class',
     'Event.Service',
 
-function($rootScope, $http, Context, Step, eventService) {
+function($rootScope, $http, $q, Context, Step, eventService) {
     eventService.register('Context.Service', processEvent);
 
     var contexts = {};
@@ -56,7 +57,7 @@ function($rootScope, $http, Context, Step, eventService) {
     function getContext(contextId) {
         var context = contexts[contextId];
         if (context != undefined) {
-            return context;
+            return $q((resolve, reject) => { resolve(context) });
         }
         return loadContext(contextId);
     };
