@@ -23,6 +23,28 @@ angular.module('pipelineModule').factory('Pipeline.Class', ['PipelineContext.Cla
 
        Pipeline.prototype.getContexts = () => Object.keys(contexts).map(key => contexts[key]);
 
+       Pipeline.prototype.getContextsWithStatus = function(status)
+       {
+            return this.getContexts().filter( context => context.status === status );
+       }
+
+       Pipeline.prototype.erroredContexts = function() {
+            return this.getContextsWithStatus('ERROR' );
+       };
+
+       Pipeline.prototype.failedContexts = function() {
+            return this.getContextsWithStatus('FAILURE' );
+       };
+
+       Pipeline.prototype.completeContexts = function() {
+            return this.getContextsWithStatus('COMPLETE' );
+       };
+
+       Pipeline.prototype.inProgressContexts = function() {
+            return this.getContextsWithStatus('IN_PROGRESS' );
+       };
+
+
        Pipeline.apiResponseTransformer = responseData => new Pipeline(responseData.name, responseData.script);
 
        return Pipeline;
