@@ -1,11 +1,14 @@
 <div class="grid-block large-up-1 align-center">
     <div class="grid-content align-center" style="text-align: center">
-        <h1>{{pipeline.name}}</h1><tw-command text="Start" command="/pipelines/{{pipeline.name}}/start"></tw-command>
+        <h1>{{pipeline.name}} <small><tw-command text="Start" command="/pipelines/{{pipeline.name}}/start"></tw-command></small></h1>
     </div>
     <div class="grid-block">
-        <div class="grid-content">
+        <div class="grid-content shrink">
             <table>
                 <thead>
+                    <tr>
+                        <th colspan="3"><h4>Contexts</h4></th>
+                    </tr>
                     <tr>
                         <th></th>
                         <th>Start Time</th>
@@ -22,14 +25,36 @@
             </table>
         </div>
         <div class="grid-content">
-            <div class="box-header grid-content" ng-click="showScript = !showScript">
-                <h4>Script</h4>
+            <div class="box-header grid-content">
+                <h4>
+                    Script
+                    <small>
+                        <a class="button small hollow" href="#" zf-open="editModal">Edit <img height="16" width="16" src="./assets/img/edit.svg" /></a>
+                    </small>
+                </h4>
             </div>
             <div class="box-body grid-content" ng-show="showScript" style="max-height: 600px; overflow: scroll;">
                 <pre>
 {{pipeline.script}}
                 </pre>
             </div>
+        </div>
+    </div>
+</div>
+
+<div zf-modal="" id="editModal" class="collapse">
+    <div class="grid-block vertical">
+        <div class="primary title-bar">
+            <div class="center title">Update Script</div>
+            <span zf-close="" class="right"><a>Close</a></span>
+        </div>
+        <div class="grid-content padding" style="padding-top: 1rem;">
+            <form novalidate>
+                <textarea elastic ng-model="formdata.script" >
+                </textarea>
+                <a class="button" ng-click="submitScriptUpdate(formdata)">Save</a>
+                <a zf-close="" class="button">Cancel</a>
+            </form>
         </div>
     </div>
 </div>

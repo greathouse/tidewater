@@ -8,6 +8,7 @@ var application = angular.module('application', [
   //foundation
   'foundation',
 
+  'elastic',
   'statusImage',
   'commandButton',
   'contextModule',
