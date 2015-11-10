@@ -24,19 +24,54 @@
                 </tbody>
             </table>
         </div>
-        <div class="grid-content">
-            <div class="box-header grid-content">
-                <h4>
-                    Script
-                    <small>
-                        <a class="button small hollow" href="#" zf-open="editModal">Edit <img height="16" width="16" src="./assets/img/edit.svg" /></a>
-                    </small>
-                </h4>
+        <div class="grid-block vertical">
+            <div class="grid-content shrink">
+                <div class="box-header">
+                    <h4>Stats</h4>
+                </div>
+                <div class="box-body">
+                    <div class="grid-block medium-up-2 small-up-1 align-center">
+                        <div class="grid-content">
+                            <h1>
+                                <small><img tw-status-image="COMPLETE" height="50" width="50" /></small>
+                                {{pipeline.stats.complete}} ({{pipeline.stats.percent(pipeline.stats.complete)}}%)
+                            </h1>
+                        </div>
+                        <div class="grid-content">
+                            <h1>
+                                <small><img tw-status-image="IN_PROGRESS" height="50" width="50" /></small>
+                                {{pipeline.stats.inProgress}} ({{pipeline.stats.percent(pipeline.stats.inProgress)}}%)
+                            </h1>
+                        </div>
+                        <div class="grid-content">
+                            <h1>
+                                <small><img tw-status-image="FAILURE" height="50" width="50" /></small>
+                                {{pipeline.stats.failed}} ({{pipeline.stats.percent(pipeline.stats.failed)}}%)
+                            </h1>
+                        </div>
+                        <div class="grid-content">
+                            <h1>
+                                <small><img tw-status-image="ERROR" height="50" width="50" /></small>
+                                {{pipeline.stats.errored}} ({{pipeline.stats.percent(pipeline.stats.errored)}}%)
+                            </h1>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="box-body grid-content" ng-show="showScript" style="max-height: 600px; overflow: scroll;">
-                <pre>
+            <div class="grid-content">
+                <div class="box-header">
+                    <h4>
+                        Script
+                        <small>
+                            <a class="button small hollow" href="#" zf-open="editModal">Edit <img height="16" width="16" src="./assets/img/edit.svg" /></a>
+                        </small>
+                    </h4>
+                </div>
+                <div class="box-body grid-content" ng-show="showScript" style="max-height: 600px; overflow: scroll;">
+                    <pre>
 {{pipeline.script}}
-                </pre>
+                    </pre>
+                </div>
             </div>
         </div>
     </div>

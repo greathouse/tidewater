@@ -1,27 +1,48 @@
-angular.module('pipelineModule').factory('Pipeline.Class', ['PipelineContext.Class',
+angular.module('pipelineModule').factory('Pipeline.Class', [
+    '$rootScope',
+    'PipelineContext.Class',
+    'PipelineStats.Class',
 
-   function(PipelineContext) {
+   function(
+        $rootScope,
+        PipelineContext,
+        PipelineStats) {
        function Pipeline(name, script) {
+           this.contexts = {};
            this.name = name;
            this.script = script;
+           this.stats = new PipelineStats();
        };
 
-       var contexts = {};
-
-       Pipeline.prototype.startContext = (contextId, startTime) => {
-            contexts[contextId] = new PipelineContext(contextId, startTime);
-            console.log(contexts[contextId]);
+       Pipeline.prototype.updateStats = function() {
+            this.stats.total = this.getContexts().length;
+            this.stats.errored = this.erroredContexts().length;
+            this.stats.failed = this.failedContexts().length;
+            this.stats.inProgress = this.inProgressContexts().length
+            this.stats.complete = this.completeContexts().length;
+            $rootScope.$apply();
        }
 
-       Pipeline.prototype.endContext = (contextId, status, endTime) => {
-            var c = contexts[contextId];
+       Pipeline.prototype.startContext = function(contextId, startTime) {
+            this.contexts[contextId] = new PipelineContext(contextId, startTime);
+            this.updateStats();
+       }
+
+       Pipeline.prototype.endContext = function(contextId, status, endTime) {
+            var c = this.contexts[contextId];
             c.status = status;
             c.endTime = endTime;
+            this.updateStats();
        }
 
-       Pipeline.prototype.addContext = context => contexts[context.id] = context;
+       Pipeline.prototype.addContext = function(context) {
+            this.contexts[context.id] = context;
+            this.updateStats();
+       }
 
-       Pipeline.prototype.getContexts = () => Object.keys(contexts).map(key => contexts[key]);
+       Pipeline.prototype.getContexts = function() {
+            return Object.keys(this.contexts).map(key => this.contexts[key]);
+       }
 
        Pipeline.prototype.getContextsWithStatus = function(status)
        {

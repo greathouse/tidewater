@@ -4,13 +4,15 @@ angular.module('pipelineModule').controller('Pipeline.DetailsController', [
   '$http',
   'FoundationApi',
   'Pipeline.Service',
+  'PipelineStats.Class',
 
 function (
     $scope,
     $routeParams,
     $http,
     foundationApi,
-    pipelineService
+    pipelineService,
+    PipelineStats
   ) {
 
   $scope.showScript = true;

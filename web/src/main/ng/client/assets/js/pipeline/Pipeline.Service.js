@@ -19,14 +19,10 @@ function($rootScope, $q, $http, Pipeline, PipelineContext, foundationApi, eventS
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent': function(event) {
             var pipeline = pipelines[event.aggregateId];
             pipeline.startContext(event.contextId.id, event.eventDateTime.epochSecond * 1000);
-            console.log('Robert');
-            console.log(pipeline);
         },
         'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent': function(event) {
             var pipeline = pipelines[event.pipelineName];
             pipeline.endContext(event.aggregateId, event.status, event.eventDateTime.epochSecond * 1000);
-            console.log('Robert');
-            console.log(pipeline);
         },
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineScriptUpdatedEvent': function(event) {
             pipelines[event.aggregateId].script = event.script;
