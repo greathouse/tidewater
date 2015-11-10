@@ -16,6 +16,15 @@ function (
   ) {
 
   $scope.showScript = true;
+  $scope.panelContexts = {
+    title: 'N/A',
+    list: []
+  };
+  $scope.showContexts = function(status) {
+    $scope.panelContexts.list = (status === 'ALL') ? $scope.pipeline.getContexts() : $scope.pipeline.getContextsWithStatus(status);
+    $scope.panelContexts.title = (status === 'ALL') ? 'All' : status;
+    foundationApi.publish('contextsPanel', 'toggle');
+  };
 
   $scope.submitScriptUpdate = function(formdata) {
     $http.patch('/pipelines/' + $routeParams.pipelineName + '/updateScript', formdata)

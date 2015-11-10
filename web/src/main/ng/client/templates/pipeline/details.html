@@ -3,27 +3,6 @@
         <h1>{{pipeline.name}} <small><tw-command text="Start" command="/pipelines/{{pipeline.name}}/start"></tw-command></small></h1>
     </div>
     <div class="grid-block">
-        <div class="grid-content shrink">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="3"><h4>Contexts</h4></th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="c in pipeline.getContexts() | orderBy: 'startTime' : true">
-                        <td><a ng-href="/#/pipelines/{{pipeline.name}}/contexts/{{c.id}}"><img tw-status-image="{{c.status}}" height="32" width="32" /></a></td>
-                        <td>{{c.startTime | date:'medium'}}</td>
-                        <td>{{c.endTime | date:'medium'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
         <div class="grid-block vertical">
             <div class="grid-content shrink">
                 <div class="box-header">
@@ -33,28 +12,29 @@
                     <div class="grid-block medium-up-2 small-up-1 align-center">
                         <div class="grid-content">
                             <h1>
-                                <small><img tw-status-image="COMPLETE" height="50" width="50" /></small>
+                                <small><a ng-click="showContexts('COMPLETE')"><img tw-status-image="COMPLETE" height="50" width="50" /></a></small>
                                 {{pipeline.stats.complete}} ({{pipeline.stats.percent(pipeline.stats.complete)}}%)
                             </h1>
                         </div>
                         <div class="grid-content">
                             <h1>
-                                <small><img tw-status-image="IN_PROGRESS" height="50" width="50" /></small>
+                                <small><a ng-click="showContexts('IN_PROGRESS')"><img tw-status-image="IN_PROGRESS" height="50" width="50" /></a></small>
                                 {{pipeline.stats.inProgress}} ({{pipeline.stats.percent(pipeline.stats.inProgress)}}%)
                             </h1>
                         </div>
                         <div class="grid-content">
                             <h1>
-                                <small><img tw-status-image="FAILURE" height="50" width="50" /></small>
+                                <small><a ng-click="showContexts('FAILURE')"><img tw-status-image="FAILURE" height="50" width="50" /></a></small>
                                 {{pipeline.stats.failed}} ({{pipeline.stats.percent(pipeline.stats.failed)}}%)
                             </h1>
                         </div>
                         <div class="grid-content">
                             <h1>
-                                <small><img tw-status-image="ERROR" height="50" width="50" /></small>
+                                <small><a ng-click="showContexts('ERROR')"><img tw-status-image="ERROR" height="50" width="50" /></a></small>
                                 {{pipeline.stats.errored}} ({{pipeline.stats.percent(pipeline.stats.errored)}}%)
                             </h1>
                         </div>
+                        <a ng-click="showContexts('ALL')">Show All</a>
                     </div>
                 </div>
             </div>
@@ -91,5 +71,29 @@
                 <a zf-close="" class="button">Cancel</a>
             </form>
         </div>
+    </div>
+</div>
+
+<div zf-panel="c" id="contextsPanel" position="right">
+    <div class="grid-content shrink">
+        <table>
+            <thead>
+            <tr>
+                <th colspan="3"><h4>{{panelContexts.title}} Contexts</h4></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="c in panelContexts.list | orderBy: 'startTime' : true">
+                <td><a ng-href="/#/pipelines/{{pipeline.name}}/contexts/{{c.id}}"><img tw-status-image="{{c.status}}" height="32" width="32" /></a></td>
+                <td>{{c.startTime | date:'medium'}}</td>
+                <td>{{c.endTime | date:'medium'}}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
