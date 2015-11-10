@@ -69,7 +69,6 @@ function run() {
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function(frame) {
       stompClient.subscribe('/topic/events', function(event){
-          console.log(event);
           channel.publish( "event.received", JSON.parse(event.body) );
       });
   });

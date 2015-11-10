@@ -23,7 +23,7 @@ function (
   $scope.showContexts = function(status) {
     $scope.panelContexts.list = (status === 'ALL') ? $scope.pipeline.getContexts() : $scope.pipeline.getContextsWithStatus(status);
     $scope.panelContexts.title = (status === 'ALL') ? 'All' : status;
-    foundationApi.publish('contextsPanel', 'toggle');
+    foundationApi.publish('contextsPanel', 'open');
   };
 
   $scope.submitScriptUpdate = function(formdata) {
