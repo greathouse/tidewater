@@ -1,6 +1,7 @@
 <div class="grid-block large-up-1 align-center">
     <div class="grid-content align-center" style="text-align: center">
         <h1>{{pipeline.name}} <small><tw-command text="Start" command="/pipelines/{{pipeline.name}}/start"></tw-command></small></h1>
+        <a href="#" zf-toggle="eventsPanel" class="button">Show Events</a>
     </div>
     <div class="grid-block">
         <div class="grid-block vertical">
@@ -74,7 +75,7 @@
     </div>
 </div>
 
-<div zf-panel="c" id="contextsPanel" position="right">
+<div zf-panel="" id="contextsPanel" position="right">
     <div class="secondary title-bar">
         <div class="center title">{{panelContexts.title}} Contexts</div>
         <span zf-close="" class="right"><a>Close</a></span>
@@ -93,6 +94,29 @@
                 <td><a ng-href="/#/pipelines/{{pipeline.name}}/contexts/{{c.id}}"><img tw-status-image="{{c.status}}" height="32" width="32" /></a></td>
                 <td>{{c.startTime | date:'medium'}}</td>
                 <td>{{c.endTime | date:'medium'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div zf-panel="" id="eventsPanel" position="bottom">
+    <div class="primary title-bar">
+        <div class="center title">Events</div>
+        <span zf-close="" class="right"><a>Close</a></span>
+    </div>
+    <div class="grid-content center">
+        <table>
+            <thead>
+            <tr>
+                <th>Date/Time</th>
+                <th>Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="e in pipeline.events">
+                <td>{{(e.eventDateTime.epochSecond * 1000) + (e.eventDateTime.nano / 1000000) | date:'MMM d, y H:mm:ss.sss '}}</td>
+                <td>{{e.type}}</td>
             </tr>
             </tbody>
         </table>

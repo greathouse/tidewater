@@ -14,24 +14,31 @@ function($rootScope, $q, $http, Pipeline, PipelineContext, foundationApi, eventS
     var pipelineChangeListeners = {};
     var eventHandlers = {
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineCreatedEvent': function(event) {
-            pipelines[event.aggregateId] = new Pipeline(event.aggregateId, event.script);
+            var pipeline = new Pipeline(event.aggregateId, event.script);
+            pipelines[event.aggregateId] = p;
+            return pipeline;
         },
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineStartedEvent': function(event) {
             var pipeline = pipelines[event.aggregateId];
             pipeline.startContext(event.contextId.id, event.eventDateTime.epochSecond * 1000);
+            return pipeline;
         },
         'greenmoonsoftware.tidewater.web.context.events.PipelineContextEndedEvent': function(event) {
             var pipeline = pipelines[event.pipelineName];
             pipeline.endContext(event.aggregateId, event.status, event.eventDateTime.epochSecond * 1000);
+            return pipeline;
         },
         'greenmoonsoftware.tidewater.web.pipeline.events.PipelineScriptUpdatedEvent': function(event) {
-            pipelines[event.aggregateId].script = event.script;
+            var pipeline = pipelines[event.aggregateId];
+            pipeline.script = event.script;
+            return pipeline;
         }
     };
 
     function processEvent(event, index) {
         if (eventHandlers.hasOwnProperty(event.type)) {
-            eventHandlers[event.type](event);
+            var pipeline = eventHandlers[event.type](event);
+            pipeline.addEvent(event);
             Object.keys(pipelineChangeListeners).forEach(function(key) {
                 pipelineChangeListeners[key](pipelines);
             });

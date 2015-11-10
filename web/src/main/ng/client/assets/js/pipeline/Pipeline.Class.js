@@ -15,6 +15,10 @@ angular.module('pipelineModule').factory('Pipeline.Class', [
            this.events = [];
        };
 
+       Pipeline.prototype.addEvent = function(event) {
+        this.events.push(event);
+       }
+
        Pipeline.prototype.updateStats = function() {
             this.stats.total = this.getContexts().length;
             this.stats.errored = this.erroredContexts().length;
