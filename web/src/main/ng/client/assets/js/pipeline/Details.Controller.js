@@ -17,10 +17,16 @@ function (
 
   $scope.showScript = true;
   $scope.panelContexts = {
+    status: '',
     title: 'N/A',
     list: []
   };
   $scope.showContexts = function(status) {
+    if (status === $scope.panelContexts.status) {
+      foundationApi.publish('contextsPanel', 'toggle');
+      return;
+    }
+    $scope.panelContexts.status = status;
     $scope.panelContexts.list = (status === 'ALL') ? $scope.pipeline.getContexts() : $scope.pipeline.getContextsWithStatus(status);
     $scope.panelContexts.title = (status === 'ALL') ? 'All' : status;
     foundationApi.publish('contextsPanel', 'open');
