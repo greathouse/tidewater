@@ -74,6 +74,14 @@ function($rootScope, $q, $http, Pipeline, PipelineContext, foundationApi, eventS
             });
     }
 
+    function loadEvents(pipeline) {
+        return $http.get('/pipelines/' + pipeline.name + '/events')
+            .then((response) => {
+                pipeline.events = response.data;
+                return pipeline;
+            })
+    }
+
     function registerChangeListener(name, listener) {
         pipelineChangeListeners[name] = listener;
     };
@@ -87,7 +95,8 @@ function($rootScope, $q, $http, Pipeline, PipelineContext, foundationApi, eventS
         unregisterChangeListener: unregisterChangeListener,
         getList: getList,
         getPipeline: getPipeline,
-        loadContexts: loadContexts
+        loadContexts: loadContexts,
+        loadEvents: loadEvents
     }
 }
 

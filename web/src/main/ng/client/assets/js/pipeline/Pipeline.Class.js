@@ -12,6 +12,7 @@ angular.module('pipelineModule').factory('Pipeline.Class', [
            this.name = name;
            this.script = script;
            this.stats = new PipelineStats();
+           this.events = [];
        };
 
        Pipeline.prototype.updateStats = function() {
@@ -44,8 +45,7 @@ angular.module('pipelineModule').factory('Pipeline.Class', [
             return Object.keys(this.contexts).map(key => this.contexts[key]);
        }
 
-       Pipeline.prototype.getContextsWithStatus = function(status)
-       {
+       Pipeline.prototype.getContextsWithStatus = function(status) {
             return this.getContexts().filter( context => context.status === status );
        }
 

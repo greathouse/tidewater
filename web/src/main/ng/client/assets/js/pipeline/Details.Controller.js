@@ -41,6 +41,7 @@ function (
 
   pipelineService.getPipeline($routeParams.pipelineName)
     .then((pipeline) => pipelineService.loadContexts(pipeline))
+    .then((pipeline) => pipelineService.loadEvents(pipeline))
     .then((pipeline) => {
       $scope.pipeline = pipeline;
       $scope.formdata = {script: pipeline.script};
