@@ -36,6 +36,9 @@ abstract class AbstractContext implements Context {
 
     @Override
     void addDefinedStep(StepDefinition stepDef) {
+        if (definedSteps.containsKey(stepDef.name)) {
+            throw new InvalidScriptException("Script contains two steps named '${stepDef.name}'.")
+        }
         definedSteps[stepDef.name] = stepDef
     }
 
