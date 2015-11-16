@@ -10,7 +10,7 @@ import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
 
-class S3Copy extends AbstractStep {
+class S3CopyObject extends AbstractStep {
     @Input String sourceBucketName
     @Input String sourceKeyName
     @Input String destinationBucketName

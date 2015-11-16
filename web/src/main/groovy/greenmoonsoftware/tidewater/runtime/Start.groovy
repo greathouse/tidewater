@@ -75,7 +75,7 @@ class Start {
 //                    tree
 //                \'\'\'.stripIndent()
 //            }
-            step s3Copy(type: greenmoonsoftware.tidewater.plugins.aws.S3Copy) {
+            step s3Copy(type: greenmoonsoftware.tidewater.plugins.aws.S3CopyObject) {
                 sourceBucketName 'tidewater-test-bucket\'
                 sourceKeyName 'dir/something-totally-different'
                 destinationBucketName 'tidewater-test-bucket-copy\'
