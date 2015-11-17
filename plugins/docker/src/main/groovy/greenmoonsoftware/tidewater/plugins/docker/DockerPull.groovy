@@ -1,5 +1,5 @@
 package greenmoonsoftware.tidewater.plugins.docker
-import com.google.common.base.Optional
+
 import com.google.common.net.HostAndPort
 import com.spotify.docker.client.*
 import com.spotify.docker.client.messages.ProgressMessage
@@ -7,7 +7,6 @@ import greenmoonsoftware.tidewater.context.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 
-import java.nio.file.Path
 import java.nio.file.Paths
 
 import static com.google.common.base.Optional.fromNullable
@@ -23,7 +22,7 @@ class DockerPull extends AbstractStep {
     @Override
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
-        def docker = getClient(log)
+        def docker = getClient()
 
         docker.pull(image, new ProgressHandler() {
             @Override
@@ -37,26 +36,25 @@ class DockerPull extends AbstractStep {
     }
 
     //Shamelessly borrowed from DefaultDockerClient
-    private DockerClient getClient(log) throws DockerCertificateException {
-        final String endpoint = fromNullable(uri).or(defaultEndpoint())
-        final Path dockerCertPath = Paths.get(fromNullable(certPath)
-                .or(defaultCertPath()))
+    private DockerClient getClient() throws DockerCertificateException {
+        def endpoint = fromNullable(uri).or(defaultEndpoint())
+        def dockerCertPath = Paths.get(fromNullable(certPath).or(defaultCertPath()))
 
-        final Builder builder = new Builder()
+        def builder = new Builder()
 
-        final Optional<DockerCertificates> certs = DockerCertificates.builder()
-                .dockerCertPath(dockerCertPath).build()
+        def certs = DockerCertificates.builder().dockerCertPath(dockerCertPath).build()
 
         if (endpoint.startsWith('unix://')) {
             builder.uri(endpoint)
-        } else {
-            final String stripped = endpoint.replaceAll('.*://', '')
-            final HostAndPort hostAndPort = HostAndPort.fromString(stripped)
-            final String hostText = hostAndPort.getHostText()
-            final String scheme = certs.isPresent() ? 'https' : 'http'
+        }
+        else {
+            def stripped = endpoint.replaceAll('.*://', '')
+            def hostAndPort = HostAndPort.fromString(stripped)
+            def hostText = hostAndPort.getHostText()
+            def scheme = certs.isPresent() ? 'https' : 'http'
 
-            final int port = hostAndPort.getPortOrDefault(DEFAULT_PORT)
-            final String address = isNullOrEmpty(hostText) ? DEFAULT_HOST : hostText
+            def port = hostAndPort.getPortOrDefault(DEFAULT_PORT)
+            def address = isNullOrEmpty(hostText) ? DEFAULT_HOST : hostText
 
             builder.uri("$scheme://$address:$port")
         }
