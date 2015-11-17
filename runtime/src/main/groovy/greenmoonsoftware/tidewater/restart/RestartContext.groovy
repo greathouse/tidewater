@@ -98,6 +98,13 @@ class RestartContext extends AbstractContext implements EventSubscriber<Event>, 
     }
 
     @Override
+    void log(String logMessageId, Step s, String message) {
+        def event = new StepLogEvent(s, attributes.id, message)
+        event.logMessageId = logMessageId
+        raiseEvent(event)
+    }
+
+    @Override
     void log(Step step, String message) {
         raiseEvent(new StepLogEvent(step, attributes.id, message))
     }

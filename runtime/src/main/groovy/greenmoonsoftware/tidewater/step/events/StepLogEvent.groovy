@@ -6,6 +6,7 @@ import greenmoonsoftware.tidewater.step.StepDouble
 
 final class StepLogEvent extends AbstractEvent {
     Step step
+    String logMessageId
     ContextId contextId
     String message
 
@@ -17,5 +18,9 @@ final class StepLogEvent extends AbstractEvent {
         step = new StepDouble(s)
         contextId = c
         message = msg
+    }
+
+    String getLogMessageId() {
+        return logMessageId ?: id.toString()
     }
 }
