@@ -45,7 +45,7 @@ class AbstractContextTests {
         }
 
         @Override
-        void log(String logMessageId, Step s, String message) {
+        void log(Step s, String logMessageId, String message) {
 
         }
 

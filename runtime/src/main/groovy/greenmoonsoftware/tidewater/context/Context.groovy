@@ -16,7 +16,7 @@ interface Context {
     void addExecutedStep(Step step)
     Step findExecutedStep(String name)
     void raiseEvent(Event event)
-    void log(String logMessageId, Step s, String message)
+    void log(Step s, String logMessageId, String message)
     void log(Step s, String message)
     void log(String message)
 }

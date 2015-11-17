@@ -1,13 +1,7 @@
 package greenmoonsoftware.tidewater.plugins.docker
-
 import com.google.common.base.Optional
 import com.google.common.net.HostAndPort
-import com.spotify.docker.client.DefaultDockerClient
-import com.spotify.docker.client.DockerCertificateException
-import com.spotify.docker.client.DockerCertificates
-import com.spotify.docker.client.DockerClient
-import com.spotify.docker.client.DockerException
-import com.spotify.docker.client.ProgressHandler
+import com.spotify.docker.client.*
 import com.spotify.docker.client.messages.ProgressMessage
 import greenmoonsoftware.tidewater.context.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
@@ -17,12 +11,9 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 import static com.google.common.base.Optional.fromNullable
-import static com.google.common.base.Optional.fromNullable
 import static com.google.common.base.Strings.isNullOrEmpty
 import static com.spotify.docker.client.DefaultDockerClient.*
 import static java.lang.System.getProperty
-import static java.lang.System.getenv
-import static java.lang.System.getenv
 
 class DockerPull extends AbstractStep {
     @Input String image
