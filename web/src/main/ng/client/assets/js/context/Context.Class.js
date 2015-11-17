@@ -26,8 +26,8 @@ function() {
         this.stepsByName[stepName].start(startTime);
     }
 
-    Context.prototype.stepLog = function(stepName, time, message) {
-        this.stepsByName[stepName].log(time, message);
+    Context.prototype.stepLog = function(stepName, logId, time, message) {
+        this.stepsByName[stepName].log(logId, time, message);
     }
 
     Context.prototype.stepSuccess = function(stepName, endTime, outputs) {

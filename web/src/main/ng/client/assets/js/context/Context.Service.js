@@ -36,7 +36,7 @@ function($rootScope, $http, $q, Context, Step, eventService) {
             contexts[event.contextId.id].startStep(event.aggregateId, event.eventDateTime.epochSecond * 1000);
         },
         'greenmoonsoftware.tidewater.step.events.StepLogEvent': function(event) {
-            contexts[event.contextId.id].stepLog(event.aggregateId, event.eventDateTime.epochSecond * 1000, event.message);
+            contexts[event.contextId.id].stepLog(event.aggregateId, event.logMessageId, event.eventDateTime.epochSecond * 1000, event.message);
         },
         'greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent': function(event) {
             contexts[event.contextId.id].stepSuccess(event.aggregateId, event.endDate, event.step.outputs);

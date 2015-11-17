@@ -28,8 +28,8 @@ class DockerPull extends AbstractStep {
         docker.pull(image, new ProgressHandler() {
             @Override
             void progress(ProgressMessage message) throws DockerException {
-                def id = message.id() ? "${message.id()}: " : ''
-                log "${id}${message.status()}"
+                def idMessage = message.id() ? "${message.id()}: " : ''
+                log message.id(), "${idMessage}${message.status()}"
             }
         })
 

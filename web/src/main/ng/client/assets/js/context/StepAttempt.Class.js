@@ -5,11 +5,21 @@ function() {
         this.startTime = startTime;
         this.status = 'IN_PROGRESS';
         this.endTime;
+        this.logsById = {};
         this.logs = [];
     };
 
-    StepAttempt.prototype.log = function(time, message) {
-        this.logs.push({time: time, message: message});
+    StepAttempt.prototype.log = function(id, time, message) {
+        var log = this.logsById[id];
+        if (log === undefined) {
+            log = {time: time, message: message};
+            this.logsById[id] = log
+            this.logs.push(log);
+        }
+        else {
+            log.time = time;
+            log.message = message;
+        }
     }
 
     StepAttempt.prototype.success = function(endTime) {

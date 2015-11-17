@@ -26,8 +26,8 @@ function(StepAttempt) {
         this.attempts.push(new StepAttempt(startTime));
     }
 
-    Step.prototype.log = function(time, message) {
-        this.currentAttempt().log(time, message);
+    Step.prototype.log = function(id, time, message) {
+        this.currentAttempt().log(id, time, message);
     }
 
     Step.prototype.success = function(endTime, outputs) {
