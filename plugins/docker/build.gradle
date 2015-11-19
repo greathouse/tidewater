@@ -2,5 +2,5 @@ apply plugin: 'groovy'
 
 dependencies {
     compile project(':runtime')
-    compile 'com.spotify:docker-client:3.3.0'
+    compile 'com.github.docker-java:docker-java:2.1.2'
 }

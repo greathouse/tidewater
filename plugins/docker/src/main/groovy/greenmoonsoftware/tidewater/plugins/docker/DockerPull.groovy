@@ -1,20 +1,23 @@
 package greenmoonsoftware.tidewater.plugins.docker
 
+import com.github.dockerjava.core.DockerClientBuilder
+import com.github.dockerjava.core.DockerClientConfig
 import com.google.common.net.HostAndPort
-import com.spotify.docker.client.*
-import com.spotify.docker.client.messages.ProgressMessage
 import greenmoonsoftware.tidewater.context.Context
+import greenmoonsoftware.tidewater.plugins.docker.pull.TidewaterPullImageResultCallback
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 
-import java.nio.file.Paths
-
 import static com.google.common.base.Optional.fromNullable
 import static com.google.common.base.Strings.isNullOrEmpty
-import static com.spotify.docker.client.DefaultDockerClient.*
 import static java.lang.System.getProperty
 
+
 class DockerPull extends AbstractStep {
+    static final String DEFAULT_UNIX_ENDPOINT = "unix:///var/run/docker.sock"
+    static final String DEFAULT_HOST = "localhost"
+    static final int DEFAULT_PORT = 2375
+
     @Input String image
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
@@ -22,48 +25,39 @@ class DockerPull extends AbstractStep {
     @Override
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
-        def docker = getClient()
 
-        docker.pull(image, new ProgressHandler() {
-            @Override
-            void progress(ProgressMessage message) throws DockerException {
-                def idMessage = message.id() ? "${message.id()}: " : ''
-                log message.id(), "${idMessage}${message.status()}"
-            }
-        })
+        def config = DockerClientConfig.createDefaultConfigBuilder()
+//                .withVersion("1.16")
+                .withUri(buildUri())
+//                .withUsername("dockeruser")
+//                .withPassword("ilovedocker")
+//                .withEmail("dockeruser@github.com")
+//                .withServerAddress("https://index.docker.io/v1/")
+                .withDockerCertPath(certPath)
+                .build();
+        def docker = DockerClientBuilder.getInstance(config).build()
 
-        return true
+        return docker.pullImageCmd(image)
+                .exec(new TidewaterPullImageResultCallback(log))
+                .awaitCompletion()
+                .success
     }
 
-    //Shamelessly borrowed from DefaultDockerClient
-    private DockerClient getClient() throws DockerCertificateException {
+    private String buildUri() {
         def endpoint = fromNullable(uri).or(defaultEndpoint())
-        def dockerCertPath = Paths.get(fromNullable(certPath).or(defaultCertPath()))
-
-        def builder = new Builder()
-
-        def certs = DockerCertificates.builder().dockerCertPath(dockerCertPath).build()
-
         if (endpoint.startsWith('unix://')) {
-            builder.uri(endpoint)
+            return endpoint
         }
         else {
             def stripped = endpoint.replaceAll('.*://', '')
             def hostAndPort = HostAndPort.fromString(stripped)
             def hostText = hostAndPort.getHostText()
-            def scheme = certs.isPresent() ? 'https' : 'http'
+            def scheme = certPath == null ? 'http' : 'https'
 
             def port = hostAndPort.getPortOrDefault(DEFAULT_PORT)
             def address = isNullOrEmpty(hostText) ? DEFAULT_HOST : hostText
-
-            builder.uri("$scheme://$address:$port")
+            return "$scheme://$address:$port"
         }
-
-        if (certs.isPresent()) {
-            builder.dockerCertificates(certs.get())
-        }
-
-        return builder.build()
     }
 
     private static String defaultEndpoint() {
@@ -72,9 +66,5 @@ class DockerPull extends AbstractStep {
         } else {
             return DEFAULT_HOST + ":" + DEFAULT_PORT
         }
-    }
-
-    private static String defaultCertPath() {
-        return Paths.get(getProperty("user.home"), ".docker").toString()
     }
 }
