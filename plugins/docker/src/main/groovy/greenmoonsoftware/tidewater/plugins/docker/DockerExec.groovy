@@ -1,10 +1,12 @@
 package greenmoonsoftware.tidewater.plugins.docker
 
+import com.github.dockerjava.api.command.CreateContainerResponse
+import com.github.dockerjava.api.model.Bind
+import com.github.dockerjava.api.model.Volume
 import com.github.dockerjava.core.DockerClientBuilder
 import com.github.dockerjava.core.DockerClientConfig
 import com.google.common.net.HostAndPort
 import greenmoonsoftware.tidewater.context.Context
-import greenmoonsoftware.tidewater.plugins.docker.pull.TidewaterPullImageResultCallback
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 
@@ -12,8 +14,7 @@ import static com.google.common.base.Optional.fromNullable
 import static com.google.common.base.Strings.isNullOrEmpty
 import static java.lang.System.getProperty
 
-
-class DockerPull extends AbstractStep {
+class DockerExec extends AbstractStep {
     static final String DEFAULT_UNIX_ENDPOINT = "unix:///var/run/docker.sock"
     static final String DEFAULT_HOST = "localhost"
     static final int DEFAULT_PORT = 2375
@@ -25,17 +26,21 @@ class DockerPull extends AbstractStep {
     @Override
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
-
         def config = DockerClientConfig.createDefaultConfigBuilder()
                 .withUri(buildUri())
                 .withDockerCertPath(certPath)
                 .build();
         def docker = DockerClientBuilder.getInstance(config).build()
 
-        return docker.pullImageCmd(image)
-                .exec(new TidewaterPullImageResultCallback(log))
-                .awaitCompletion()
-                .success
+        def volume1 = new Volume('/srv/jekyll')
+
+        def container1 = docker.createContainerCmd('jekyll/jekyll:stable').withCmd('jekyll', 'build')
+//                .withName(container1Name)
+                .withBinds(new Bind("${context.attributes.workspace.absolutePath}/site", volume1)).exec();
+
+        docker.startContainerCmd(container1.id).exec()
+
+        return true
     }
 
     private String buildUri() {
