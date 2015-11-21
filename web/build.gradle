@@ -19,8 +19,6 @@ apply plugin: 'com.moowork.gulp'
 apply plugin: 'com.moowork.node'
 apply from: "${rootDir}/gradle/integrationTests.gradle"
 
-processResources.dependsOn gulp_build
-
 springBoot {
     mainClass = 'greenmoonsoftware.tidewater.web.Application'
 }
@@ -32,6 +30,12 @@ gulp {
 node {
     version = '5.0.0'
     download = true
+}
+
+configurations {
+    plugin {
+        transitive = false
+    }
 }
 
 dependencies {
@@ -50,14 +54,21 @@ dependencies {
 
     //Add all known plugins
     project(':plugins').childProjects.each {
-        runtime it.value
+        plugin project(path: it.value.path, configuration: 'plugin')
     }
 
     testCompile 'org.springframework:spring-test'
     testCompile 'org.testng:testng:6.9.6'
 }
 
+task copyPlugins(type: Copy) {
+    from configurations.plugin
+    into "${project.buildDir}/plugins"
+}
+
 test {
     useTestNG()
     jvmArgs = ['-noverify']
 }
+
+processResources.dependsOn gulp_build

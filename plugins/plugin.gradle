@@ -25,4 +25,8 @@ task pluginJar(type: Jar) {
     with jar
 }
 
+artifacts {
+    plugin pluginJar
+}
+
 build.dependsOn pluginJar
