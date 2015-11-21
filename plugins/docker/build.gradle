@@ -1,6 +1,11 @@
-apply plugin: 'groovy'
+apply from: "$projectDir/../plugin.gradle"
+
+repositories {
+    maven {
+        url 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
 
 dependencies {
-    compile project(':runtime')
-    compile 'com.github.docker-java:docker-java:2.1.2'
+    plugin 'com.github.docker-java:docker-java:3.0.0-SNAPSHOT'
 }

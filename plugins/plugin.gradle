@@ -1,0 +1,28 @@
+apply plugin: 'groovy'
+
+configurations {
+    plugin {
+        transitive true
+    }
+    compile {
+        extendsFrom plugin
+    }
+}
+
+dependencies {
+    compile project(':runtime')
+    compile 'org.codehaus.groovy:groovy:2.4.1'
+
+    testCompile 'org.testng:testng:6.9.6'
+}
+
+task pluginJar(type: Jar) {
+    baseName = project.name + '-all'
+    from { configurations.plugin.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude ('META-INF/*.SF')
+    exclude ('META-INF/*.DSA')
+    exclude ('META-INF/*.RSA')
+    with jar
+}
+
+build.dependsOn pluginJar

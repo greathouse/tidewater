@@ -1,8 +1,5 @@
-apply plugin: 'groovy'
+apply from: "$projectDir/../plugin.gradle"
 
 dependencies {
-    compile project(':runtime')
-
-    compile 'com.amazonaws:aws-java-sdk-s3:1.10.16'
-    compile 'org.codehaus.groovy:groovy:2.4.4'
+    plugin 'com.amazonaws:aws-java-sdk-s3:1.10.16'
 }
