@@ -3,7 +3,7 @@ import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcEventQuery
-import greenmoonsoftware.tidewater.PluginClassLoader
+import greenmoonsoftware.tidewater.plugins.PluginClassLoader
 import greenmoonsoftware.tidewater.context.ContextAttributes
 import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.context.TidewaterEventStoreConfiguration

@@ -1,5 +1,7 @@
 package greenmoonsoftware.tidewater.context
 
+import greenmoonsoftware.tidewater.Tidewater
+
 final class ContextAttributes implements Serializable {
     private final ContextId id
     private String script

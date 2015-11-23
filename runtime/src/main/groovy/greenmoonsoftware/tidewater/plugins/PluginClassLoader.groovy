@@ -1,4 +1,6 @@
-package greenmoonsoftware.tidewater
+package greenmoonsoftware.tidewater.plugins
+
+import greenmoonsoftware.tidewater.Tidewater
 
 //https://dzone.com/articles/java-classloader-handling
 public class PluginClassLoader extends ClassLoader {
@@ -6,10 +8,15 @@ public class PluginClassLoader extends ClassLoader {
 
     public PluginClassLoader() {
         super(Thread.currentThread().getContextClassLoader())
-        def uris = new File('/Users/robert/projects/tidewater/web/build/plugins')
+        def uris = new File(Tidewater.PLUGIN_DIR)
                 .listFiles()
                 .collect { it.toURI().toURL() } as URL[]
         childClassLoader = new ChildClassLoader(uris, new DetectClass(this.getParent()))
+    }
+
+    public PluginClassLoader(URL... pluginLocations) {
+        super(Thread.currentThread().getContextClassLoader())
+        childClassLoader = new ChildClassLoader(pluginLocations, new DetectClass(this.getParent()))
     }
 
     @Override
