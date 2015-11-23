@@ -1,4 +1,6 @@
 package greenmoonsoftware.tidewater.context
+
+import greenmoonsoftware.tidewater.PluginClassLoader
 import greenmoonsoftware.tidewater.step.CustomStep
 import greenmoonsoftware.tidewater.step.StepDefinition
 import org.codehaus.groovy.control.CompilerConfiguration
@@ -58,9 +60,13 @@ abstract class TidewaterBaseScript extends Script implements Serializable {
     }
 
     private static TidewaterBaseScript parseScript(Context c, CompilerConfiguration cc, String script) {
-        GroovyShell shell = new GroovyShell(this.class.classLoader, new Binding(context: c), cc)
+        GroovyShell shell = new GroovyShell(classLoader(), new Binding(context: c), cc)
         def script1 = (TidewaterBaseScript) shell.parse(script)
         return script1
+    }
+
+    private static ClassLoader classLoader() {
+        return new PluginClassLoader()
     }
 
     private static void addImports(CompilerConfiguration cc) {

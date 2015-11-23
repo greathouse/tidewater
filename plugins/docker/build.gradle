@@ -7,5 +7,7 @@ repositories {
 }
 
 dependencies {
-    plugin 'com.github.docker-java:docker-java:3.0.0-SNAPSHOT'
+    plugin ('com.github.docker-java:docker-java:3.0.0-SNAPSHOT') {
+        exclude group: 'org.slf4j'
+    }
 }

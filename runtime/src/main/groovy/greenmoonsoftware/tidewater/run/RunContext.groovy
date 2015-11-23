@@ -4,6 +4,7 @@ import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
+import greenmoonsoftware.tidewater.PluginClassLoader
 import greenmoonsoftware.tidewater.context.AbstractContext
 import greenmoonsoftware.tidewater.context.Context
 import greenmoonsoftware.tidewater.context.ContextAttributeEventSubscriber
@@ -68,14 +69,19 @@ final class RunContext extends AbstractContext implements Context, EventSubscrib
 
     Thread execute(String scriptText) {
         attributes.script = scriptText
-        def t =new Thread({
+        def t = new Thread({
             raiseEvent(new ContextExecutionStartedEvent(attributes))
             processScript(scriptText)
             executeSteps()
             raiseEvent(new ContextExecutionEndedEvent(attributes))
         }, "ContextRunThread-${attributes.id}")
+//        t.setContextClassLoader(classLoader())
         t.start()
         return t
+    }
+
+    private ClassLoader classLoader() {
+        return new PluginClassLoader()
     }
 
     private executeSteps() {

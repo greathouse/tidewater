@@ -1,13 +1,13 @@
 package greenmoonsoftware.tidewater.replay
-
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcEventQuery
+import greenmoonsoftware.tidewater.PluginClassLoader
 import greenmoonsoftware.tidewater.context.ContextAttributes
 import greenmoonsoftware.tidewater.context.ContextId
-import greenmoonsoftware.tidewater.json.JsonEventSerializer
 import greenmoonsoftware.tidewater.context.TidewaterEventStoreConfiguration
+import greenmoonsoftware.tidewater.json.JsonEventSerializer
 
 public class ReplayRunner {
     private final ContextAttributes attributes
@@ -15,9 +15,14 @@ public class ReplayRunner {
     private final eventBus = new SimpleEventBus()
 
     ReplayRunner(ContextId id) {
+        Thread.currentThread().setContextClassLoader(classLoader())
         attributes = new ContextAttributes(id)
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         eventQuery = new JdbcEventQuery(storage.toConfiguration(), storage.datasource, new JsonEventSerializer())
+    }
+
+    private ClassLoader classLoader() {
+        return new PluginClassLoader()
     }
 
     void replay() {

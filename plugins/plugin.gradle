@@ -2,6 +2,7 @@ apply plugin: 'groovy'
 
 configurations {
     plugin {
+//        exclude group: 'org.slf4j'
         transitive true
     }
     compile {
@@ -12,6 +13,7 @@ configurations {
 dependencies {
     compile project(':runtime')
     compile 'org.codehaus.groovy:groovy:2.4.1'
+    compile 'org.slf4j:slf4j-api:1.7.12'
 
     testCompile 'org.testng:testng:6.9.6'
 }
