@@ -2,13 +2,12 @@ apply plugin: 'groovy'
 
 configurations {
     plugin {
-//        exclude group: 'org.slf4j'
+        exclude group: 'org.slf4j'
         transitive true
     }
-    compile {
-        extendsFrom plugin
-    }
 }
+
+sourceSets.main.compileClasspath += [configurations.plugin]
 
 dependencies {
     compile project(':runtime')
