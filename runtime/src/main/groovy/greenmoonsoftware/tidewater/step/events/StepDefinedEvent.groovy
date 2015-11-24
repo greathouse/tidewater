@@ -5,7 +5,7 @@ import greenmoonsoftware.tidewater.step.StepDefinition
 
 class StepDefinedEvent extends AbstractEvent {
     String name
-    Class stepType
+    String stepType
     ContextId contextId
 
     private StepDefinedEvent(){}

@@ -1,5 +1,7 @@
 package greenmoonsoftware.tidewater.context
 
+import greenmoonsoftware.tidewater.plugins.PluginClassLoader
+import greenmoonsoftware.tidewater.plugins.PluginLocator
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
 import greenmoonsoftware.tidewater.step.StepDelegate
@@ -64,12 +66,21 @@ class StepRunner implements Serializable {
     }
 
     private Step configure(StepDefinition defined) {
-        def step = defined.type.newInstance() as Step
+        def step = instantiateStep(defined.type)
         step.name = defined.name
         def c = (Closure) defined.configureClosure.rehydrate(new StepDelegate(context, step), null, null)
         c.resolveStrategy = Closure.DELEGATE_ONLY
         c.call()
         context.raiseEvent(new StepConfiguredEvent(step, context.attributes.id))
         return step
+    }
+
+    private Step instantiateStep(String type) {
+        return locateClass(type).newInstance() as Step
+    }
+
+    private Class<?> locateClass(String type) {
+        def pluginClassLoader = new PluginClassLoader(new PluginLocator().locate(type))
+        return pluginClassLoader.loadClass(type)
     }
 }
