@@ -28,6 +28,7 @@ class DockerExec extends AbstractStep {
     @Input String image
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
+    @Input Map<String,String> binds = [:]
 
     @Output int exitCode
 
@@ -51,13 +52,17 @@ class DockerExec extends AbstractStep {
     }
 
     private CreateContainerResponse createAndStartContainer(DockerClient docker, Context context) {
-        def container = docker.createContainerCmd('jekyll/jekyll:stable')
+        def container = docker.createContainerCmd(image)
                 .withCmd('jekyll', 'build')
-                .withBinds(new Bind("${context.attributes.workspace.absolutePath}/site", new Volume('/srv/jekyll')))
+                .withBinds(buildBinds())
                 .exec()
 
         docker.startContainerCmd(container.id).exec()
         container
+    }
+
+    private Bind[] buildBinds() {
+        binds.collect { k,v -> new Bind(k, new Volume(v)) }
     }
 
     private int awaitStatusCode(DockerClient docker, CreateContainerResponse container) {

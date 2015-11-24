@@ -23,7 +23,7 @@ final class StepDelegate {
                 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         Unable to find step named \"${name}\".
                 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!""".stripIndent()
-            System.exit(1)
+            throw new RuntimeException("Unable to find step named \"${name}\"")
         }
         return executedStep
     }
