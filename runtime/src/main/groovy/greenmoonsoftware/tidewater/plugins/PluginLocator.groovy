@@ -6,27 +6,28 @@ import greenmoonsoftware.tidewater.step.Step
 import java.util.jar.JarFile
 
 class PluginLocator {
-    private final Map<Class<Step>, URL> cache = [:]
+    private final Map<String, URL> cache = [:]
 
     URL locate(Step s) {
-        cache[s.class] ?: find(s)
+        locate(s.class.canonicalName)
     }
 
-    private URL find(Step s) {
+    URL locate(String typeString) {
+        cache[typeString] ?: find(typeString)
+    }
+
+    private URL find(String typeString) {
         def jarFile = new File(Tidewater.PLUGIN_DIR)
             .listFiles()
-            .find {
-                new JarFile(it).getJarEntry(s.class.canonicalName.replace(".","/") + ".class")
+            .find { file ->
+                new JarFile(file).getJarEntry(typeString.replace(".","/") + ".class")
             }
         def url = jarFile.toURI().toURL()
-        cache[s.class] = url
+        cache[typeString] = url
         return url
     }
 
     static void main(String[] args) {
-        def pluginClassloader = new PluginClassLoader()
-        def clazz = pluginClassloader.loadClass('greenmoonsoftware.tidewater.plugins.aws.s3.S3CopyBucket')
-        def instance = clazz.newInstance()
-        println new PluginLocator().find(instance)
+        println new PluginLocator().locate('greenmoonsoftware.tidewater.plugins.docker.DockerPull')
     }
 }
