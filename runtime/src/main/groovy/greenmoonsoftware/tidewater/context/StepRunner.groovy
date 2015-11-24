@@ -1,7 +1,6 @@
 package greenmoonsoftware.tidewater.context
 
-import greenmoonsoftware.tidewater.plugins.PluginClassLoader
-import greenmoonsoftware.tidewater.plugins.PluginLocator
+import greenmoonsoftware.tidewater.plugins.PluginClassLoaderCache
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
 import greenmoonsoftware.tidewater.step.StepDelegate
@@ -34,12 +33,17 @@ class StepRunner implements Serializable {
     private boolean start(Step step) {
         def startDate = new Date()
         context.raiseEvent(new StepStartedEvent(step, context.attributes.id, startDate))
+        def originalClassloader = Thread.currentThread().contextClassLoader
         try {
+            Thread.currentThread().contextClassLoader = PluginClassLoaderCache.getFor(step.class)
             return executeStep(step, startDate)
         } catch (all) {
             all.printStackTrace()
             handleErroredStep(step, startDate, all)
             return false
+        }
+        finally {
+            Thread.currentThread().contextClassLoader = originalClassloader
         }
     }
 
@@ -80,7 +84,6 @@ class StepRunner implements Serializable {
     }
 
     private Class<?> locateClass(String type) {
-        def pluginClassLoader = new PluginClassLoader(new PluginLocator().locate(type))
-        return pluginClassLoader.loadClass(type)
+        return PluginClassLoaderCache.getFor(type).loadClass(type)
     }
 }

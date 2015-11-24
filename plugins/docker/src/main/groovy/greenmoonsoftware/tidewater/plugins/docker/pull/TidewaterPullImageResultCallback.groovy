@@ -50,7 +50,7 @@ class TidewaterPullImageResultCallback extends ResultCallbackTemplate<TidewaterP
     }
 
     private String buildProgressBar(PullResponseItem i) {
-        return i.progress //Unfortunately the attributes in the progressDetails class are package scoped so we must use the deprecated method to get a progress bar.
+        return i.progress //Unfortunately the attributes in the progressDetails class are package scoped so we must use the deprecated method to getFor a progress bar.
 //        def d = i.progressDetail
 //        def percentageScale = (d.current / d.total) / 2
 //        def bar = '' * percentageScale

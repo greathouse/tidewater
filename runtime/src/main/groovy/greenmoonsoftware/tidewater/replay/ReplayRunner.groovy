@@ -15,7 +15,7 @@ public class ReplayRunner {
     private final eventBus = new SimpleEventBus()
 
     ReplayRunner(ContextId id) {
-        Thread.currentThread().setContextClassLoader(classLoader())
+//        Thread.currentThread().setContextClassLoader(classLoader())
         attributes = new ContextAttributes(id)
         def storage = new TidewaterEventStoreConfiguration(attributes.metaDirectory)
         eventQuery = new JdbcEventQuery(storage.toConfiguration(), storage.datasource, new JsonEventSerializer())
