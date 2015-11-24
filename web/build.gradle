@@ -63,7 +63,7 @@ dependencies {
 
 task copyPlugins(type: Copy) {
     from configurations.plugin
-    into "${project.buildDir}/plugins"
+    into "${System.properties['user.home']}/.tidewater/plugins"
 }
 
 test {

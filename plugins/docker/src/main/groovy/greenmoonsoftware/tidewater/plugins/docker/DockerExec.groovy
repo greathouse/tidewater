@@ -1,13 +1,20 @@
 package greenmoonsoftware.tidewater.plugins.docker
 
+import com.github.dockerjava.api.DockerClient
+import com.github.dockerjava.api.command.CreateContainerResponse
 import com.github.dockerjava.api.model.Bind
+import com.github.dockerjava.api.model.Frame
 import com.github.dockerjava.api.model.Volume
 import com.github.dockerjava.core.DockerClientBuilder
 import com.github.dockerjava.core.DockerClientConfig
+import com.github.dockerjava.core.async.ResultCallbackTemplate
+import com.github.dockerjava.core.command.LogContainerResultCallback
+import com.github.dockerjava.core.command.WaitContainerResultCallback
 import com.google.common.net.HostAndPort
 import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
+import greenmoonsoftware.tidewater.step.Output
 
 import static com.google.common.base.Optional.fromNullable
 import static com.google.common.base.Strings.isNullOrEmpty
@@ -22,24 +29,55 @@ class DockerExec extends AbstractStep {
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
 
+    @Output int exitCode
+
     @Override
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
+        def docker = dockerClient()
+
+        def container = createAndStartContainer(docker, context)
+        exitCode = awaitStatusCode(docker, container)
+        captureContainerLogs(log, docker, container)
+        return exitCode == 0
+    }
+
+    private DockerClient dockerClient() {
         def config = DockerClientConfig.createDefaultConfigBuilder()
                 .withUri(buildUri())
                 .withDockerCertPath(certPath)
                 .build();
-        def docker = DockerClientBuilder.getInstance(config).build()
+        return DockerClientBuilder.getInstance(config).build()
+    }
 
-        def volume1 = new Volume('/srv/jekyll')
+    private CreateContainerResponse createAndStartContainer(DockerClient docker, Context context) {
+        def container = docker.createContainerCmd('jekyll/jekyll:stable')
+                .withCmd('jekyll', 'build')
+                .withBinds(new Bind("${context.attributes.workspace.absolutePath}/site", new Volume('/srv/jekyll')))
+                .exec()
 
-        def container1 = docker.createContainerCmd('jekyll/jekyll:stable').withCmd('jekyll', 'build')
-//                .withName(container1Name)
-                .withBinds(new Bind("${context.attributes.workspace.absolutePath}/site", volume1)).exec();
+        docker.startContainerCmd(container.id).exec()
+        container
+    }
 
-        docker.startContainerCmd(container1.id).exec()
+    private int awaitStatusCode(DockerClient docker, CreateContainerResponse container) {
+        docker.waitContainerCmd(container.id)
+                .exec(new WaitContainerResultCallback())
+                .awaitStatusCode()
+    }
 
-        return true
+    private void captureContainerLogs(log, DockerClient docker, CreateContainerResponse container) {
+        def logCallback = new ResultCallbackTemplate<LogContainerResultCallback, Frame>() {
+            @Override
+            void onNext(Frame object) {
+                log object.toString()
+            }
+        }
+        docker.logContainerCmd(container.getId())
+                .withStdErr(true)
+                .withStdOut(true)
+                .exec(logCallback)
+                .awaitCompletion()
     }
 
     private String buildUri() {
