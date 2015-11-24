@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.step
 
-import greenmoonsoftware.tidewater.context.Context
+import greenmoonsoftware.tidewater.Context
 
 interface Step extends Serializable {
     String getName()

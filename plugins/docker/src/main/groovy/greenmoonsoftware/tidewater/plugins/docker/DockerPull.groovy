@@ -3,7 +3,7 @@ package greenmoonsoftware.tidewater.plugins.docker
 import com.github.dockerjava.core.DockerClientBuilder
 import com.github.dockerjava.core.DockerClientConfig
 import com.google.common.net.HostAndPort
-import greenmoonsoftware.tidewater.context.Context
+import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.plugins.docker.pull.TidewaterPullImageResultCallback
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input

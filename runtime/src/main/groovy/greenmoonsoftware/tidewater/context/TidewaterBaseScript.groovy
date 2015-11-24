@@ -1,5 +1,6 @@
 package greenmoonsoftware.tidewater.context
 
+import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.CustomStep
 import greenmoonsoftware.tidewater.step.StepDefinition
 import org.codehaus.groovy.control.CompilerConfiguration

@@ -1,6 +1,6 @@
 package greenmoonsoftware.tidewater.step
 
-import greenmoonsoftware.tidewater.context.Context
+import greenmoonsoftware.tidewater.Context
 
 class CustomStep extends AbstractStep {
     transient Closure executable

@@ -1,6 +1,5 @@
 package greenmoonsoftware.tidewater
 
-import greenmoonsoftware.tidewater.context.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import groovy.transform.Canonical
 

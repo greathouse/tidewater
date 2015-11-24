@@ -1,5 +1,6 @@
-package greenmoonsoftware.tidewater.context
+package greenmoonsoftware.tidewater
 import greenmoonsoftware.es.event.Event
+import greenmoonsoftware.tidewater.context.ContextAttributes
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
 

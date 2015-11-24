@@ -2,7 +2,7 @@ package greenmoonsoftware.tidewater.plugins.aws.s3
 
 import com.amazonaws.services.s3.transfer.Transfer
 import com.amazonaws.services.s3.transfer.TransferManager
-import greenmoonsoftware.tidewater.context.Context
+import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output

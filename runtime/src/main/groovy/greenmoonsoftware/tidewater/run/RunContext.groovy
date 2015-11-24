@@ -5,7 +5,7 @@ import greenmoonsoftware.es.event.EventSubscriber
 import greenmoonsoftware.es.event.SimpleEventBus
 import greenmoonsoftware.es.event.jdbcstore.JdbcStoreEventSubscriber
 import greenmoonsoftware.tidewater.context.AbstractContext
-import greenmoonsoftware.tidewater.context.Context
+import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.context.ContextAttributeEventSubscriber
 import greenmoonsoftware.tidewater.context.ContextAttributes
 import greenmoonsoftware.tidewater.context.ContextId

@@ -2,6 +2,7 @@ package greenmoonsoftware.tidewater.context
 import greenmoonsoftware.es.event.Event
 import greenmoonsoftware.es.event.EventApplier
 import greenmoonsoftware.es.event.EventSubscriber
+import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.context.events.ContextExecutionStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
 

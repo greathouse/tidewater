@@ -2,10 +2,8 @@ package greenmoonsoftware.tidewater.plugins.aws.s3
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.services.s3.AmazonS3Client
-import com.amazonaws.services.s3.model.ListObjectsRequest
 import com.amazonaws.services.s3.model.ObjectListing
-import com.amazonaws.services.s3.model.S3ObjectSummary
-import greenmoonsoftware.tidewater.context.Context
+import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output

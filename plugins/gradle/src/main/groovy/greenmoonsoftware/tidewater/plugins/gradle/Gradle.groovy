@@ -1,5 +1,5 @@
 package greenmoonsoftware.tidewater.plugins.gradle
-import greenmoonsoftware.tidewater.context.Context
+import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import groovy.transform.ToString
