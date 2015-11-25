@@ -1,10 +1,10 @@
 package greenmoonsoftware.tidewater.plugins.docker
-import com.github.dockerjava.api.model.ResponseItem
+
 import com.github.dockerjava.core.async.ResultCallbackTemplate
 
 import java.util.concurrent.TimeUnit
 
-class TidewaterLoggingResultCallback<C extends ResultCallbackTemplate, I extends ResponseItem> extends ResultCallbackTemplate<TidewaterLoggingResultCallback, I> {
+class TidewaterLoggingResultCallback<C extends ResultCallbackTemplate, I> extends ResultCallbackTemplate<TidewaterLoggingResultCallback, I> {
     final C delegateCallback
     private final Closure log
 

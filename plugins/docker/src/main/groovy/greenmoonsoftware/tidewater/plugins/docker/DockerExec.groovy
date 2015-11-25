@@ -12,10 +12,13 @@ import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
 
+import static greenmoonsoftware.tidewater.plugins.docker.Helper.dockerClient
+
 class DockerExec extends AbstractStep {
     @Input String image
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
+    @Input String[] command
     @Input Map<String,String> binds = [:]
 
     @Output int exitCode
@@ -23,7 +26,7 @@ class DockerExec extends AbstractStep {
     @Override
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
-        def docker = Helper.dockerClient(uri, certPath)
+        def docker = dockerClient(uri, certPath)
 
         def container = createAndStartContainer(docker, context)
         exitCode = awaitStatusCode(docker, container)
@@ -31,14 +34,14 @@ class DockerExec extends AbstractStep {
         return exitCode == 0
     }
 
-    private CreateContainerResponse createAndStartContainer(DockerClient docker, Context context) {
+    private CreateContainerResponse createAndStartContainer(DockerClient docker) {
         def container = docker.createContainerCmd(image)
-                .withCmd('jekyll', 'build')
+                .withCmd(command)
                 .withBinds(buildBinds())
                 .exec()
 
         docker.startContainerCmd(container.id).exec()
-        container
+        return container
     }
 
     private Bind[] buildBinds() {
