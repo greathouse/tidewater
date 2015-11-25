@@ -21,8 +21,24 @@ final class PluginClassLoaderCache {
     }
 
     private static ClassLoader locate(String typeString) {
+        return locateInApplication(typeString) ?:
+                locateInPlugin(typeString)
+    }
+
+    private static ClassLoader locateInPlugin(String typeString) {
         def url = new PluginLocator().locate(typeString)
         return cacheByPluginUrl[url] ?: newClassLoader(typeString, url)
+    }
+
+    private static ClassLoader locateInApplication(String typeString) {
+        try {
+            def classLoader = Thread.currentThread().contextClassLoader
+            Class.forName(typeString, false, classLoader)
+            cacheByPluginType[typeString] = classLoader
+            return classLoader
+        } catch (ClassNotFoundException e) {
+            return null
+        }
     }
 
     private static ClassLoader newClassLoader(String typeString, URL pluginUrl) {
