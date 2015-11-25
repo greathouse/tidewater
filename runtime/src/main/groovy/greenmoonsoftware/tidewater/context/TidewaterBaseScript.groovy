@@ -36,7 +36,7 @@ abstract class TidewaterBaseScript extends Script implements Serializable {
 
     private StepDefinition customStep(String name, args) {
         Closure c = args[0] as Closure
-        return new StepDefinition(name: name, type: CustomStep, configureClosure: { executable c})
+        return new StepDefinition(name: name, type: CustomStep.canonicalName, configureClosure: { executable c})
     }
 
     void println(String s) {
