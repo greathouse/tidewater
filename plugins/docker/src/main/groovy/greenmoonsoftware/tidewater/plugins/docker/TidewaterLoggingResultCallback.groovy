@@ -1,13 +1,12 @@
 package greenmoonsoftware.tidewater.plugins.docker
 
-import com.github.dockerjava.api.async.ResultCallback
 import com.github.dockerjava.api.model.ResponseItem
 import com.github.dockerjava.core.async.ResultCallbackTemplate
 
 import java.text.DecimalFormat
 import java.util.concurrent.TimeUnit
 
-class TidewaterLoggingResultCallback<C extends ResultCallback, I extends ResponseItem> extends ResultCallbackTemplate<TidewaterLoggingResultCallback, I> {
+class TidewaterLoggingResultCallback<C extends ResultCallbackTemplate, I extends ResponseItem> extends ResultCallbackTemplate<TidewaterLoggingResultCallback, I> {
     final C delegate
     private final Closure log
     boolean success = true
