@@ -9,7 +9,7 @@ import greenmoonsoftware.tidewater.step.Input
 
 import java.text.DecimalFormat
 
-import static greenmoonsoftware.tidewater.plugins.docker.Helper.dockerClient
+import static Client.dockerClient
 
 class DockerPull extends AbstractStep {
     @Input String image

@@ -9,7 +9,7 @@ import static com.google.common.base.Optional.fromNullable
 import static com.google.common.base.Strings.isNullOrEmpty
 import static java.lang.System.getProperty
 
-class Helper {
+class Client {
     static final String DEFAULT_UNIX_ENDPOINT = "unix:///var/run/docker.sock"
     static final String DEFAULT_HOST = "localhost"
     static final int DEFAULT_PORT = 2375

@@ -12,7 +12,7 @@ import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
 
-import static greenmoonsoftware.tidewater.plugins.docker.Helper.dockerClient
+import static Client.dockerClient
 
 class DockerExec extends AbstractStep {
     @Input String image
