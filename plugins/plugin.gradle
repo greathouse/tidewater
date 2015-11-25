@@ -7,6 +7,12 @@ configurations {
     }
 }
 
+idea {
+    module{
+        scopes.PROVIDED.plus += [configurations.plugin]
+    }
+}
+
 sourceSets.main.compileClasspath += configurations.plugin
 
 dependencies {

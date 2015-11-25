@@ -3,6 +3,7 @@ task wrapper(type: Wrapper) {
 }
 
 subprojects {
+    apply plugin: 'idea'
     repositories {
         jcenter()
     }
