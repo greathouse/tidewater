@@ -6,10 +6,6 @@ import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 
 class DockerPull extends AbstractStep {
-    static final String DEFAULT_UNIX_ENDPOINT = "unix:///var/run/docker.sock"
-    static final String DEFAULT_HOST = "localhost"
-    static final int DEFAULT_PORT = 2375
-
     @Input String image
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
