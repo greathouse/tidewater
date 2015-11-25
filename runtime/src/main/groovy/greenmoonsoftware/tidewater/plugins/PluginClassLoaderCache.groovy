@@ -15,6 +15,11 @@ final class PluginClassLoaderCache {
                 locate(typeString)
     }
 
+    static void clear() {
+        cacheByPluginType.clear()
+        cacheByPluginUrl.clear()
+    }
+
     private static ClassLoader locate(String typeString) {
         def url = new PluginLocator().locate(typeString)
         return cacheByPluginUrl[url] ?: newClassLoader(typeString, url)
