@@ -28,7 +28,7 @@ class DockerExec extends AbstractStep {
         def log = context.&log.curry(this)
         def docker = dockerClient(uri, certPath)
 
-        def container = createAndStartContainer(docker, context)
+        def container = createAndStartContainer(docker)
         exitCode = awaitStatusCode(docker, container)
         captureContainerLogs(log, docker, container)
         return exitCode == 0
