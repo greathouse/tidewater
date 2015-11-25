@@ -24,8 +24,7 @@ class DockerBuild extends AbstractStep {
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
         imageId = command(dockerClient(uri, certPath))
-                .exec(new TidewaterLoggingResultCallback<BuildImageResultCallback, BuildResponseItem>(new BuildImageResultCallback(), log))
-                .delegate
+                .exec(new Callback(log))
                 .awaitImageId()
 
         return imageId
@@ -40,5 +39,27 @@ class DockerBuild extends AbstractStep {
             cmd.withRemote(URI.create(remote))
         }
         return cmd
+    }
+
+    private class Callback extends TidewaterLoggingResultCallback<BuildImageResultCallback, BuildResponseItem> {
+        private final Closure log
+
+        Callback(Closure log) {
+            super(new BuildImageResultCallback(), log)
+            this.log = log
+        }
+        String awaitImageId() { delegateCallback.awaitImageId() }
+
+        @Override
+        void onNext(BuildResponseItem item) {
+            super.onNext(item)
+            log item.stream.replaceAll('\n', '')
+        }
+
+        @Override
+        Callback awaitCompletion() throws InterruptedException {
+            super.awaitCompletion()
+            return this
+        }
     }
 }
