@@ -7,7 +7,7 @@ configurations {
     }
 }
 
-sourceSets.main.compileClasspath += [configurations.plugin]
+sourceSets.main.compileClasspath += configurations.plugin
 
 dependencies {
     compile project(':runtime')
