@@ -12,9 +12,9 @@ import java.text.DecimalFormat
 import static Client.dockerClient
 
 class DockerPull extends AbstractStep {
-    @Input String image
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
+    @Input String image
 
     @Override
     boolean execute(Context context, File stepDirectory) {

@@ -34,3 +34,9 @@ step logs(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerLogs') {
     containerId start.containerId
     toFilePath "${context.workspace}/logs.txt"
 }
+
+step push(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerPush') {
+    uri context.dockerHost
+    certPath context.dockerCert
+    image 'robert/ubuntu'
+}
