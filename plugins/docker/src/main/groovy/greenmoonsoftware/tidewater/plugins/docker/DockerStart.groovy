@@ -15,9 +15,9 @@ import greenmoonsoftware.tidewater.step.Output
 import static Client.dockerClient
 
 class DockerStart extends AbstractStep {
-    @Input String image
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
+    @Input String image
     @Input String[] command
     @Input Map<String,String> binds = [:]
     @Input boolean waitForCompletion = true

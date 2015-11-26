@@ -9,10 +9,10 @@ import groovy.json.JsonOutput
 
 import static greenmoonsoftware.tidewater.plugins.docker.Client.dockerClient
 
-class DockerStop extends AbstractStep {
-    @Input String containerId
+class DockerKill extends AbstractStep {
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
+    @Input String containerId
 
     @Output int exitCode = -1
 
@@ -22,18 +22,18 @@ class DockerStop extends AbstractStep {
     @Override
     boolean execute(Context context, File stepDirectory) {
         init(context)
-        stop()
+        kill(docker)
         return isStopped()
     }
 
-    private void init(Context context) {
+    private init(Context context) {
         log = context.&log.curry(this)
         docker = dockerClient(uri, certPath)
     }
 
-    private void stop() {
-        log "Attempting to stop container: ${containerId}"
-        docker.stopContainerCmd(containerId).exec()
+    private void kill(DockerClient docker) {
+        log "Killing container: ${containerId}"
+        docker.killContainerCmd(containerId).exec()
     }
 
     private boolean isStopped() {
