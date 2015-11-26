@@ -5,6 +5,9 @@ import com.github.dockerjava.core.command.LogContainerResultCallback
 import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
+import greenmoonsoftware.tidewater.step.Output
+
+import java.text.DecimalFormat
 
 class DockerLogs extends AbstractStep {
     @Input String uri = System.env['DOCKER_HOST']
@@ -12,24 +15,38 @@ class DockerLogs extends AbstractStep {
     @Input String containerId
     @Input String toFilePath
 
+    @Output String totalSize = "?"
+
     private Closure<Void> log
     private DockerClient docker
     private File toFile
+    private long sizeInBytes = 0
 
     @Override
     boolean execute(Context context, File stepDirectory) {
         init(context)
-        def logCallback = new LogContainerResultCallback() {
-            @Override
-            void onNext(Frame object) {
-                toFile.append object.payload
-            }
-        }
+        log()
+        totalSize = byteSizeToHuman(sizeInBytes)
+        return true
+    }
+
+    private void log() {
         docker.logContainerCmd(containerId)
                 .withStdErr(true)
                 .withStdOut(true)
-                .exec(logCallback)
+                .exec(callback())
                 .awaitCompletion()
+    }
+
+    private LogContainerResultCallback callback() {
+        def logCallback = new LogContainerResultCallback() {
+            @Override
+            void onNext(Frame object) {
+                sizeInBytes += object.payload.length
+                toFile.append object.payload
+            }
+        }
+        logCallback
     }
 
     private init(Context context) {
@@ -37,5 +54,12 @@ class DockerLogs extends AbstractStep {
         docker = Client.dockerClient(uri, certPath)
         toFile = new File(toFilePath)
         toFile.parentFile.mkdirs()
+    }
+
+    private String byteSizeToHuman(long size) {
+        if(size <= 0) return '0'
+        final String[] units = [ 'B', 'kB', 'MB', 'GB', 'TB' ] as String[]
+        int digitGroups = (int) (Math.log10(size)/Math.log10(1024))
+        return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups]
     }
 }
