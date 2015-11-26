@@ -14,33 +14,47 @@ import greenmoonsoftware.tidewater.step.Output
 
 import static Client.dockerClient
 
-class DockerExec extends AbstractStep {
+class DockerStart extends AbstractStep {
     @Input String image
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
     @Input String[] command
     @Input Map<String,String> binds = [:]
+    @Input boolean waitForCompletion = true
 
-    @Output int exitCode
+    @Output String containerId
+    @Output int exitCode = -1
+
+    private Closure<Void> log
+    private CreateContainerResponse container
+    private DockerClient docker
 
     @Override
     boolean execute(Context context, File stepDirectory) {
-        def log = context.&log.curry(this)
-        def docker = dockerClient(uri, certPath)
+        init(context)
+        createAndStartContainer(this.docker)
+        return waitForCompletion ? doWait() : true
+    }
 
-        def container = createAndStartContainer(docker)
-        exitCode = awaitStatusCode(docker, container)
-        captureContainerLogs(log, docker, container)
+    private void init(Context context) {
+        log = context.&log.curry(this)
+        docker = dockerClient(uri, certPath)
+    }
+
+    private boolean doWait() {
+        exitCode = awaitStatusCode()
+        captureContainerLogs()
         return exitCode == 0
     }
 
     private CreateContainerResponse createAndStartContainer(DockerClient docker) {
-        def container = docker.createContainerCmd(image)
+        container = docker.createContainerCmd(image)
                 .withCmd(command)
                 .withBinds(buildBinds())
                 .exec()
 
         docker.startContainerCmd(container.id).exec()
+        containerId = container.id
         return container
     }
 
