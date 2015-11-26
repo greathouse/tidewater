@@ -27,3 +27,10 @@ step stop(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerStop') {
     certPath context.dockerCert
     containerId start.containerId
 }
+
+step logs(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerLogs') {
+    uri context.dockerHost
+    certPath context.dockerCert
+    containerId start.containerId
+    toFilePath "${context.workspace}/logs.txt"
+}
