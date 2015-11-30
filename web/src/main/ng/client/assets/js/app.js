@@ -52,10 +52,12 @@ config.$inject = ['$routeProvider', '$locationProvider'];
 function config($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: 'templates/home.html'
+      templateUrl: 'templates/home.html',
+      controller: 'Application.HomeController'
     })
     .otherwise({
-      redirectTo: '/'
+      redirectTo: '/',
+      controller: 'Application.HomeController'
     })
     ;
 }

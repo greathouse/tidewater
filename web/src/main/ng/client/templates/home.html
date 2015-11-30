@@ -1,3 +1,22 @@
 <div class="grid-container">
   <h1>Welcome to Tidewater</h1>
+  <p>
+    Thank you for trying Tidewater. This software is very alpha. However, if you would like to help contribute, please
+    fork the repo at <a href="https://github.com/greathouse/tidewater">https://github.com/greathouse/tidewater</a> and email me at
+    <a href="mailto:robert@greenmoonsoftware.com">robert@greenmoonsoftware.com</a>
+  </p>
+  <p>
+    To get you started, here is a sample script showing some of the pre-packaged plugins at work.
+  </p>
+  <div class="grid-block" ng-repeat="sample in samples">
+    <div class="grid-content" style="overflow: hidden">
+      <div class="box-header grid-content" ng-click="sample.show = !sample.show">
+        <h4>{{sample.title}} <small>(click to show)</small></h4>
+      </div>
+      <div class="box-body grid-content" ng-show="sample.show" style="max-height: 600px; overflow: scroll;">
+        <pre ng-include="sample.template">
+        </pre>
+      </div>
+    </div>
+  </div>
 </div>
