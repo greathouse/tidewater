@@ -39,9 +39,23 @@ step logs(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerLogs') {
 }
 
 step catDockerLogToPipeline(type: 'greenmoonsoftware.tidewater.plugins.shell.Shell') {
-    env (['fileToCat': logs.toFilePath]) <span class="comment">//In addition, each step's <em>inputs</em> are available using their step name. ie: "logs"</span>
+    env (['fileToCat': logs.toFilePath]) <span class="comment">//Previous step <em>inputs</em> are available using their step name. ie: "logs"</span>
     contents '''\\
         #!/bin/bash
         cat $fileToCat
     '''.stripIndent()
+}
+
+step tag(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerTag') {
+    uri context.dockerHost
+    certPath context.dockerCert
+    imageToTag context.dockerImage
+    repository 'local.docker:5000/tidewater/ubuntu'
+    tag "${new Date().format('yyyyMMddHHmmss')}"
+}
+
+step push(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerPush') {
+    uri context.dockerHost
+    certPath context.dockerCert
+    image tag.repository
 }
