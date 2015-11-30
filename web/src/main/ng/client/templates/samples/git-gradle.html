@@ -1,0 +1,13 @@
+step clone(type: 'greenmoonsoftware.tidewater.plugins.git.GitClone') {
+    url 'git@github.com:greathouse/tidewater.git'
+    dir 'tidewater'
+}
+
+step build(type: 'greenmoonsoftware.tidewater.plugins.gradle.Gradle') {
+    workingDir clone.dir
+    tasks 'installGulp bowerInstall build'
+}
+
+step showWorkspace(type: 'greenmoonsoftware.tidewater.plugins.shell.Shell') {
+    contents 'ls -lah'
+}

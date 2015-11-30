@@ -30,6 +30,7 @@ gulp {
 node {
     version = '5.0.0'
     download = true
+    nodeModulesDir = file("${project.projectDir}/src/main/ng")
 }
 
 configurations {
