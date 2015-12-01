@@ -67,7 +67,7 @@ function run() {
   var channel = postal.channel('TidewaterEvents');
 
   var stompClient = null;
-  var socket = new SockJS('/hello');
+  var socket = new SockJS('/eventChannel');
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function(frame) {
       stompClient.subscribe('/topic/events', function(event){
