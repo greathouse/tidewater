@@ -13,6 +13,7 @@ var router   = require('front-router');
 var sequence = require('run-sequence');
 var mainBowerFiles = require('main-bower-files');
 var headerfooter = require('gulp-headerfooter');
+var install = require("gulp-install");
 
 // Check for --production flag
 var isProduction = !!(argv.production);
@@ -167,9 +168,14 @@ gulp.task('server', ['build'], function() {
   ;
 });
 
+gulp.task('install-dependencies', function() {
+    gulp.src(['./bower.json', './package.json'])
+      .pipe(install());
+});
+
 // Builds your entire app once, without starting a server
 gulp.task('build', function(cb) {
-  sequence('clean', ['copy', 'copy:bower-files', 'copy:foundation', 'sass', 'uglify'], 'copy:templates', cb);
+  sequence('clean', 'install-dependencies', ['copy', 'copy:bower-files', 'copy:foundation', 'sass', 'uglify'], 'copy:templates', cb);
 });
 
 // Default task: builds your app, starts a server, and recompiles assets when they change
