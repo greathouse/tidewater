@@ -169,16 +169,14 @@ gulp.task('server', ['build'], function() {
 });
 
 gulp.task('install-dependencies', function() {
-    gulp.src(['./bower.json', './package.json'])
+    return gulp.src(['./bower.json', './package.json'])
       .pipe(install());
 });
 
-// Builds your entire app once, without starting a server
 gulp.task('build', function(cb) {
   sequence('clean', 'install-dependencies', ['copy', 'copy:bower-files', 'copy:foundation', 'sass', 'uglify'], 'copy:templates', cb);
 });
 
-// Default task: builds your app, starts a server, and recompiles assets when they change
 gulp.task('default', ['server'], function () {
   // Watch Sass
   gulp.watch(['./client/assets/scss/**/*', './scss/**/*'], ['sass']);

@@ -47,7 +47,7 @@ function($rootScope, $http, $q, Context, Step, eventService) {
             context.setLog(event.aggregateId, event.endDate, event.stackTrace);
         },
         'greenmoonsoftware.tidewater.step.events.StepFailedEvent': function(event) {
-            contexts[event.contextId.id].fail(event.aggregateId, event.endDate, event.step.outputs);
+            contexts[event.contextId.id].stepFail(event.aggregateId, event.endDate, event.step.outputs);
         },
         'greenmoonsoftware.tidewater.context.events.ContextExecutionEndedEvent': function(event) {
             contexts[event.aggregateId].end(event.eventDateTime.epochSecond * 1000);
