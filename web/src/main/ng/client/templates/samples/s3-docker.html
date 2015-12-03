@@ -1,0 +1,38 @@
+properties {
+    source 'git@bitbucket.org:greathouse/greenmoonsoftware.com.git'
+    dockerHost 'tcp://192.168.99.100:2376'
+    dockerCert '/Users/robert/.docker/machine/machines/default'
+    jekyllImage 'jekyll/jekyll:builder'
+    publishBucket 'www.greenmoonsoftware.com'
+    backupBucket 'backup.greenmoonsoftware.com'
+}
+
+step cloneSource(type: 'greenmoonsoftware.tidewater.plugins.git.GitClone') {
+    url context.source
+    dir 'site'
+}
+
+step pullJekyll(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerPull') {
+    uri context.dockerHost
+    certPath context.dockerCert
+    image context.jekyllImage
+}
+
+step jekyll(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerStart') {
+    uri context.dockerHost
+    certPath context.dockerCert
+    image context.jekyllImage
+    command (['jekyll', 'build'])
+    binds (["${context.workspace}/${cloneSource.dir}" : '/srv/jekyll'])
+}
+
+step backup(type: 'greenmoonsoftware.tidewater.plugins.aws.s3.S3CopyBucket') {
+    sourceBucketName context.publishBucket
+    destinationBucketName context.backupBucket
+    destinationKeyName "${new Date().format('yyyy-MM-dd-HH-mm-ss')}"
+}
+
+step publish(type: 'greenmoonsoftware.tidewater.plugins.aws.s3.S3Upload') {
+    bucketName context.publishBucket
+    upload "${cloneSource.dir}/_site"
+}
