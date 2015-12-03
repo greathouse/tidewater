@@ -45,7 +45,7 @@ final class TidewaterS3TransferManager {
         new Thread({
             while (!transfer.done) {
                 def progress = transfer.progress
-                log "${progress.percentTransferred as int}% (${byteSizeToHuman(progress.bytesTransferred)} / ${byteSizeToHuman(progress.totalBytesToTransfer)} bytes)"
+                log 'transferProgress', buildProgressBar(progress.bytesTransferred, progress.totalBytesToTransfer)
                 sleep 2000
             }
         }).start()
@@ -56,5 +56,12 @@ final class TidewaterS3TransferManager {
         final String[] units = [ 'B', 'kB', 'MB', 'GB', 'TB' ] as String[]
         int digitGroups = (int) (Math.log10(size)/Math.log10(1024))
         return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups]
+    }
+
+    private String buildProgressBar(long currentBytes, long totalBytes) {
+        def percent = currentBytes / totalBytes * 100 as double
+        def percentageScale = percent / 2
+        def bar = ''.padRight(percentageScale, '█')
+        return "${bar} ${percent.round(1)}%  ${byteSizeToHuman(currentBytes)} / ${byteSizeToHuman(totalBytes)}"
     }
 }
