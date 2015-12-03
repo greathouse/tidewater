@@ -3,7 +3,7 @@ ext {
     groovy = "org.codehaus.groovy:groovy:$groovyVersion"
     groovySql = "org.codehaus.groovy:groovy-sql:$groovyVersion"
 
-    h2 = 'com.h2database:h2:1.4.186'
+    h2 = 'com.h2database:h2:1.4.190'
     testng = 'org.testng:testng:6.8.21'
 
     peerProject = { name ->
