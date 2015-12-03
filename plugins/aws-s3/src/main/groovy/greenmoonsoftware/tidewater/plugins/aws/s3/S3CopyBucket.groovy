@@ -25,9 +25,10 @@ class S3CopyBucket extends AbstractStep {
             objectListing = s3Client.listObjects(sourceBucketName)
             objectListing.objectSummaries.each {
                 def toFullKey = "${destinationKeyName}/${it.key}"
-                log "Copying ${it.key} to ${toFullKey}"
+                def msg = " Copying ${it.key} → ${toFullKey}"
+                log toFullKey, ' ' + msg
                 def result = s3Client.copyObject(it.bucketName, it.key, destinationBucketName, toFullKey)
-                log "Complete. ETag ${result.ETag}"
+                log toFullKey, "✔${msg} : ETag ${result.ETag}"
             }
         }
         return true
