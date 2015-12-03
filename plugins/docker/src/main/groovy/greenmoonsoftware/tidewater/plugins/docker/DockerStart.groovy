@@ -62,13 +62,13 @@ class DockerStart extends AbstractStep {
         binds.collect { k,v -> new Bind(k, new Volume(v)) }
     }
 
-    private int awaitStatusCode(DockerClient docker, CreateContainerResponse container) {
+    private int awaitStatusCode() {
         docker.waitContainerCmd(container.id)
                 .exec(new WaitContainerResultCallback())
                 .awaitStatusCode()
     }
 
-    private void captureContainerLogs(log, DockerClient docker, CreateContainerResponse container) {
+    private void captureContainerLogs() {
         def logCallback = new ResultCallbackTemplate<LogContainerResultCallback, Frame>() {
             @Override
             void onNext(Frame object) {
