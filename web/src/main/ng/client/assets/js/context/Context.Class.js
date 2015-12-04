@@ -42,6 +42,10 @@ function() {
         this.stepsByName[stepName].fail(endTime, outputs);
     }
 
+    Context.prototype.stepDisabled = function(stepName, time) {
+        this.stepsByName[stepName].disabled(time);
+    }
+
     Context.prototype.end = function(endTime) {
         this.endTime = endTime;
         this.status = this.steps.slice(-1)[0].status;

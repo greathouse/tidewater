@@ -41,6 +41,9 @@ function($rootScope, $http, $q, Context, Step, eventService) {
         'greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent': function(event) {
             contexts[event.contextId.id].stepSuccess(event.aggregateId, event.endDate, event.step.outputs);
         },
+        'greenmoonsoftware.tidewater.step.events.StepDisabledEvent': function(event) {
+            contexts[event.contextId.id].stepDisabled(event.aggregateId, event.skippedTime);
+        },
         'greenmoonsoftware.tidewater.step.events.StepErroredEvent': function(event) {
             var context = contexts[event.contextId.id];
             context.stepError(event.aggregateId, event.endDate, event.step.outputs);

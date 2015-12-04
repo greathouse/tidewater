@@ -7,7 +7,8 @@ m.directive('twStatusImage', function() {
         'COMPLETE': './assets/img/green-check.svg',
         'SUCCESS': './assets/img/green-check.svg',
         'ERROR': './assets/img/error.svg',
-        'FAILURE': './assets/img/failure.svg'
+        'FAILURE': './assets/img/failure.svg',
+        'DISABLED': './assets/img/disabled.svg'
     }
     var twStatusImage = {
         scope: {

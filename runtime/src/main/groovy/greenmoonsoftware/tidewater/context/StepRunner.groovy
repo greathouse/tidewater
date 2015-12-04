@@ -6,6 +6,7 @@ import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
 import greenmoonsoftware.tidewater.step.StepDelegate
 import greenmoonsoftware.tidewater.step.events.StepConfiguredEvent
+import greenmoonsoftware.tidewater.step.events.StepDisabledEvent
 import greenmoonsoftware.tidewater.step.events.StepErroredEvent
 import greenmoonsoftware.tidewater.step.events.StepFailedEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
@@ -24,11 +25,24 @@ class StepRunner implements Serializable {
 
     void run() {
         for(defined in steps) {
+            if (isDisabled(defined)) {
+                continue
+            }
+
             def success = start(configure(defined))
             if (!success) {
                 break
             }
         }
+    }
+
+    private boolean isDisabled(StepDefinition stepDefinition) {
+        stepDefinition.enabled ? false : disabled(stepDefinition)
+    }
+
+    private boolean disabled(StepDefinition stepDefinition) {
+        context.raiseEvent(new StepDisabledEvent(stepDefinition.name, context.attributes.id, new Date()))
+        return true
     }
 
     private boolean start(Step step) {

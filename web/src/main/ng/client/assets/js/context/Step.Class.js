@@ -50,6 +50,10 @@ function(StepAttempt) {
         this.currentAttempt().fail(endTime);
     }
 
+    Step.prototype.disabled = function(time) {
+        this.status = 'DISABLED'
+    }
+
     return Step;
 }
 
