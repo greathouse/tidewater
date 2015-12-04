@@ -12,11 +12,21 @@ class StepDefinitionBuilderTest {
 
     @Test
     void givenSingleArgumentAsClosure_shouldReturnDefinitionOfTypeCustomStep() {
-        def expectedClosure = configureClosure()
-        def args = [expectedClosure]
+        def args = [configureClosure()]
         def actual = StepDefinition.builder().scriptArgs(args).build()
         assert actual.type == CustomStep.canonicalName
-        assert actual.configureClosure == expectedClosure
+    }
+
+    @Test
+    void givenCustomStep_shouldWrapConfigureClosureWithExecutableProperty() {
+        def expected = configureClosure()
+        def args = [expected]
+        def stepDefinition = StepDefinition.builder().scriptArgs(args).build()
+        def stepDefinitionConfigureClosure = stepDefinition.configureClosure.rehydrate(new TestCustomStepDelegate(), this, this)
+        stepDefinitionConfigureClosure.resolveStrategy = Closure.DELEGATE_ONLY
+
+        def actual = stepDefinitionConfigureClosure.call()
+        assert actual == expected
     }
 
     @Test
@@ -51,5 +61,11 @@ class StepDefinitionBuilderTest {
 
     private configureClosure() {
         return { def someClosure = true }
+    }
+
+    private class TestCustomStepDelegate {
+        Closure executable(Closure executableClosure) {
+            executableClosure
+        }
     }
 }

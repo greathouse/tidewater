@@ -18,10 +18,17 @@ class StepDefinition  {
         StepDefinition build() {
             def type = definitionArgs?.type ?: CustomStep.canonicalName
             def enabled = definitionArgs?.enabled == null ? true : definitionArgs.enabled
-            return new StepDefinition(name: name, type: type, enabled: enabled, configureClosure: configureClosure)
+            return new StepDefinition(name: name, type: type, enabled: enabled, configureClosure: wrapConfigureClosureIfNecessary(type))
         }
 
-        Builder scriptArgs(List args) {
+        private wrapConfigureClosureIfNecessary(String type) {
+            //Ensure the CustomStep closure doesn't execute during the "configuration" phase.
+            //The 'executable' property in the wrapped closure maps to the greenmoonsoftware.tidewater.step.CustomStep::executable property
+            def c = configureClosure
+            return type == CustomStep.canonicalName ? { executable c} : configureClosure
+        }
+
+        Builder scriptArgs(args) {
             definitionArgs = args.size() == 2 ? args[0] : [:]
             configureClosure = args.size() == 2 ? args[1] : args[0]
             return this

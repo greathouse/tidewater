@@ -1,6 +1,5 @@
 package greenmoonsoftware.tidewater.context
 import greenmoonsoftware.tidewater.Context
-import greenmoonsoftware.tidewater.step.CustomStep
 import greenmoonsoftware.tidewater.step.StepDefinition
 import org.codehaus.groovy.control.CompilerConfiguration
 
@@ -20,21 +19,10 @@ abstract class TidewaterBaseScript extends Script implements Serializable {
     }
 
     def methodMissing(String name, args) {
-        if (args.length == 1) {
-            return customStep(name, args)
-        }
-        return stepConfiguration(name, args)
-    }
-
-    private StepDefinition stepConfiguration(String name, args) {
-        def type = args[0].type
-        def configureClosure = args[-1] as Closure
-        return new StepDefinition(name: name, type: type, configureClosure: configureClosure)
-    }
-
-    private StepDefinition customStep(String name, args) {
-        Closure c = args[0] as Closure
-        return new StepDefinition(name: name, type: CustomStep.canonicalName, configureClosure: { executable c})
+        return StepDefinition.builder()
+                .name(name)
+                .scriptArgs(args)
+                .build()
     }
 
     void println(String s) {
