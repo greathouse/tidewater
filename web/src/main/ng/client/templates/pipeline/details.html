@@ -49,9 +49,8 @@
                     </h4>
                 </div>
                 <div class="box-body grid-content" ng-show="showScript" style="max-height: 600px; overflow: scroll;">
-                    <pre>
-{{pipeline.script}}
-                    </pre>
+                    <div hljs hljs-language="groovy" hljs-source="pipeline.script">
+                    </div>
                 </div>
             </div>
         </div>

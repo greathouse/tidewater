@@ -5,7 +5,7 @@ properties {
 }
 
 step pull(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerPull') {
-    uri context.dockerHost <span class="comment">//Properties are accessible via the <em>context</em> variable</span>
+    uri context.dockerHost //Properties are accessible via the context variable
     certPath context.dockerCert
     image context.dockerImage
 }
@@ -18,7 +18,7 @@ step start(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerStart') {
     command (['/bin/sh', '-c', 'while true; do echo hello world; sleep 5; done'])
 }
 
-step sleep { <span class="comment">//If no type is provided for the step, then plain 'ol groovy code is executed.</span>
+step sleep { //If no type is provided for the step, then plain 'ol groovy code is executed.
     def millisecondsToSleep = 10000
     println "Going to sleep for ${millisecondsToSleep / 1000} seconds..."
     sleep 10000
@@ -28,18 +28,18 @@ step sleep { <span class="comment">//If no type is provided for the step, then p
 step stop(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerStop') {
     uri context.dockerHost
     certPath context.dockerCert
-    containerId start.containerId <span class="comment">//Steps may have <em>output</em> variables. These are referenced by their step name. ie: "start"</span>
+    containerId start.containerId //Steps may have output variables. These are referenced by their step name. ie: "start"
 }
 
 step logs(type: 'greenmoonsoftware.tidewater.plugins.docker.DockerLogs') {
     uri context.dockerHost
     certPath context.dockerCert
     containerId start.containerId
-    toFilePath "${context.workspace}/logs.txt" <span class="comment">//Each individual execution of a pipeline (ie: context) has it's own workspace directory. No file system collisions with concurrent executions.</span>
+    toFilePath "${context.workspace}/logs.txt" //Each individual execution of a pipeline (ie: context) has it's own workspace directory. No file system collisions with concurrent executions.
 }
 
 step catDockerLogToPipeline(type: 'greenmoonsoftware.tidewater.plugins.shell.Shell') {
-    env (['fileToCat': logs.toFilePath]) <span class="comment">//Previous step <em>inputs</em> are available using their step name. ie: "logs"</span>
+    env (['fileToCat': logs.toFilePath]) //Previous step inputs are available using their step name. ie: "logs"
     contents '''\\
         #!/bin/bash
         cat $fileToCat

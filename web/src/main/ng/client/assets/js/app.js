@@ -8,6 +8,8 @@ var application = angular.module('application', [
   //foundation
   'foundation',
 
+  'hljs',
+
   'elastic',
   'statusImage',
   'commandButton',

@@ -53,9 +53,7 @@
                         <h4>Script</h4>
                     </div>
                     <div class="box-body grid-content" ng-show="showScript" style="max-height: 600px; overflow: scroll;">
-                            <pre>
-{{context.script}}
-                            </pre>
+                        <div hljs hljs-source="context.script" hljs-language="groovy"></div>
                     </div>
                 </div>
             </div>

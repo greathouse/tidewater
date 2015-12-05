@@ -14,8 +14,7 @@
         <h4>{{sample.title}} <small>(click to show)</small></h4>
       </div>
       <div class="box-body grid-content" ng-show="sample.show" style="max-height: 600px; overflow: scroll;">
-        <pre ng-include="sample.template">
-        </pre>
+        <div hljs hljs-include="sample.template" hljs-language="groovy"></div>
       </div>
     </div>
   </div>

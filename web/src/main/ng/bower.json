@@ -29,7 +29,8 @@
     "moment": "~2.10.6",
     "postal.js": "~1.0.7",
     "sockjs-client": "~1.0.3",
-    "stomp-websocket": "~2.3.4"
+    "stomp-websocket": "~2.3.4",
+    "angular-highlightjs": "~0.5.1"
   },
   "overrides": {
     "foundation-apps": {
