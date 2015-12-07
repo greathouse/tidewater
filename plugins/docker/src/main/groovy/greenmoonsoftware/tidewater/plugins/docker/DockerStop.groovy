@@ -42,6 +42,6 @@ class DockerStop extends AbstractStep {
         exitCode = inspect.state.exitCode
         log JsonOutput.prettyPrint(JsonOutput.toJson(inspect))
 
-        return !inspect.state.isRunning()
+        return !inspect.state.running
     }
 }
