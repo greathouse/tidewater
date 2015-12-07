@@ -1,14 +1,11 @@
 package greenmoonsoftware.tidewater.web
-
 import greenmoonsoftware.tidewater.context.ContextId
 
-import java.util.concurrent.ConcurrentHashMap
-
 final class PipelineContextContainer {
-    private final Map<ContextId, Thread> runningThreads = [:] as ConcurrentHashMap
+    private final Map<String, Thread> runningThreads = [:]
 
     void add(ContextId c, Thread t) {
-        runningThreads[c] = t
+        runningThreads.put(c.id, t)
     }
 
     boolean abort(ContextId c) {
@@ -16,10 +13,10 @@ final class PipelineContextContainer {
     }
 
     void remove(ContextId c) {
-        runningThreads.remove(c)
+        runningThreads.remove(c.id)
     }
 
     Collection<ContextId> getRunningContextIds() {
-        runningThreads.keySet().asImmutable()
+        runningThreads.keySet().collect { new ContextId(it) }.asImmutable()
     }
 }

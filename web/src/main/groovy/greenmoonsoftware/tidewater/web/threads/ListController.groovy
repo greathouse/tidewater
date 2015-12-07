@@ -1,5 +1,6 @@
 package greenmoonsoftware.tidewater.web.threads
 
+import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.web.PipelineContextContainer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,7 +11,7 @@ class ListController {
     @Autowired private PipelineContextContainer container
 
     @RequestMapping('/threads')
-    List index() {
-        container.getRunningContextIds().asList()
+    Collection<ContextId> index() {
+        container.runningContextIds
     }
 }
