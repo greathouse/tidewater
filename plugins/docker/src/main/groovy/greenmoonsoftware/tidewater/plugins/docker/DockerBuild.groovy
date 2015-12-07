@@ -8,8 +8,6 @@ import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
 
-import static Client.dockerClient
-
 class DockerBuild extends AbstractStep {
     @Input String uri = System.env['DOCKER_HOST']
     @Input String certPath = System.env['DOCKER_CERT_PATH']
@@ -23,7 +21,7 @@ class DockerBuild extends AbstractStep {
     @Override
     boolean execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
-        imageId = command(dockerClient(uri, certPath))
+        imageId = command(Client.dockerClient(uri, certPath))
                 .exec(new Callback(log))
                 .awaitImageId()
 
