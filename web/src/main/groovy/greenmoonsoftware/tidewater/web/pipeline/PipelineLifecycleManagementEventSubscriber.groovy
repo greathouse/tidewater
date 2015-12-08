@@ -49,7 +49,7 @@ class PipelineLifecycleManagementEventSubscriber implements EventSubscriber<Even
         def context = new RunContext(event.contextId)
         context.addEventSubscribers(this, contextEventSubscriber)
         def thread = context.execute(event.script)
-        pipelineContextContainer.add(event.contextId, thread)
+        pipelineContextContainer.add(event.pipelineName, event.contextId, thread)
     }
 
     private void handle(StepFailedEvent e) {
