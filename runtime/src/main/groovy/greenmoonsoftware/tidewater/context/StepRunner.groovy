@@ -12,6 +12,7 @@ import greenmoonsoftware.tidewater.step.events.StepErroredEvent
 import greenmoonsoftware.tidewater.step.events.StepFailedEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
 import greenmoonsoftware.tidewater.step.events.StepSuccessfullyCompletedEvent
+import groovy.transform.TailRecursive
 
 import java.time.Duration
 
@@ -25,14 +26,21 @@ class StepRunner implements Serializable {
     }
 
     void run() {
-        for(defined in steps) {
-            if (isDisabled(defined)) {
-                continue
-            }
+        process(steps)
+    }
 
-            if (!start(configure(defined)).continueProcessing) {
-                break
-            }
+    @TailRecursive
+    private process(List<StepDefinition> remaining) {
+        if (remaining.size() == 0) {
+            return
+        }
+        def defined = remaining.head()
+        if (isDisabled(defined)) {
+            return process(remaining.tail())
+        }
+
+        if (start(configure(defined)).continueProcessing) {
+            return process(remaining.tail())
         }
     }
 
