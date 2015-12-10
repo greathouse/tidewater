@@ -5,6 +5,7 @@ import greenmoonsoftware.tidewater.plugins.PluginClassLoaderCache
 import greenmoonsoftware.tidewater.step.Step
 import greenmoonsoftware.tidewater.step.StepDefinition
 import greenmoonsoftware.tidewater.step.StepDelegate
+import greenmoonsoftware.tidewater.step.StepResult
 import greenmoonsoftware.tidewater.step.events.StepConfiguredEvent
 import greenmoonsoftware.tidewater.step.events.StepDisabledEvent
 import greenmoonsoftware.tidewater.step.events.StepErroredEvent
@@ -29,8 +30,7 @@ class StepRunner implements Serializable {
                 continue
             }
 
-            def success = start(configure(defined))
-            if (!success) {
+            if (!start(configure(defined)).continueProcessing) {
                 break
             }
         }
@@ -45,17 +45,17 @@ class StepRunner implements Serializable {
         return true
     }
 
-    private boolean start(Step step) {
+    private StepResult start(Step step) {
         def startDate = new Date()
         context.raiseEvent(new StepStartedEvent(step, context.attributes.id, startDate))
         def originalClassloader = Thread.currentThread().contextClassLoader
         try {
             Thread.currentThread().contextClassLoader = PluginClassLoaderCache.getFor(step.class)
-            return executeStep(step, startDate)
+            return executeStep(step, startDate) ? StepResult.SUCCESS : StepResult.FAILURE
         } catch (all) {
             all.printStackTrace()
             handleErroredStep(step, startDate, all)
-            return false
+            return StepResult.ERROR
         }
         finally {
             Thread.currentThread().contextClassLoader = originalClassloader
