@@ -1,5 +1,4 @@
 package greenmoonsoftware.tidewater.context
-
 import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.plugins.PluginClassLoaderCache
 import greenmoonsoftware.tidewater.step.Step
@@ -19,6 +18,10 @@ import java.time.Duration
 class StepRunner implements Serializable {
     private final Context context
     private final List<StepDefinition> steps
+    private final successFailHandler = [
+            (StepResult.SUCCESS): {Step step, Date startDate, Date endDate -> new StepSuccessfullyCompletedEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()))},
+            (StepResult.FAILURE): {Step step, Date startDate, Date endDate -> new StepFailedEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())) }
+    ]
 
     StepRunner(Context c, List<StepDefinition> s) {
         context = c
@@ -73,12 +76,7 @@ class StepRunner implements Serializable {
 
     private StepResult executeStep(Step step, Date startDate) {
         def result = step.execute(context, setupStepMetaDirectory(step))
-        def endDate = new Date()
-        if (result == StepResult.SUCCESS) {
-            context.raiseEvent(new StepSuccessfullyCompletedEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
-        } else {
-            context.raiseEvent(new StepFailedEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
-        }
+        context.raiseEvent(successFailHandler[result].call(step, startDate, new Date()))
         return result
     }
 
