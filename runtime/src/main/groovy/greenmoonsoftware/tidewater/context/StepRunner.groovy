@@ -31,10 +31,9 @@ class StepRunner implements Serializable {
 
     @TailRecursive
     private long process(List<StepDefinition> remaining, long counter = 0) {
-        if (remaining.size() == 0) {
-            return counter
-        }
-        process(remaining.head()) ? process(remaining.tail(), counter + 1) : counter
+        return (remaining.size() == 0) ? counter
+            : process(remaining.head()) ?
+                process(remaining.tail(), counter + 1) : counter
     }
 
     private boolean process(StepDefinition defined) {
