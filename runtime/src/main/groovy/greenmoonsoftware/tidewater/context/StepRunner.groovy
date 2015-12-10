@@ -25,23 +25,20 @@ class StepRunner implements Serializable {
         steps = s
     }
 
-    void run() {
+    long run() {
         process(steps)
     }
 
     @TailRecursive
-    private process(List<StepDefinition> remaining) {
+    private long process(List<StepDefinition> remaining, long counter = 0) {
         if (remaining.size() == 0) {
-            return
+            return counter
         }
-        def defined = remaining.head()
-        if (isDisabled(defined)) {
-            return process(remaining.tail())
-        }
+        process(remaining.head()) ? process(remaining.tail(), counter + 1) : counter
+    }
 
-        if (start(configure(defined)).continueProcessing) {
-            return process(remaining.tail())
-        }
+    private boolean process(StepDefinition defined) {
+        return isDisabled(defined) ?: start(configure(defined)).continueProcessing
     }
 
     private boolean isDisabled(StepDefinition stepDefinition) {
@@ -61,18 +58,18 @@ class StepRunner implements Serializable {
             Thread.currentThread().contextClassLoader = PluginClassLoaderCache.getFor(step.class)
             return executeStep(step, startDate) ? StepResult.SUCCESS : StepResult.FAILURE
         } catch (all) {
-            all.printStackTrace()
-            handleErroredStep(step, startDate, all)
-            return StepResult.ERROR
+            return handleErroredStep(step, startDate, all)
         }
         finally {
             Thread.currentThread().contextClassLoader = originalClassloader
         }
     }
 
-    private StepErroredEvent handleErroredStep(Step step, Date startDate, Exception e) {
+    private StepResult handleErroredStep(Step step, Date startDate, Exception e) {
+        e.printStackTrace()
         def endDate = new Date()
         context.raiseEvent(new StepErroredEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant()), e))
+        return StepResult.ERROR
     }
 
     private boolean executeStep(Step step, Date startDate) {
