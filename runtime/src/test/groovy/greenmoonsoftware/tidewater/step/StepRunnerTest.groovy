@@ -5,6 +5,7 @@ import greenmoonsoftware.tidewater.context.ContextAttributes
 import greenmoonsoftware.tidewater.context.ContextId
 import greenmoonsoftware.tidewater.context.StepRunner
 import greenmoonsoftware.tidewater.step.events.StepConfiguredEvent
+import greenmoonsoftware.tidewater.step.events.StepDisabledEvent
 import greenmoonsoftware.tidewater.step.events.StepErroredEvent
 import greenmoonsoftware.tidewater.step.events.StepFailedEvent
 import greenmoonsoftware.tidewater.step.events.StepStartedEvent
@@ -51,6 +52,16 @@ class StepRunnerTest {
         context.assertEvents(steps[1].name, failEvents())
     }
 
+    @Test
+    void givenDisabledThenSuccess_shouldExecuteSuccessStep() {
+        def context = new TestContext()
+        def steps = [custom([enabled: false]) {}, custom {true}]
+
+        assert new StepRunner(context, steps).run() == 2
+        context.assertEvents(steps[0].name, disabledEvents())
+        context.assertEvents(steps[1].name, successEvents())
+    }
+
     private successEvents() {
         [StepConfiguredEvent, StepStartedEvent, StepSuccessfullyCompletedEvent] as Class<Event>[]
     }
@@ -63,8 +74,16 @@ class StepRunnerTest {
         [StepConfiguredEvent, StepStartedEvent, StepErroredEvent] as Class<Event>[]
     }
 
+    Class<Event>[] disabledEvents() {
+        [StepDisabledEvent] as Class<Event>[]
+    }
+
+    private custom(Map args, Closure configureClosure) {
+        StepDefinition.builder().name(UUID.randomUUID().toString()).scriptArgs([args, configureClosure]).build()
+    }
+
     private custom(Closure configureClosure) {
-        StepDefinition.builder().name(UUID.randomUUID().toString()).scriptArgs([configureClosure]).build()
+        custom([enabled: true], configureClosure)
     }
 
     private static class TestContext implements Context {
@@ -73,6 +92,8 @@ class StepRunnerTest {
         File metaDirectory = Files.createTempDirectory(UUID.randomUUID().toString()).toFile()
 
         boolean assertEvents(String aggregateId, Class<Event> ... events) {
+            def eventsForAggregateId = raisedEvents.findAll { e -> e.aggregateId == aggregateId }
+            assert eventsForAggregateId.size() == events.size(), "Expected Events and raised events don't match: Raised Events: ${eventsForAggregateId.collect{it.type}}"
             events.each { eventClass ->
                 assert raisedEvents.find { e -> e.type == eventClass.canonicalName && e.aggregateId == aggregateId }, "No event found of type ${eventClass}"
             }
