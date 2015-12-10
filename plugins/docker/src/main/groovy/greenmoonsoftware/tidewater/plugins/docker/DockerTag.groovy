@@ -4,6 +4,7 @@ import com.github.dockerjava.api.DockerClient
 import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
+import greenmoonsoftware.tidewater.step.StepResult
 
 class DockerTag extends AbstractStep {
     @Input String uri = System.env['DOCKER_HOST']
@@ -16,13 +17,13 @@ class DockerTag extends AbstractStep {
     private DockerClient docker
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         init(context)
 
         log "Attempting to tag ${imageToTag} → ${repository}:${tag}"
         docker.tagImageCmd(imageToTag, repository, tag).exec()
         log 'Successful'
-        return true
+        return StepResult.SUCCESS
     }
 
     private init(Context context) {

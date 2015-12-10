@@ -6,10 +6,10 @@ import com.github.dockerjava.core.command.PullImageResultCallback
 import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
+import greenmoonsoftware.tidewater.step.StepResult
 
 import java.text.DecimalFormat
 
-import static Client.dockerClient
 
 class DockerPull extends AbstractStep {
     @Input String uri = System.env['DOCKER_HOST']
@@ -17,14 +17,14 @@ class DockerPull extends AbstractStep {
     @Input String image
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
 
-        return dockerClient(uri, certPath)
+        return StepResult.from(Client.dockerClient(uri, certPath)
                 .pullImageCmd(image)
                 .exec(new Callback(log))
                 .awaitCompletion()
-                .success
+                .success)
     }
 
     private String buildProgressBar(ResponseItem i) {

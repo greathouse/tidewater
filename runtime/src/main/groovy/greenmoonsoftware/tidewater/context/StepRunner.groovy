@@ -55,7 +55,7 @@ class StepRunner implements Serializable {
         def originalClassloader = Thread.currentThread().contextClassLoader
         try {
             Thread.currentThread().contextClassLoader = PluginClassLoaderCache.getFor(step.class)
-            return executeStep(step, startDate) ? StepResult.SUCCESS : StepResult.FAILURE
+            return executeStep(step, startDate)
         } catch (all) {
             return handleErroredStep(step, startDate, all)
         }
@@ -71,15 +71,15 @@ class StepRunner implements Serializable {
         return StepResult.ERROR
     }
 
-    private boolean executeStep(Step step, Date startDate) {
-        def success = step.execute(context, setupStepMetaDirectory(step))
+    private StepResult executeStep(Step step, Date startDate) {
+        def result = step.execute(context, setupStepMetaDirectory(step))
         def endDate = new Date()
-        if (success) {
+        if (result == StepResult.SUCCESS) {
             context.raiseEvent(new StepSuccessfullyCompletedEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
         } else {
             context.raiseEvent(new StepFailedEvent(step, context.attributes.id, endDate, Duration.between(startDate.toInstant(), endDate.toInstant())))
         }
-        return success
+        return result
     }
 
     private File setupStepMetaDirectory(Step step) {

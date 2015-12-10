@@ -2,6 +2,7 @@ package greenmoonsoftware.tidewater.plugins.gradle
 import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
+import greenmoonsoftware.tidewater.step.StepResult
 import groovy.transform.ToString
 
 @ToString
@@ -12,10 +13,10 @@ class Gradle extends AbstractStep {
     @Input String tasks = 'clean'
 
     @Override
-    boolean execute(Context c, File metaDirectory) {
-        return executeProcess(buildProcess(c)) {
+    StepResult execute(Context c, File metaDirectory) {
+        StepResult.from(executeProcess(buildProcess(c)) {
             c.log(this, it)
-        }
+        })
     }
 
     private boolean executeProcess(ProcessBuilder builder, Closure eachLine) {

@@ -7,6 +7,7 @@ import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
+import greenmoonsoftware.tidewater.step.StepResult
 
 class DockerBuild extends AbstractStep {
     @Input String uri = System.env['DOCKER_HOST']
@@ -19,13 +20,13 @@ class DockerBuild extends AbstractStep {
     @Output String imageId
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
         imageId = command(Client.dockerClient(uri, certPath))
                 .exec(new Callback(log))
                 .awaitImageId()
 
-        return imageId
+        return StepResult.from(imageId)
     }
 
     private BuildImageCmd command(DockerClient docker) {

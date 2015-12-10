@@ -11,6 +11,7 @@ import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
+import greenmoonsoftware.tidewater.step.StepResult
 
 import static Client.dockerClient
 
@@ -30,10 +31,14 @@ class DockerStart extends AbstractStep {
     private DockerClient docker
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         init(context)
         createAndStartContainer(this.docker)
-        return waitForCompletion ? doWait() : true
+        return StepResult.from(waitIfRequired())
+    }
+
+    private boolean waitIfRequired() {
+        waitForCompletion ? doWait() : true
     }
 
     private void init(Context context) {

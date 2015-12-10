@@ -5,6 +5,7 @@ import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
+import greenmoonsoftware.tidewater.step.StepResult
 import groovy.json.JsonOutput
 
 import static greenmoonsoftware.tidewater.plugins.docker.Client.dockerClient
@@ -20,10 +21,10 @@ class DockerStop extends AbstractStep {
     private DockerClient docker
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         init(context)
         stop()
-        return isStopped()
+        return StepResult.from(isStopped())
     }
 
     private void init(Context context) {

@@ -9,6 +9,7 @@ import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
+import greenmoonsoftware.tidewater.step.StepResult
 
 class S3CopyObject extends AbstractStep {
     @Input String sourceBucketName
@@ -19,11 +20,11 @@ class S3CopyObject extends AbstractStep {
     @Output Transfer.TransferState transferState
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
         transferState = copy(log)
 
-        return transferState == Transfer.TransferState.Completed
+        return StepResult.from(transferState == Transfer.TransferState.Completed)
     }
 
     private Transfer.TransferState copy(Closure<Void> log) {

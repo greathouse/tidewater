@@ -5,6 +5,7 @@ import com.github.dockerjava.core.command.PushImageResultCallback
 import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
+import greenmoonsoftware.tidewater.step.StepResult
 
 class DockerPush extends AbstractStep {
     @Input String uri = System.env['DOCKER_HOST']
@@ -15,12 +16,12 @@ class DockerPush extends AbstractStep {
     private DockerClient docker
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         init(context)
-        return docker.pushImageCmd(image)
+        return StepResult.from(docker.pushImageCmd(image)
                 .exec(new Callback(log))
                 .awaitCompletion()
-                .success
+                .success)
     }
 
     private init(Context context) {

@@ -30,7 +30,7 @@ class StepDouble implements Step {
     }
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         throw new RuntimeException(unsupportedExceptionMessage)
     }
 

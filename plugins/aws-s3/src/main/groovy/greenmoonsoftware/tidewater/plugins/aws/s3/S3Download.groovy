@@ -6,6 +6,7 @@ import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
+import greenmoonsoftware.tidewater.step.StepResult
 
 class S3Download extends AbstractStep {
     @Input String bucketName
@@ -16,11 +17,11 @@ class S3Download extends AbstractStep {
     @Output Transfer.TransferState transferState
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
         File localTarget = new File(context.attributes.workspace, destination)
         transferState = isDirectory ? downloadDirectory(log, localTarget) : downloadFile(log, localTarget)
-        return transferState == Transfer.TransferState.Completed
+        return StepResult.from(transferState == Transfer.TransferState.Completed)
     }
 
     private boolean downloadDirectory(Closure<Void> log, File localTarget) {

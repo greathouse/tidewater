@@ -3,6 +3,7 @@ import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
+import greenmoonsoftware.tidewater.step.StepResult
 
 class Shell extends AbstractStep {
     @Input String contents
@@ -11,10 +12,10 @@ class Shell extends AbstractStep {
     @Output int exitValue = -1
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
-        return executeProcess(buildProcess(context, writeScript(stepDirectory))) {
+    StepResult execute(Context context, File stepDirectory) {
+        return StepResult.from(executeProcess(buildProcess(context, writeScript(stepDirectory))) {
             context.log(this, it)
-        }
+        })
     }
 
     private boolean executeProcess(ProcessBuilder builder, Closure eachLine) {

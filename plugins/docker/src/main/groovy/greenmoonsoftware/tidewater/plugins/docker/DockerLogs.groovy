@@ -6,6 +6,7 @@ import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
+import greenmoonsoftware.tidewater.step.StepResult
 
 import java.text.DecimalFormat
 
@@ -23,11 +24,11 @@ class DockerLogs extends AbstractStep {
     private long sizeInBytes = 0
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         init(context)
         log()
         totalSize = byteSizeToHuman(sizeInBytes)
-        return true
+        return StepResult.SUCCESS
     }
 
     private void log() {

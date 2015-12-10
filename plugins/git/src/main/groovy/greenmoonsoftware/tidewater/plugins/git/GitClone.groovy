@@ -4,6 +4,7 @@ import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
+import greenmoonsoftware.tidewater.step.StepResult
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
@@ -15,7 +16,7 @@ class GitClone extends AbstractStep {
 
     @Output private String sha
 
-    boolean execute(Context context, File metaDirectory) {
+    StepResult execute(Context context, File metaDirectory) {
         def log = context.&log.curry(this)
         def directory = new File(context.workspace, dir)
         log "Cloning repo: $url into ${directory.absolutePath}"
@@ -32,7 +33,7 @@ class GitClone extends AbstractStep {
         def ref = repository.getRef(ref)
         sha = ref.objectId.name
         log "Finished cloning. Working directory at ${ref.name} ($sha)"
-        return true
+        return StepResult.SUCCESS
     }
 
     String getSha() { sha }

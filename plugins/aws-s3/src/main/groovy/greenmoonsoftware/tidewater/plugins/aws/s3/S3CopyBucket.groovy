@@ -7,6 +7,7 @@ import greenmoonsoftware.tidewater.Context
 import greenmoonsoftware.tidewater.step.AbstractStep
 import greenmoonsoftware.tidewater.step.Input
 import greenmoonsoftware.tidewater.step.Output
+import greenmoonsoftware.tidewater.step.StepResult
 
 class S3CopyBucket extends AbstractStep {
     @Input String sourceBucketName
@@ -16,7 +17,7 @@ class S3CopyBucket extends AbstractStep {
     @Output int numberOfObjects
 
     @Override
-    boolean execute(Context context, File stepDirectory) {
+    StepResult execute(Context context, File stepDirectory) {
         def log = context.&log.curry(this)
         def s3Client = new AmazonS3Client(new ProfileCredentialsProvider())
 
@@ -31,6 +32,6 @@ class S3CopyBucket extends AbstractStep {
                 log toFullKey, "✔${msg} : ETag ${result.ETag}"
             }
         }
-        return true
+        return StepResult.SUCCESS
     }
 }
