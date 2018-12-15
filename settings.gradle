@@ -1,8 +1,9 @@
 include (
 		'eventsourcing:core',
+
 		'eventsourcing:jdbc-event-store',
 		'plugins:aws-s3',
-		'plugins:docker',
+//		'plugins:docker',
 		'plugins:git',
 		'plugins:gradle',
 		'plugins:shell',
